@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WE7g6WqER6E=",
+  "dgSpecHash": "b1UbYbG+pBE=",
   "success": true,
   "projectFilePath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Domain\\PhuongXa.Domain.csproj",
   "expectedPackageFiles": [
@@ -23,5 +23,18 @@
     "C:\\Users\\buidi\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
     "C:\\Users\\buidi\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
+      "projectPath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Domain\\PhuongXa.Domain.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Domain\\PhuongXa.Domain.csproj",
+      "libraryId": "Microsoft.Extensions.Caching.Memory",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

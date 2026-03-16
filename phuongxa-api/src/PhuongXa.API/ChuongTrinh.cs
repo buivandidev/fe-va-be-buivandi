@@ -146,6 +146,21 @@ var app = builder.Build();
 
 app.UseMiddleware<PhanMemGhiNhanYeuCau>();
 app.UseMiddleware<PhanMemNgoaiLeKichThuoc>();
+
+// Global exception handler for unhandled exceptions
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (InvalidOperationException ex) when (ex.Message.Contains("người dùng hiện tại"))
+    {
+        context.Response.StatusCode = 401;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(PhanHoiApi.ThatBai("Không xác thực"));
+    }
+});
 app.UseResponseCompression();
 
 // Security headers

@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("49d42c98-143d-4337-84fc-56297ff24e32")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhuongXa.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bdf8e71043f167cba12f5feb177a924e719579f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhuongXa.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhuongXa.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

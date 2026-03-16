@@ -40,7 +40,7 @@ public class XacThucController : BaseApiController
     // ── Helpers ──────────────────────────────────────────────
 
     private int SoNgayHetHanMaLamMoi =>
-        int.Parse(_cauHinh["Jwt:RefreshTokenDays"] ?? "7");
+        int.TryParse(_cauHinh["Jwt:RefreshTokenDays"], out var ngay) ? ngay : 7;
 
     private MaLamMoi TaoThucTheMaLamMoi(Guid idNguoiDung, string maToken)
     {
@@ -95,9 +95,8 @@ public class XacThucController : BaseApiController
         var phanHoi = new PhanHoiXacThucDto
         {
             MaTruyCap = maTruyCap,
-            MaLamMoi = maLamMoi,
             HetHanLuc = DateTime.UtcNow.AddMinutes(
-                double.Parse(_cauHinh["Jwt:AccessTokenMinutes"] ?? "15")),
+                double.TryParse(_cauHinh["Jwt:AccessTokenMinutes"], out var phut) ? phut : 15),
             NguoiDung = new ThongTinNguoiDungDto
             {
                 Id = nguoiDung.Id,

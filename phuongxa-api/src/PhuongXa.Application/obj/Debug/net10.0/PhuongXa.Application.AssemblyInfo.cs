@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhuongXa.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bdf8e71043f167cba12f5feb177a924e719579f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhuongXa.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhuongXa.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

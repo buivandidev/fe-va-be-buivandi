@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Djdoe8ogI3o=",
+  "dgSpecHash": "utCtI0N0sPk=",
   "success": true,
   "projectFilePath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Application\\PhuongXa.Application.csproj",
   "expectedPackageFiles": [
@@ -36,7 +36,19 @@
       "filePath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Application\\PhuongXa.Application.csproj",
       "libraryId": "AutoMapper",
       "targetGraphs": [
-        "net8.0"
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
+      "projectPath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Application\\PhuongXa.Application.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\febecuoiki\\phuongxa-api\\src\\PhuongXa.Application\\PhuongXa.Application.csproj",
+      "libraryId": "Microsoft.Extensions.Caching.Memory",
+      "targetGraphs": [
+        "net10.0"
       ]
     }
   ]

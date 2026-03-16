@@ -11,14 +11,20 @@ public abstract class BaseApiController : ControllerBase
         get
         {
             var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Guid.TryParse(claim, out var id)
-                ? id
-                : throw new UnauthorizedAccessException("Không xác định được người dùng hiện tại");
+            if (!Guid.TryParse(claim, out var id))
+                throw new InvalidOperationException("Không xác định được người dùng hiện tại");
+            return id;
         }
     }
 
-    protected string? IdNguoiDungHoacNull =>
-        User.FindFirstValue(ClaimTypes.NameIdentifier);
+    protected Guid? IdNguoiDungGuidHoacNull
+    {
+        get
+        {
+            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.TryParse(claim, out var id) ? id : null;
+        }
+    }
 
     protected static (int page, int pageSize) ChuanHoaPhanTrang(
         int page, int pageSize, int maxPageSize = 100)
