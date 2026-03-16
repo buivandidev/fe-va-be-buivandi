@@ -27,7 +27,7 @@ public class BangDieuKhienController : BaseApiController
     [HttpGet("stats")]
     public async Task<IActionResult> LayThongKe()
     {
-        var taskBaiViet = _donViCongViec.BaiViets.TruyVan()
+        var taskBaiViet = _donViCongViec.BaiViets.TruyVan().AsNoTracking()
             .GroupBy(_ => 1)
             .Select(g => new
             {
@@ -37,7 +37,7 @@ public class BangDieuKhienController : BaseApiController
             })
             .FirstOrDefaultAsync();
 
-        var taskDonUng = _donViCongViec.DonUngs.TruyVan()
+        var taskDonUng = _donViCongViec.DonUngs.TruyVan().AsNoTracking()
             .GroupBy(_ => 1)
             .Select(g => new
             {
@@ -46,7 +46,7 @@ public class BangDieuKhienController : BaseApiController
             })
             .FirstOrDefaultAsync();
 
-        var taskBinhLuan = _donViCongViec.BinhLuans.TruyVan()
+        var taskBinhLuan = _donViCongViec.BinhLuans.TruyVan().AsNoTracking()
             .GroupBy(_ => 1)
             .Select(g => new
             {
@@ -87,7 +87,7 @@ public class BangDieuKhienController : BaseApiController
         var hienTai = DateTime.UtcNow;
         var ngayBatDau = new DateTime(hienTai.Year, hienTai.Month, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(-11);
 
-        var soLuongTheoThang = await _donViCongViec.BaiViets.TruyVan()
+        var soLuongTheoThang = await _donViCongViec.BaiViets.TruyVan().AsNoTracking()
             .Where(a => a.NgayXuatBan.HasValue && a.NgayXuatBan.Value >= ngayBatDau)
             .GroupBy(a => new { a.NgayXuatBan!.Value.Year, a.NgayXuatBan!.Value.Month })
             .Select(g => new { g.Key.Year, g.Key.Month, Count = g.Count() })
@@ -119,7 +119,7 @@ public class BangDieuKhienController : BaseApiController
     {
         var cacTrangThai = new[] { TrangThaiDonUng.ChoXuLy, TrangThaiDonUng.DangXuLy, TrangThaiDonUng.HoanThanh, TrangThaiDonUng.TuChoi };
 
-        var soLuongTheoTrangThai = await _donViCongViec.DonUngs.TruyVan()
+        var soLuongTheoTrangThai = await _donViCongViec.DonUngs.TruyVan().AsNoTracking()
             .Where(a => cacTrangThai.Contains(a.TrangThai))
             .GroupBy(a => a.TrangThai)
             .Select(g => new { TrangThai = g.Key, SoLuong = g.Count() })

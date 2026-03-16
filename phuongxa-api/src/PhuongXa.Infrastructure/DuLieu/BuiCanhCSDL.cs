@@ -203,6 +203,14 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
     private List<NhatKyKiemTra> TruocKhiLuuThayDoi()
     {
         ChangeTracker.DetectChanges();
+
+        // Auto-set NgayCapNhat for modified entities inheriting ThucTheCoBan
+        foreach (var mucThayDoi in ChangeTracker.Entries<ThucTheCoBan>())
+        {
+            if (mucThayDoi.State == EntityState.Modified)
+                mucThayDoi.Entity.NgayCapNhat = DateTime.UtcNow;
+        }
+
         var cacMuc = new List<NhatKyKiemTra>();
 
         Guid? idNguoiDung = null;

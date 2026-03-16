@@ -3,7 +3,6 @@ namespace PhuongXa.Application.DTOs.XacThuc;
 public class PhanHoiXacThucDto
 {
     public string MaTruyCap { get; set; } = string.Empty;
-    public string MaLamMoi { get; set; } = string.Empty;
     public DateTime HetHanLuc { get; set; }
     public ThongTinNguoiDungDto NguoiDung { get; set; } = null!;
 }

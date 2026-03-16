@@ -32,6 +32,11 @@ public class DichVuLuuTruTepCucBo : IDichVuLuuTruTep
         var duongDanThuMuc = Path.Combine(_duongDanGocWeb, thuMuc);
         var namThang = DateTime.UtcNow.ToString("yyyy/MM");
         var duongDanThuMucDayDu = Path.Combine(duongDanThuMuc, namThang);
+
+        // Verify directory path stays within wwwroot BEFORE creating it
+        if (!Path.GetFullPath(duongDanThuMucDayDu).StartsWith(Path.GetFullPath(_duongDanGocWeb), StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Đường dẫn thư mục không hợp lệ");
+
         Directory.CreateDirectory(duongDanThuMucDayDu);
 
         // Verify final path stays within wwwroot
@@ -53,7 +58,7 @@ public class DichVuLuuTruTepCucBo : IDichVuLuuTruTep
         if (!duongDanDayDu.StartsWith(duongDanGocChoPhep, StringComparison.OrdinalIgnoreCase))
         {
             _nhatKy.LogWarning("Attempted path traversal delete blocked: {FilePath}", duongDanTep);
-            return Task.CompletedTask;
+            throw new InvalidOperationException("Đường dẫn tệp không hợp lệ");
         }
 
         if (File.Exists(duongDanDayDu))

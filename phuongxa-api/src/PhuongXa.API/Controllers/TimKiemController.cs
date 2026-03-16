@@ -35,19 +35,24 @@ public class TimKiemController : BaseApiController
         gioiHan = Math.Clamp(gioiHan, 1, 50);
         tuKhoa = tuKhoa.Trim();
 
-        var baiViets = await _donViCongViec.BaiViets.TruyVan().AsNoTracking()
+        var taskBaiViets = _donViCongViec.BaiViets.TruyVan().AsNoTracking()
             .Where(a => a.TrangThai == TrangThaiBaiViet.DaXuatBan && !a.DaXoa
                 && (a.TieuDe.Contains(tuKhoa) || a.TomTat!.Contains(tuKhoa) || a.TheTag!.Contains(tuKhoa)))
             .OrderByDescending(a => a.NgayXuatBan)
             .Take(gioiHan)
             .ToListAsync();
 
-        var dichVus = await _donViCongViec.DichVus.TruyVan().AsNoTracking()
+        var taskDichVus = _donViCongViec.DichVus.TruyVan().AsNoTracking()
             .Where(s => s.DangHoatDong
                 && (s.Ten.Contains(tuKhoa) || s.MoTa!.Contains(tuKhoa) || s.MaDichVu.Contains(tuKhoa)))
             .OrderBy(s => s.ThuTuSapXep)
             .Take(gioiHan)
             .ToListAsync();
+
+        await Task.WhenAll(taskBaiViets, taskDichVus);
+
+        var baiViets = await taskBaiViets;
+        var dichVus = await taskDichVus;
 
         var ketQua = new KetQuaTimKiemDto
         {

@@ -53,6 +53,12 @@ public class ThongTinController : BaseApiController
 
     private static bool CoChuKyHopLe(byte[] byteDauTep, string duoiTep)
     {
+        // MP4: check for 'ftyp' at offset 4 (any atom size)
+        if (duoiTep == ".mp4")
+            return byteDauTep.Length >= 8
+                && byteDauTep[4] == 0x66 && byteDauTep[5] == 0x74
+                && byteDauTep[6] == 0x79 && byteDauTep[7] == 0x70;
+
         if (!ChuKyTep.TryGetValue(duoiTep, out var sigs))
             return true;
         return sigs.Any(sig => byteDauTep.Take(sig.Length).SequenceEqual(sig));
@@ -191,11 +197,18 @@ public class ThongTinController : BaseApiController
         if (album == null)
             return NotFound(PhanHoiApi.ThatBai("Không tìm thấy album"));
 
-        foreach (var m in album.DanhSachPhuongTien)
-            await _luuTruTep.XoaTepAsync(m.DuongDanTep);
+        // Delete DB records first to maintain consistency
+        var duongDanTep = album.DanhSachPhuongTien.Select(m => m.DuongDanTep).ToList();
         _donViCongViec.PhuongTiens.XoaNhieu(album.DanhSachPhuongTien);
         _donViCongViec.AlbumPhuongTiens.Xoa(album);
         await _donViCongViec.LuuThayDoiAsync();
+
+        // Clean up files after DB deletion (best effort)
+        foreach (var dp in duongDanTep)
+        {
+            try { await _luuTruTep.XoaTepAsync(dp); }
+            catch { /* file cleanup is best-effort */ }
+        }
         return Ok(PhanHoiApi.ThanhCongKetQua("Xóa album thành công"));
     }
 
@@ -215,9 +228,9 @@ public class ThongTinController : BaseApiController
         using var luongTep = tep.OpenReadStream();
 
         var byteDauTep = new byte[8];
-        await luongTep.ReadAsync(byteDauTep.AsMemory(0, 8));
+        var soByteDoc = await luongTep.ReadAsync(byteDauTep.AsMemory(0, 8));
 
-        if (!CoChuKyHopLe(byteDauTep, duoiTep))
+        if (soByteDoc < 4 || !CoChuKyHopLe(byteDauTep, duoiTep))
             return BadRequest(PhanHoiApi.ThatBai("Nội dung file không khớp với định dạng"));
 
         luongTep.Position = 0;

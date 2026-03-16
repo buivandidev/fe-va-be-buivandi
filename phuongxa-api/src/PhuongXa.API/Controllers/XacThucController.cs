@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PhuongXa.Application.Chung;
 using PhuongXa.Application.DTOs.XacThuc;
 using PhuongXa.Application.CacGiaoDien;
@@ -20,6 +21,7 @@ public class XacThucController : BaseApiController
     private readonly IDonViCongViec _donViCongViec;
     private readonly IConfiguration _cauHinh;
     private readonly IDichVuEmail _dichVuEmail;
+    private readonly ILogger<XacThucController> _nhatKy;
 
     public XacThucController(
         UserManager<NguoiDung> quanLyNguoiDung,
@@ -27,7 +29,8 @@ public class XacThucController : BaseApiController
         IDichVuJwt dichVuJwt,
         IDonViCongViec donViCongViec,
         IConfiguration cauHinh,
-        IDichVuEmail dichVuEmail)
+        IDichVuEmail dichVuEmail,
+        ILogger<XacThucController> nhatKy)
     {
         _quanLyNguoiDung = quanLyNguoiDung;
         _quanLyDangNhap = quanLyDangNhap;
@@ -35,6 +38,7 @@ public class XacThucController : BaseApiController
         _donViCongViec = donViCongViec;
         _cauHinh = cauHinh;
         _dichVuEmail = dichVuEmail;
+        _nhatKy = nhatKy;
     }
 
     // ── Helpers ──────────────────────────────────────────────
@@ -138,9 +142,9 @@ public class XacThucController : BaseApiController
         {
             await _dichVuEmail.GuiChaoMungAsync(nguoiDung.Email!, nguoiDung.HoTen);
         }
-        catch { /* logged in email service */ }
+        catch (Exception ex) { _nhatKy.LogWarning(ex, "Gửi email chào mừng thất bại cho {Email}", nguoiDung.Email); }
 
-        return Ok(PhanHoiApi.ThanhCongKetQua("Đăng ký tài khoản thành công"));
+        return StatusCode(201, PhanHoiApi.ThanhCongKetQua("Đăng ký tài khoản thành công"));
     }
 
     [HttpPost("refresh")]
@@ -175,8 +179,7 @@ public class XacThucController : BaseApiController
 
         return Ok(PhanHoiApi<object>.ThanhCongKetQua(new
         {
-            maTruyCap = maTruyCapMoi,
-            maLamMoi = maLamMoiMoi
+            maTruyCap = maTruyCapMoi
         }));
     }
 
@@ -203,16 +206,12 @@ public class XacThucController : BaseApiController
     [HttpPost("revoke-all")]
     public async Task<IActionResult> ThuHoiTatCa()
     {
-        var cacMaLamMoi = await _donViCongViec.MaLamMois.TruyVan()
+        var soLuong = await _donViCongViec.MaLamMois.TruyVan()
             .Where(r => r.NguoiDungId == IdNguoiDungHienTai && !r.DaBiThuHoi)
-            .ToListAsync();
+            .ExecuteUpdateAsync(s => s.SetProperty(r => r.DaBiThuHoi, true));
 
-        foreach (var ma in cacMaLamMoi)
-            ma.DaBiThuHoi = true;
-
-        await _donViCongViec.LuuThayDoiAsync();
         Response.Cookies.Delete("refreshToken");
-        return Ok(PhanHoiApi.ThanhCongKetQua($"Đã thu hồi {cacMaLamMoi.Count} phiên đăng nhập"));
+        return Ok(PhanHoiApi.ThanhCongKetQua($"Đã thu hồi {soLuong} phiên đăng nhập"));
     }
 
     [Authorize]

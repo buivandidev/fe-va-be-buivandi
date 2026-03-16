@@ -114,11 +114,23 @@ public class NguoiDungController : BaseApiController
         nguoiDung.AnhDaiDien = dto.AnhDaiDien;
         nguoiDung.DangHoatDong = dto.DangHoatDong;
         nguoiDung.NgayCapNhat = DateTime.UtcNow;
-        await _quanLyNguoiDung.UpdateAsync(nguoiDung);
+        var ketQuaCapNhat = await _quanLyNguoiDung.UpdateAsync(nguoiDung);
+        if (!ketQuaCapNhat.Succeeded)
+            return BadRequest(PhanHoiApi.ThatBai("Cập nhật thất bại",
+                ketQuaCapNhat.Errors.Select(e => e.Description).ToList()));
 
         var vaiTroHienTai = await _quanLyNguoiDung.GetRolesAsync(nguoiDung);
-        await _quanLyNguoiDung.RemoveFromRolesAsync(nguoiDung, vaiTroHienTai);
-        await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, dto.VaiTro);
+        if (!vaiTroHienTai.Contains(dto.VaiTro, StringComparer.OrdinalIgnoreCase))
+        {
+            var ketQuaGanVaiTro = await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, dto.VaiTro);
+            if (!ketQuaGanVaiTro.Succeeded)
+                return BadRequest(PhanHoiApi.ThatBai("Gán vai trò mới thất bại",
+                    ketQuaGanVaiTro.Errors.Select(e => e.Description).ToList()));
+
+            var cacVaiTroCanXoa = vaiTroHienTai.Where(r => !string.Equals(r, dto.VaiTro, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (cacVaiTroCanXoa.Count > 0)
+                await _quanLyNguoiDung.RemoveFromRolesAsync(nguoiDung, cacVaiTroCanXoa);
+        }
 
         if (!dto.DangHoatDong)
         {
@@ -134,8 +146,8 @@ public class NguoiDungController : BaseApiController
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Xoa(Guid id)
     {
-        var idHienTai = IdNguoiDungHoacNull;
-        if (idHienTai == id.ToString())
+        var idHienTai = IdNguoiDungGuidHoacNull;
+        if (idHienTai == id)
             return BadRequest(PhanHoiApi.ThatBai("Không thể xóa tài khoản đang đăng nhập"));
 
         var nguoiDung = await _quanLyNguoiDung.FindByIdAsync(id.ToString());

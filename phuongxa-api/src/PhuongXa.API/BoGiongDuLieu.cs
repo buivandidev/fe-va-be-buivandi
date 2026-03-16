@@ -66,7 +66,7 @@ public static class BoGiongDuLieu
         }
 
         // Khởi tạo danh mục mặc định
-        if (!csdl.DanhMucs.Any())
+        if (!await csdl.DanhMucs.AnyAsync())
         {
             var danhMucTinTuc = new[]
             {
@@ -87,7 +87,7 @@ public static class BoGiongDuLieu
         }
 
         // Khởi tạo cài đặt trang web mặc định
-        if (!csdl.CaiDatTrangWebs.Any())
+        if (!await csdl.CaiDatTrangWebs.AnyAsync())
         {
             csdl.CaiDatTrangWebs.AddRange(
                 new CaiDatTrangWeb { Khoa = "SiteName", GiaTri = "Ủy ban nhân dân phường", Loai = "string" },

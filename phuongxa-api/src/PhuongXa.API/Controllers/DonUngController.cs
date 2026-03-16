@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PhuongXa.Application.Chung;
 using PhuongXa.Application.DTOs.DonUng;
 using PhuongXa.Application.CacGiaoDien;
@@ -21,17 +22,20 @@ public class DonUngController : BaseApiController
     private readonly IMapper _anhXa;
     private readonly IDichVuLuuTruTep _luuTruTep;
     private readonly IDichVuEmail _dichVuEmail;
+    private readonly ILogger<DonUngController> _nhatKy;
 
     public DonUngController(
         IDonViCongViec donViCongViec,
         IMapper anhXa,
         IDichVuLuuTruTep luuTruTep,
-        IDichVuEmail dichVuEmail)
+        IDichVuEmail dichVuEmail,
+        ILogger<DonUngController> nhatKy)
     {
         _donViCongViec = donViCongViec;
         _anhXa = anhXa;
         _luuTruTep = luuTruTep;
         _dichVuEmail = dichVuEmail;
+        _nhatKy = nhatKy;
     }
 
     [HttpPost("submit")]
@@ -45,9 +49,9 @@ public class DonUngController : BaseApiController
         var donUng = _anhXa.Map<DonUngDichVu>(dto);
         donUng.MaTheoDoi = $"HS{DateTime.UtcNow:yyyyMMdd}{Convert.ToHexString(RandomNumberGenerator.GetBytes(4)).ToUpper()}";
 
-        var chuoiIdNguoiDung = IdNguoiDungHoacNull;
-        if (!string.IsNullOrEmpty(chuoiIdNguoiDung))
-            donUng.NguoiDungId = Guid.Parse(chuoiIdNguoiDung);
+        var chuoiIdNguoiDung = IdNguoiDungGuidHoacNull;
+        if (chuoiIdNguoiDung.HasValue)
+            donUng.NguoiDungId = chuoiIdNguoiDung.Value;
 
         await _donViCongViec.DonUngs.ThemAsync(donUng);
         await _donViCongViec.LuuThayDoiAsync();
@@ -57,7 +61,7 @@ public class DonUngController : BaseApiController
             await _dichVuEmail.GuiDaNopDonAsync(
                 donUng.EmailNguoiNop, donUng.TenNguoiNop, donUng.MaTheoDoi, dichVu.Ten);
         }
-        catch { /* logged in email service */ }
+        catch (Exception ex) { _nhatKy.LogWarning(ex, "Gửi email xác nhận nộp đơn thất bại cho {Email}", donUng.EmailNguoiNop); }
 
         return Ok(PhanHoiApi<object>.ThanhCongKetQua(new { donUng.Id, donUng.MaTheoDoi },
             "Nộp đơn thành công. Vui lòng lưu mã theo dõi của bạn."));
@@ -76,18 +80,22 @@ public class DonUngController : BaseApiController
         if (donUng == null)
             return NotFound(PhanHoiApi.ThatBai("Không tìm thấy đơn ứng"));
 
-        var idNguoiDung = IdNguoiDungHoacNull;
-        if (donUng.NguoiDungId.HasValue && donUng.NguoiDungId.ToString() != idNguoiDung)
+        var idNguoiDung = IdNguoiDungGuidHoacNull;
+        if (donUng.NguoiDungId.HasValue && donUng.NguoiDungId != idNguoiDung)
             return StatusCode(403, PhanHoiApi.ThatBai("Bạn không có quyền tải tệp cho đơn ứng này"));
         if (!donUng.NguoiDungId.HasValue)
             return StatusCode(403, PhanHoiApi.ThatBai("Không thể tải tệp cho đơn ứng ẩn danh"));
 
+        // Validate all file extensions first before uploading any
         foreach (var tep in cacTep.Where(f => f.Length > 0))
         {
             var duoiTep = Path.GetExtension(tep.FileName).ToLowerInvariant();
             if (!DuoiTepChoPhep.Contains(duoiTep))
                 return BadRequest(PhanHoiApi.ThatBai($"Định dạng tệp '{duoiTep}' không được phép"));
+        }
 
+        foreach (var tep in cacTep.Where(f => f.Length > 0))
+        {
             using var luongTep = tep.OpenReadStream();
             var tenTepAnToan = Path.GetFileName(tep.FileName);
             var duongDan = await _luuTruTep.LuuTepAsync(luongTep, tenTepAnToan, tep.ContentType, "uploads/applications");
@@ -218,7 +226,7 @@ public class DonUngController : BaseApiController
                 donUng.EmailNguoiNop, donUng.TenNguoiNop, donUng.MaTheoDoi,
                 donUng.DichVu.Ten, dto.TrangThai.ToString(), dto.GhiChuNguoiXuLy);
         }
-        catch { /* logged in email service */ }
+        catch (Exception ex) { _nhatKy.LogWarning(ex, "Gửi email cập nhật trạng thái thất bại cho {Email}", donUng.EmailNguoiNop); }
 
         return Ok(PhanHoiApi.ThanhCongKetQua("Cập nhật trạng thái đơn ứng thành công"));
     }

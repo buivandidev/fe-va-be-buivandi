@@ -87,11 +87,11 @@ public class BinhLuanController : BaseApiController
         dto.NoiDung = _boLamSach.LamSachVanBan(dto.NoiDung);
 
         var binhLuan = _anhXa.Map<BinhLuan>(dto);
-        var chuoiIdNguoiDung = IdNguoiDungHoacNull;
-        if (!string.IsNullOrEmpty(chuoiIdNguoiDung))
-            binhLuan.NguoiDungId = Guid.Parse(chuoiIdNguoiDung);
+        var idNguoiDung = IdNguoiDungGuidHoacNull;
+        if (idNguoiDung.HasValue)
+            binhLuan.NguoiDungId = idNguoiDung.Value;
 
-        binhLuan.DaDuyet = !string.IsNullOrEmpty(chuoiIdNguoiDung);
+        binhLuan.DaDuyet = idNguoiDung.HasValue;
         await _donViCongViec.BinhLuans.ThemAsync(binhLuan);
         await _donViCongViec.LuuThayDoiAsync();
         return Ok(PhanHoiApi.ThanhCongKetQua("Bình luận đã được gửi"));
@@ -121,9 +121,9 @@ public class BinhLuanController : BaseApiController
         if (binhLuan == null)
             return NotFound(PhanHoiApi.ThatBai("Không tìm thấy bình luận"));
 
-        var idNguoiDung = IdNguoiDungHoacNull;
+        var idNguoiDung = IdNguoiDungGuidHoacNull;
         var laQuanTri = User.IsInRole("Admin") || User.IsInRole("Editor");
-        if (!laQuanTri && binhLuan.NguoiDungId.ToString() != idNguoiDung)
+        if (!laQuanTri && binhLuan.NguoiDungId != idNguoiDung)
             return StatusCode(403, PhanHoiApi.ThatBai("Bạn không có quyền xóa bình luận này"));
 
         if (binhLuan.DanhSachTraLoi.Any())

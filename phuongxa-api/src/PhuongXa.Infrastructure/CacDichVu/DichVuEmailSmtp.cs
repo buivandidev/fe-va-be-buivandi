@@ -45,8 +45,8 @@ public class DichVuEmailSmtp : IDichVuEmail
         try
         {
             var host = _cauHinh["Email:SmtpHost"] ?? "smtp.gmail.com";
-            var port = int.Parse(_cauHinh["Email:SmtpPort"] ?? "587");
-            var enableSsl = bool.Parse(_cauHinh["Email:EnableSsl"] ?? "true");
+            var port = int.TryParse(_cauHinh["Email:SmtpPort"], out var p) ? p : 587;
+            var enableSsl = !bool.TryParse(_cauHinh["Email:EnableSsl"], out var ssl) || ssl;
             var tenNguoiGui = _cauHinh["Email:SenderName"] ?? "Cổng Thông Tin Điện Tử Phường/Xã";
             var matKhau = _cauHinh["Email:Password"] ?? "";
 
