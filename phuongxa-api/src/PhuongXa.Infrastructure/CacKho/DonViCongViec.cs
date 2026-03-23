@@ -65,7 +65,24 @@ public class DonViCongViec : IDonViCongViec
     protected virtual void Dispose(bool dangGiaiPhong)
     {
         if (!_daGiaiPhong && dangGiaiPhong)
-            _buiCanh.Dispose();
+        {
+            // Do not dispose _buiCanh — the DI container owns its lifetime.
+            // Only null out cached repository references.
+            _baiViets = null;
+            _danhMucs = null;
+            _binhLuans = null;
+            _phuongTiens = null;
+            _albumPhuongTiens = null;
+            _dichVus = null;
+            _donUngs = null;
+            _tepDonUngs = null;
+            _nhatKys = null;
+            _tinNhanLienHes = null;
+            _caiDats = null;
+            _thongBaos = null;
+            _lichSuTrangThais = null;
+            _maLamMois = null;
+        }
         _daGiaiPhong = true;
     }
 
@@ -75,11 +92,10 @@ public class DonViCongViec : IDonViCongViec
         GC.SuppressFinalize(this);
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        if (!_daGiaiPhong)
-            await _buiCanh.DisposeAsync();
-        _daGiaiPhong = true;
+        Dispose(true);
         GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
     }
 }

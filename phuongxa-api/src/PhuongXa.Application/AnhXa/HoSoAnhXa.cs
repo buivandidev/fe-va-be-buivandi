@@ -31,12 +31,12 @@ public class HoSoAnhXa : Profile
 
         // BaiViet
         CreateMap<BaiViet, BaiVietDto>()
-            .ForMember(d => d.TenTacGia, o => o.MapFrom(s => s.TacGia.HoTen))
-            .ForMember(d => d.TenDanhMuc, o => o.MapFrom(s => s.DanhMuc.Ten))
+            .ForMember(d => d.TenTacGia, o => o.MapFrom(s => s.TacGia != null ? s.TacGia.HoTen : ""))
+            .ForMember(d => d.TenDanhMuc, o => o.MapFrom(s => s.DanhMuc != null ? s.DanhMuc.Ten : ""))
             .ForMember(d => d.SoBinhLuan, o => o.MapFrom(s => s.DanhSachBinhLuan.Count(c => c.DaDuyet)));
         CreateMap<BaiViet, DanhSachBaiVietDto>()
-            .ForMember(d => d.TenTacGia, o => o.MapFrom(s => s.TacGia.HoTen))
-            .ForMember(d => d.TenDanhMuc, o => o.MapFrom(s => s.DanhMuc.Ten));
+            .ForMember(d => d.TenTacGia, o => o.MapFrom(s => s.TacGia != null ? s.TacGia.HoTen : ""))
+            .ForMember(d => d.TenDanhMuc, o => o.MapFrom(s => s.DanhMuc != null ? s.DanhMuc.Ten : ""));
         CreateMap<TaoBaiVietDto, BaiViet>()
             .ForMember(d => d.DuongDan, o => o.MapFrom(s => TaoDuongDan.TaoChuoi(s.TieuDe)));
         CreateMap<CapNhatBaiVietDto, BaiViet>()
@@ -71,7 +71,7 @@ public class HoSoAnhXa : Profile
 
         // DonUng
         CreateMap<DonUngDichVu, DonUngDto>()
-            .ForMember(d => d.TenDichVu, o => o.MapFrom(s => s.DichVu.Ten));
+            .ForMember(d => d.TenDichVu, o => o.MapFrom(s => s.DichVu != null ? s.DichVu.Ten : ""));
         CreateMap<TepDonUng, TepDonUngDto>();
         CreateMap<NopDonUngDto, DonUngDichVu>()
             .ForMember(d => d.MaTheoDoi, o => o.Ignore())
@@ -124,27 +124,28 @@ public class HoSoAnhXa : Profile
 
 public static class TaoDuongDan
 {
+    private static readonly Dictionary<string, string> BangChuyen = new()
+    {
+        {"\u00e0","a"},{"\u00e1","a"},{"\u1ea3","a"},{"\u00e3","a"},{"\u1ea1","a"},
+        {"\u0103","a"},{"\u1eb1","a"},{"\u1eaf","a"},{"\u1eb3","a"},{"\u1eb5","a"},{"\u1eb7","a"},
+        {"\u00e2","a"},{"\u1ea7","a"},{"\u1ea5","a"},{"\u1ea9","a"},{"\u1eab","a"},{"\u1ead","a"},
+        {"\u0111","d"},
+        {"\u00e8","e"},{"\u00e9","e"},{"\u1ebb","e"},{"\u1ebd","e"},{"\u1eb9","e"},
+        {"\u00ea","e"},{"\u1ec1","e"},{"\u1ebf","e"},{"\u1ec3","e"},{"\u1ec5","e"},{"\u1ec7","e"},
+        {"\u00ec","i"},{"\u00ed","i"},{"\u1ec9","i"},{"\u0129","i"},{"\u1ecb","i"},
+        {"\u00f2","o"},{"\u00f3","o"},{"\u1ecf","o"},{"\u00f5","o"},{"\u1ecd","o"},
+        {"\u00f4","o"},{"\u1ed3","o"},{"\u1ed1","o"},{"\u1ed5","o"},{"\u1ed7","o"},{"\u1ed9","o"},
+        {"\u01a1","o"},{"\u1edd","o"},{"\u1edb","o"},{"\u1edf","o"},{"\u1ee1","o"},{"\u1ee3","o"},
+        {"\u00f9","u"},{"\u00fa","u"},{"\u1ee7","u"},{"\u0169","u"},{"\u1ee5","u"},
+        {"\u01b0","u"},{"\u1eeb","u"},{"\u1ee9","u"},{"\u1eed","u"},{"\u1eef","u"},{"\u1ef1","u"},
+        {"\u1ef3","y"},{"\u00fd","y"},{"\u1ef7","y"},{"\u1ef9","y"},{"\u1ef5","y"}
+    };
+
     public static string TaoChuoi(string text)
     {
         if (string.IsNullOrWhiteSpace(text)) return string.Empty;
         text = text.ToLowerInvariant().Trim();
-        var map = new Dictionary<string, string>
-        {
-            {"\u00e0","a"},{"\u00e1","a"},{"\u1ea3","a"},{"\u00e3","a"},{"\u1ea1","a"},
-            {"\u0103","a"},{"\u1eb1","a"},{"\u1eaf","a"},{"\u1eb3","a"},{"\u1eb5","a"},{"\u1eb7","a"},
-            {"\u00e2","a"},{"\u1ea7","a"},{"\u1ea5","a"},{"\u1ea9","a"},{"\u1eab","a"},{"\u1ead","a"},
-            {"\u0111","d"},
-            {"\u00e8","e"},{"\u00e9","e"},{"\u1ebb","e"},{"\u1ebd","e"},{"\u1eb9","e"},
-            {"\u00ea","e"},{"\u1ec1","e"},{"\u1ebf","e"},{"\u1ec3","e"},{"\u1ec5","e"},{"\u1ec7","e"},
-            {"\u00ec","i"},{"\u00ed","i"},{"\u1ec9","i"},{"\u0129","i"},{"\u1ecb","i"},
-            {"\u00f2","o"},{"\u00f3","o"},{"\u1ecf","o"},{"\u00f5","o"},{"\u1ecd","o"},
-            {"\u00f4","o"},{"\u1ed3","o"},{"\u1ed1","o"},{"\u1ed5","o"},{"\u1ed7","o"},{"\u1ed9","o"},
-            {"\u01a1","o"},{"\u1edd","o"},{"\u1edb","o"},{"\u1edf","o"},{"\u1ee1","o"},{"\u1ee3","o"},
-            {"\u00f9","u"},{"\u00fa","u"},{"\u1ee7","u"},{"\u0169","u"},{"\u1ee5","u"},
-            {"\u01b0","u"},{"\u1eeb","u"},{"\u1ee9","u"},{"\u1eed","u"},{"\u1eef","u"},{"\u1ef1","u"},
-            {"\u1ef3","y"},{"\u00fd","y"},{"\u1ef7","y"},{"\u1ef9","y"},{"\u1ef5","y"}
-        };
-        foreach (var kv in map) text = text.Replace(kv.Key, kv.Value);
+        foreach (var kv in BangChuyen) text = text.Replace(kv.Key, kv.Value);
         text = System.Text.RegularExpressions.Regex.Replace(text, @"[^a-z0-9\s-]", "");
         text = System.Text.RegularExpressions.Regex.Replace(text, @"\s+", "-");
         text = System.Text.RegularExpressions.Regex.Replace(text, @"-+", "-");

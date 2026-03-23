@@ -14,6 +14,7 @@ public class DichVuJwt : IDichVuJwt
 {
     private readonly IConfiguration _cauHinh;
     private readonly SymmetricSecurityKey _khoaKy;
+    private readonly double _soPhutMaTruyCap;
 
     public DichVuJwt(IConfiguration cauHinh)
     {
@@ -21,12 +22,21 @@ public class DichVuJwt : IDichVuJwt
 
         var key = _cauHinh["Jwt:Key"]
             ?? throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Jwt:Key");
+
+        var keyBytes = Encoding.UTF8.GetBytes(key);
+        if (keyBytes.Length < 32)
+            throw new ArgumentException("Jwt:Key phải có ít nhất 32 byte (256 bit) để đảm bảo bảo mật.");
+
         if (string.IsNullOrEmpty(_cauHinh["Jwt:Issuer"]))
             throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Jwt:Issuer");
         if (string.IsNullOrEmpty(_cauHinh["Jwt:Audience"]))
             throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Jwt:Audience");
 
-        _khoaKy = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        _khoaKy = new SymmetricSecurityKey(keyBytes);
+
+        _soPhutMaTruyCap = double.TryParse(_cauHinh["Jwt:AccessTokenMinutes"], NumberStyles.Any, CultureInfo.InvariantCulture, out var phut)
+            ? phut
+            : 15;
     }
 
     public string TaoMaTruyCap(NguoiDung nguoiDung, IList<string> danhSachVaiTro)
@@ -46,7 +56,7 @@ public class DichVuJwt : IDichVuJwt
             issuer: _cauHinh["Jwt:Issuer"],
             audience: _cauHinh["Jwt:Audience"],
             claims: cacYeuCau,
-            expires: DateTime.UtcNow.AddMinutes(double.Parse(_cauHinh["Jwt:AccessTokenMinutes"] ?? "15", CultureInfo.InvariantCulture)),
+            expires: DateTime.UtcNow.AddMinutes(_soPhutMaTruyCap),
             signingCredentials: thongTinKy
         );
 

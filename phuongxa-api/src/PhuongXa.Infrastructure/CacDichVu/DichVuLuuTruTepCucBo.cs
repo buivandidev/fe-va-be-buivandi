@@ -50,7 +50,7 @@ public class DichVuLuuTruTepCucBo : IDichVuLuuTruTep
         return Path.Combine(thuMuc, namThang, tenTepAnToan).Replace("\\", "/");
     }
 
-    public Task XoaTepAsync(string duongDanTep)
+    public async Task XoaTepAsync(string duongDanTep)
     {
         var duongDanDayDu = Path.GetFullPath(Path.Combine(_duongDanGocWeb, duongDanTep));
         var duongDanGocChoPhep = Path.GetFullPath(_duongDanGocWeb);
@@ -61,10 +61,11 @@ public class DichVuLuuTruTepCucBo : IDichVuLuuTruTep
             throw new InvalidOperationException("Đường dẫn tệp không hợp lệ");
         }
 
-        if (File.Exists(duongDanDayDu))
-            File.Delete(duongDanDayDu);
-
-        return Task.CompletedTask;
+        await Task.Run(() =>
+        {
+            if (File.Exists(duongDanDayDu))
+                File.Delete(duongDanDayDu);
+        });
     }
 
     public string LayUrlTep(string duongDanTep) =>

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using PhuongXa.API.PhanMemTrungGian;
-using PhuongXa.API;
+using PhuongXa.API.Controllers;
 using PhuongXa.Application;
 using PhuongXa.Application.Chung;
 using PhuongXa.Infrastructure;
@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Response Compression
 builder.Services.AddResponseCompression(options =>
 {
-    options.EnableForHttps = true;
+    options.EnableForHttps = false;
     options.Providers.Add<BrotliCompressionProvider>();
     options.Providers.Add<GzipCompressionProvider>();
     options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
@@ -62,6 +62,7 @@ builder.Services.AddRateLimiter(options =>
         ("login", 10, TimeSpan.FromMinutes(1)),
         ("register", 5, TimeSpan.FromHours(1)),
         ("contact", 5, TimeSpan.FromMinutes(5)),
+        ("comment", 10, TimeSpan.FromMinutes(1)),
         ("file-upload", 50, TimeSpan.FromHours(1)),
         ("search", 30, TimeSpan.FromMinutes(1)),
         ("application-track", 10, TimeSpan.FromMinutes(1)),
@@ -80,11 +81,11 @@ builder.Services.AddRateLimiter(options =>
     }
 
     options.RejectionStatusCode = 429;
-    options.OnRejected = async (ctx, _) =>
+    options.OnRejected = async (ctx, ct) =>
     {
         ctx.HttpContext.Response.ContentType = "application/json";
         await ctx.HttpContext.Response.WriteAsJsonAsync(
-            PhanHoiApi.ThatBai("Quá nhiều yêu cầu. Vui lòng thử lại sau."));
+            PhanHoiApi.ThatBai("Quá nhiều yêu cầu. Vui lòng thử lại sau."), ct);
     };
 });
 
@@ -96,9 +97,11 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization", Type = SecuritySchemeType.ApiKey, Scheme = "Bearer",
         BearerFormat = "JWT", In = ParameterLocation.Header, Description = "Nhập Bearer {token}"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(doc =>
     {
-        { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
+        var requirement = new OpenApiSecurityRequirement();
+        requirement.Add(new OpenApiSecuritySchemeReference("Bearer", doc), new List<string>());
+        return requirement;
     });
 });
 
@@ -154,7 +157,7 @@ app.Use(async (context, next) =>
     {
         await next();
     }
-    catch (InvalidOperationException ex) when (ex.Message.Contains("người dùng hiện tại"))
+    catch (NguoiDungChuaXacThucException)
     {
         context.Response.StatusCode = 401;
         context.Response.ContentType = "application/json";
@@ -192,6 +195,6 @@ app.UseOutputCache();
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
-    await BoGiongDuLieu.KhoiTaoDuLieuAsync(scope.ServiceProvider);
+    await PhuongXa.API.BoGiongDuLieu.KhoiTaoDuLieuAsync(scope.ServiceProvider);
 
 app.Run();

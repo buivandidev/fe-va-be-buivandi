@@ -53,6 +53,7 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         builder.Entity<DanhMuc>(e =>
         {
             e.HasIndex(c => c.DuongDan).IsUnique();
+            e.HasQueryFilter(c => !c.DaXoa);
             e.HasOne(c => c.Cha).WithMany(c => c.DanhSachCon).HasForeignKey(c => c.ChaId).OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -79,6 +80,7 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
             e.HasIndex(c => c.NguoiDungId);
             e.HasIndex(c => c.DaDuyet);
             e.HasIndex(c => new { c.BaiVietId, c.DaDuyet });
+            e.HasQueryFilter(c => !c.DaXoa);
             e.HasOne(c => c.BaiViet).WithMany(a => a.DanhSachBinhLuan).HasForeignKey(c => c.BaiVietId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(c => c.NguoiDung).WithMany(u => u.DanhSachBinhLuan).HasForeignKey(c => c.NguoiDungId).OnDelete(DeleteBehavior.SetNull);
             e.HasOne(c => c.Cha).WithMany(c => c.DanhSachTraLoi).HasForeignKey(c => c.ChaId).OnDelete(DeleteBehavior.Restrict);
@@ -89,14 +91,22 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         {
             e.HasIndex(m => m.AlbumId);
             e.HasIndex(m => m.NguoiTaiLenId);
+            e.HasQueryFilter(m => !m.DaXoa);
             e.HasOne(m => m.Album).WithMany(a => a.DanhSachPhuongTien).HasForeignKey(m => m.AlbumId).OnDelete(DeleteBehavior.SetNull);
             e.HasOne(m => m.NguoiTaiLen).WithMany(u => u.DanhSachTaiLen).HasForeignKey(m => m.NguoiTaiLenId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // AlbumPhuongTien
+        builder.Entity<AlbumPhuongTien>(e =>
+        {
+            e.HasQueryFilter(a => !a.DaXoa);
         });
 
         // DichVu
         builder.Entity<DichVu>(e =>
         {
             e.HasIndex(s => s.MaDichVu).IsUnique();
+            e.HasQueryFilter(s => !s.DaXoa);
             e.HasOne(s => s.DanhMuc).WithMany(c => c.DanhSachDichVu).HasForeignKey(s => s.DanhMucId).OnDelete(DeleteBehavior.SetNull);
         });
 
@@ -107,6 +117,7 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
             e.HasIndex(a => a.TrangThai);
             e.HasIndex(a => a.NguoiDungId);
             e.HasIndex(a => a.NguoiXuLyId);
+            e.HasQueryFilter(a => !a.DaXoa);
             e.HasOne(a => a.DichVu).WithMany(s => s.DanhSachDonUng).HasForeignKey(a => a.DichVuId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne(a => a.NguoiDung).WithMany(u => u.DanhSachDonUng).HasForeignKey(a => a.NguoiDungId).OnDelete(DeleteBehavior.SetNull);
             e.HasOne(a => a.NguoiXuLy).WithMany().HasForeignKey(a => a.NguoiXuLyId).OnDelete(DeleteBehavior.SetNull);
@@ -115,6 +126,7 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         // TepDonUng
         builder.Entity<TepDonUng>(e =>
         {
+            e.HasQueryFilter(f => !f.DaXoa);
             e.HasOne(f => f.DonUng).WithMany(a => a.DanhSachTep).HasForeignKey(f => f.DonUngId).OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -144,10 +156,17 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
             e.HasOne(r => r.NguoiDung).WithMany().HasForeignKey(r => r.NguoiDungId).OnDelete(DeleteBehavior.Cascade);
         });
 
+        // TinNhanLienHe
+        builder.Entity<TinNhanLienHe>(e =>
+        {
+            e.HasQueryFilter(t => !t.DaXoa);
+        });
+
         // ThongBao
         builder.Entity<ThongBao>(e =>
         {
             e.HasIndex(n => new { n.NguoiDungId, n.DaDoc });
+            e.HasQueryFilter(n => !n.DaXoa);
             e.HasOne(n => n.NguoiDung).WithMany(u => u.DanhSachThongBao).HasForeignKey(n => n.NguoiDungId).OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -155,6 +174,7 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         builder.Entity<LichSuTrangThaiDonUng>(e =>
         {
             e.HasIndex(h => h.DonUngId);
+            e.HasQueryFilter(h => !h.DaXoa);
             e.HasOne(h => h.DonUng).WithMany(a => a.LichSuTrangThai).HasForeignKey(h => h.DonUngId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(h => h.NguoiThayDoi).WithMany().HasForeignKey(h => h.NguoiThayDoiId).OnDelete(DeleteBehavior.Restrict);
         });
@@ -166,6 +186,11 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
     {
         nameof(BaiViet), nameof(DanhMuc), nameof(DichVu),
         nameof(DonUngDichVu), nameof(BinhLuan), nameof(PhuongTien)
+    };
+
+    private static readonly HashSet<string> ThuocTinhLoaiTru = new(StringComparer.Ordinal)
+    {
+        "NoiDung", "MoTa"
     };
 
     private static readonly JsonSerializerOptions TuyChonJson = new()
@@ -276,6 +301,8 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         var tuDien = new Dictionary<string, object?>();
         foreach (var thuocTinh in mucThayDoi.Properties.Where(p => !p.Metadata.IsShadowProperty()))
         {
+            if (ThuocTinhLoaiTru.Contains(thuocTinh.Metadata.Name))
+                continue;
             tuDien[thuocTinh.Metadata.Name] = trangThai == EntityState.Added ? thuocTinh.CurrentValue : thuocTinh.OriginalValue;
         }
         return JsonSerializer.Serialize(tuDien, TuyChonJson);
@@ -286,6 +313,8 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         var tuDien = new Dictionary<string, object?>();
         foreach (var thuocTinh in mucThayDoi.Properties.Where(p => p.IsModified && !p.Metadata.IsShadowProperty()))
         {
+            if (ThuocTinhLoaiTru.Contains(thuocTinh.Metadata.Name))
+                continue;
             tuDien[thuocTinh.Metadata.Name] = thuocTinh.OriginalValue;
         }
         return JsonSerializer.Serialize(tuDien, TuyChonJson);
@@ -296,6 +325,8 @@ public class BuiCanhCSDL : IdentityDbContext<NguoiDung, VaiTro, Guid,
         var tuDien = new Dictionary<string, object?>();
         foreach (var thuocTinh in mucThayDoi.Properties.Where(p => p.IsModified && !p.Metadata.IsShadowProperty()))
         {
+            if (ThuocTinhLoaiTru.Contains(thuocTinh.Metadata.Name))
+                continue;
             tuDien[thuocTinh.Metadata.Name] = thuocTinh.CurrentValue;
         }
         return JsonSerializer.Serialize(tuDien, TuyChonJson);

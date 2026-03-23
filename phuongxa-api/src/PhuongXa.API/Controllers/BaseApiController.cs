@@ -3,6 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PhuongXa.API.Controllers;
 
+public class NguoiDungChuaXacThucException : Exception
+{
+    public NguoiDungChuaXacThucException()
+        : base("Không xác định được người dùng hiện tại") { }
+
+    public NguoiDungChuaXacThucException(string message)
+        : base(message) { }
+
+    public NguoiDungChuaXacThucException(string message, Exception innerException)
+        : base(message, innerException) { }
+}
+
 [ApiController]
 public abstract class BaseApiController : ControllerBase
 {
@@ -12,7 +24,7 @@ public abstract class BaseApiController : ControllerBase
         {
             var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!Guid.TryParse(claim, out var id))
-                throw new InvalidOperationException("Không xác định được người dùng hiện tại");
+                throw new NguoiDungChuaXacThucException();
             return id;
         }
     }

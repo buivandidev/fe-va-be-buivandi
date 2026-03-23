@@ -1,3 +1,4 @@
+using AngleSharp.Dom;
 using Ganss.Xss;
 using PhuongXa.Application.CacGiaoDien;
 
@@ -33,6 +34,15 @@ public class DichVuLamSachHtml : IDichVuLamSachHtml
         });
         // Force rel="noopener noreferrer" on links with target
         _boLamSachPhongPhu.AllowedSchemes.UnionWith(new[] { "http", "https", "mailto" });
+        _boLamSachPhongPhu.PostProcessNode += (_, args) =>
+        {
+            if (args.Node is IElement el
+                && el.LocalName == "a"
+                && el.HasAttribute("target"))
+            {
+                el.SetAttribute("rel", "noopener noreferrer");
+            }
+        };
 
         // Plain text sanitizer — strips ALL HTML
         _boLamSachVanBan = new HtmlSanitizer();

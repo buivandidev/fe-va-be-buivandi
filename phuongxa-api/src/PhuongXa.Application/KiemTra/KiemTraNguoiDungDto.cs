@@ -31,8 +31,8 @@ public class KiemTraTaoNguoiDungDto : AbstractValidator<TaoNguoiDungDto>
             .Must(r => VaiTroChoPhep.Contains(r)).WithMessage("Vai trò không hợp lệ (Admin, Editor, Viewer)");
 
         RuleFor(x => x.SoDienThoai)
-            .Matches(@"^0\d{9}$").When(x => !string.IsNullOrEmpty(x.SoDienThoai))
-            .WithMessage("Số điện thoại phải có 10 chữ số bắt đầu bằng 0");
+            .Matches(@"^[0-9+\-\s()]{7,20}$").When(x => !string.IsNullOrEmpty(x.SoDienThoai))
+            .WithMessage("Số điện thoại không hợp lệ");
     }
 }
 
@@ -51,7 +51,7 @@ public class KiemTraCapNhatNguoiDungDto : AbstractValidator<CapNhatNguoiDungDto>
             .Must(r => VaiTroChoPhep.Contains(r)).WithMessage("Vai trò không hợp lệ (Admin, Editor, Viewer)");
 
         RuleFor(x => x.SoDienThoai)
-            .Matches(@"^0\d{9}$").When(x => !string.IsNullOrEmpty(x.SoDienThoai))
-            .WithMessage("Số điện thoại phải có 10 chữ số bắt đầu bằng 0");
+            .Matches(@"^[0-9+\-\s()]{7,20}$").When(x => !string.IsNullOrEmpty(x.SoDienThoai))
+            .WithMessage("Số điện thoại không hợp lệ");
     }
 }

@@ -42,34 +42,27 @@ public class DichVuEmailSmtp : IDichVuEmail
             return;
         }
 
-        try
-        {
-            var host = _cauHinh["Email:SmtpHost"] ?? "smtp.gmail.com";
-            var port = int.TryParse(_cauHinh["Email:SmtpPort"], out var p) ? p : 587;
-            var enableSsl = !bool.TryParse(_cauHinh["Email:EnableSsl"], out var ssl) || ssl;
-            var tenNguoiGui = _cauHinh["Email:SenderName"] ?? "Cổng Thông Tin Điện Tử Phường/Xã";
-            var matKhau = _cauHinh["Email:Password"] ?? "";
+        var host = _cauHinh["Email:SmtpHost"] ?? "smtp.gmail.com";
+        var port = int.TryParse(_cauHinh["Email:SmtpPort"], out var p) ? p : 587;
+        var enableSsl = !bool.TryParse(_cauHinh["Email:EnableSsl"], out var ssl) || ssl;
+        var tenNguoiGui = _cauHinh["Email:SenderName"] ?? "Cổng Thông Tin Điện Tử Phường/Xã";
+        var matKhau = _cauHinh["Email:Password"] ?? "";
 
-            using var client = new SmtpClient(host, port)
-            {
-                EnableSsl = enableSsl,
-                Credentials = new NetworkCredential(tenDangNhap, matKhau)
-            };
-
-            using var thuDienTu = new MailMessage
-            {
-                From = new MailAddress(emailGuiDi, tenNguoiGui),
-                Subject = tieuDe,
-                Body = noiDungHtml,
-                IsBodyHtml = true
-            };
-            thuDienTu.To.Add(nguoiNhan);
-            await client.SendMailAsync(thuDienTu);
-        }
-        catch (Exception ex)
+        using var client = new SmtpClient(host, port)
         {
-            _nhatKy.LogError(ex, "Error sending email to {To}: {Subject}", nguoiNhan, tieuDe);
-        }
+            EnableSsl = enableSsl,
+            Credentials = new NetworkCredential(tenDangNhap, matKhau)
+        };
+
+        using var thuDienTu = new MailMessage
+        {
+            From = new MailAddress(emailGuiDi, tenNguoiGui),
+            Subject = tieuDe,
+            Body = noiDungHtml,
+            IsBodyHtml = true
+        };
+        thuDienTu.To.Add(nguoiNhan);
+        await client.SendMailAsync(thuDienTu);
     }
 
     public async Task GuiDaNopDonAsync(string nguoiNhan, string tenNguoiNop, string maTheoDoi, string tenDichVu)

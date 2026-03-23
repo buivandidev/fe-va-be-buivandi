@@ -7,12 +7,10 @@ namespace PhuongXa.Infrastructure.CacKho;
 
 public class Kho<T> : IKho<T> where T : class
 {
-    private readonly BuiCanhCSDL _buiCanh;
     private readonly DbSet<T> _tapDuLieu;
 
     public Kho(BuiCanhCSDL buiCanh)
     {
-        _buiCanh = buiCanh;
         _tapDuLieu = buiCanh.Set<T>();
     }
 

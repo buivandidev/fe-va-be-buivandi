@@ -138,6 +138,11 @@ public class XacThucController : BaseApiController
 
         await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, "Viewer");
 
+        var ketQuaVaiTro = await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, "Viewer");
+        if (!ketQuaVaiTro.Succeeded)
+            return BadRequest(PhanHoiApi.ThatBai("Gán vai trò thất bại",
+                ketQuaVaiTro.Errors.Select(e => e.Description).ToList()));
+
         try
         {
             await _dichVuEmail.GuiChaoMungAsync(nguoiDung.Email!, nguoiDung.HoTen);
