@@ -6,13 +6,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "phuongxa-api", "phuongxa-ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C0CE0635-0D93-1985-512F-895A2C4F98E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.API", "phuongxa-api\src\PhuongXa.API\PhuongXa.API.csproj", "{0851AA40-0B6E-488A-DB7F-11A0E077E225}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.API", "backend\phuongxa-api\src\PhuongXa.API\PhuongXa.API.csproj", "{0851AA40-0B6E-488A-DB7F-11A0E077E225}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Application", "phuongxa-api\src\PhuongXa.Application\PhuongXa.Application.csproj", "{E1BB5CC2-51DF-CB76-81D7-4D04D27BE34A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Application", "backend\phuongxa-api\src\PhuongXa.Application\PhuongXa.Application.csproj", "{E1BB5CC2-51DF-CB76-81D7-4D04D27BE34A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Domain", "phuongxa-api\src\PhuongXa.Domain\PhuongXa.Domain.csproj", "{7805576A-AF37-1A86-FEFD-2478B73113E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Domain", "backend\phuongxa-api\src\PhuongXa.Domain\PhuongXa.Domain.csproj", "{7805576A-AF37-1A86-FEFD-2478B73113E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Infrastructure", "phuongxa-api\src\PhuongXa.Infrastructure\PhuongXa.Infrastructure.csproj", "{C19C3CFA-5F2A-E3F3-A314-A1CCAAB6AFDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhuongXa.Infrastructure", "backend\phuongxa-api\src\PhuongXa.Infrastructure\PhuongXa.Infrastructure.csproj", "{C19C3CFA-5F2A-E3F3-A314-A1CCAAB6AFDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
