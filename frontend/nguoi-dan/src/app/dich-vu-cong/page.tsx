@@ -1,4 +1,5 @@
-﻿import Link from "next/link";`nimport { buildApiUrl, isGuid } from "@/lib/api";
+﻿import Link from "next/link";
+import { buildApiUrl, isGuid } from "@/lib/api";
 
 
 
