@@ -67,7 +67,7 @@ export default function DichVuCard({ service }: { service: DichVuDto }) {
           Xem chi tiết
         </Link>
         <Link
-          href={`/dich-vu-cong/${service.id}/nop-ho-so`}
+          href={`/dich-vu-cong/${service.id}/nop-truc-tuyen`}
           className={`flex-1 flex justify-center items-center py-2 px-4 rounded-lg font-medium text-sm transition-colors text-white 
           ${
             service.dangHoatDong

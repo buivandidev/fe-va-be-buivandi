@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const mapImage =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBbHD5gnk9DUwgIYItWznNwA9GJ_H9dG8hEPZtpqK7TWy2cjaVENDm_kmqf1Bqg1b9Hf80O_KW7m0WJpNOWIvjqCcqUgbyJTgMG2pwGrD-_B3SgUZ1HQgtgyuwl9lZzlHjkzGA6ekU4umwRvqqZ9VXJ_3R94hvXCsU2y--z9Jr35jmCwVzq4kd8AiKhefEmf1w-4lZQhFERwNyMNX_6r7iSonwmW5YreMt45xIK5hCzrQV0kJTZogPmIBsvc3wREqurLX5ggFziZJc";
 
@@ -95,9 +97,13 @@ export function PortalFooter() {
           <div>
             <h3 className="mb-6 font-bold text-slate-900 dark:text-white">Bản đồ vị trí</h3>
             <div className="relative h-32 overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-70"
-                style={{ backgroundImage: `url("${mapImage}")` }}
+              <Image
+                className="absolute inset-0 w-full h-full object-cover opacity-70"
+                src={mapImage}
+                alt="Map location"
+                fill
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 320px"
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="material-symbols-outlined text-3xl text-primary">location_on</span>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HoSoCaNhan() {
   return (
@@ -22,7 +23,7 @@ export default function HoSoCaNhan() {
             <div className="bg-white dark:bg-slate-900 rounded-xl p-8 mb-6 border border-slate-200 dark:border-slate-800">
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 <div className="relative group">
-                  <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-32 ring-4 ring-primary/10" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEWmjz1ijoPyvPgVr4_hInd2lWW_eLz2mWBAJXIdksf-jscN9ILsEyyAOsMbV-6BZ4LQy9dveara7t2v-dyXD0Ga8F0DPYhC6iWTuxmwnWkqOjsEwFjtxG0Mb8EKdCAJJOFHG19qariGlioLI-wT1fNYg-0zvj86oJ9DDZE25Yi5X1cnhVMtQ0PJ8lLBawrecXR9gYvomaq7HUrQHsH5cCeFzYJrf_SxlF2oYVlKahAuQL8NUtQvyiDGG6itFgJpm0pBV07UTLUX8")' }}></div>
+                  <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEWmjz1ijoPyvPgVr4_hInd2lWW_eLz2mWBAJXIdksf-jscN9ILsEyyAOsMbV-6BZ4LQy9dveara7t2v-dyXD0Ga8F0DPYhC6iWTuxmwnWkqOjsEwFjtxG0Mb8EKdCAJJOFHG19qariGlioLI-wT1fNYg-0zvj86oJ9DDZE25Yi5X1cnhVMtQ0PJ8lLBawrecXR9gYvomaq7HUrQHsH5cCeFzYJrf_SxlF2oYVlKahAuQL8NUtQvyiDGG6itFgJpm0pBV07UTLUX8" alt="Avatar" width={128} height={128} unoptimized className="object-cover bg-center bg-no-repeat aspect-square rounded-full size-32 ring-4 ring-primary/10" />
                   <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                     <span className="material-symbols-outlined text-white">photo_camera</span>
                   </div>
