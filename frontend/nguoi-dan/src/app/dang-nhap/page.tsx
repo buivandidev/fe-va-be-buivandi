@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function DangNhap() {
   return (
-    <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <div className="flex-1 h-full flex flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
       {/* Main Content */}
       <main className="flex-grow flex items-center justify-center p-4 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] dark:bg-none">
         <div className="w-full max-w-md">

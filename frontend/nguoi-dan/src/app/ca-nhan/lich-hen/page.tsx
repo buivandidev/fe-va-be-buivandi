@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function LichHenCuaToi() {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 flex-1 h-full">
       
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

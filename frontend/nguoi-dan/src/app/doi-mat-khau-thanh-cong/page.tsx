@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function DoiMatKhauThanhCong() {
   return (
-    <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <div className="flex-1 h-full flex flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
       
 
       <main className="flex-grow flex items-center justify-center p-6">

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function DoiMatKhauCaNhan() {
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark flex flex-col font-display text-slate-900 dark:text-slate-100">
+    <div className="flex-1 h-full bg-background-light dark:bg-background-dark flex flex-col font-display text-slate-900 dark:text-slate-100">
       {/* Header */}
       
 

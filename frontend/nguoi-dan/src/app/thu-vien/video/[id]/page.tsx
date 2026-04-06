@@ -2,12 +2,25 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { notFound } from "next/navigation";
+import { buildApiUrl, resolveMediaUrl } from "@/lib/api";
 
-// Táº¡m thá»i láº¥y danh sĂ¡ch video vĂ  lá»c ra video cĂ³ ID tÆ°Æ¡ng á»©ng
-// vĂ¬ BE chÆ°a cĂ³ endpoint GET /api/media/{id}
+interface VideoItem {
+  id: string;
+  tieuDe?: string;
+  urlTep?: string;
+  duongDanAnh?: string;
+  loaiNoiDung?: string;
+  thoiGianTao?: string;
+  tenNguoiTaiLen?: string;
+  tenAlbum?: string;
+  vanBanThayThe?: string;
+}
+
+// Tạm thời lấy danh sách video và lọc ra video có ID tương ứng
+// vì BE chưa có endpoint GET /api/media/{id}
 async function getVideoDetails(id: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/media?loai=1&kichThuocTrang=100`, { cache: "no-store" });
+    const res = await fetch(buildApiUrl("/api/media?loai=1&kichThuocTrang=100"), { cache: "no-store" });
     if (!res.ok) return null;
     const data = await res.json();
     if (data.thanhCong && data.duLieu?.danhSach) {
@@ -16,14 +29,14 @@ async function getVideoDetails(id: string) {
     }
     return null;
   } catch (error) {
-    console.error("Lá»—i láº¥y chi tiáº¿t video:", error);
+    console.error("Lỗi lấy chi tiết video:", error);
     return null;
   }
 }
 
 async function getRelatedVideos(currentId: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/media?loai=1&kichThuocTrang=5`, { cache: "no-store" });
+    const res = await fetch(buildApiUrl("/api/media?loai=1&kichThuocTrang=5"), { cache: "no-store" });
     if (!res.ok) return [];
     const data = await res.json();
     if (data.thanhCong && data.duLieu?.danhSach) {
@@ -31,7 +44,7 @@ async function getRelatedVideos(currentId: string) {
     }
     return [];
   } catch (error) {
-    console.error("Lá»—i láº¥y video liĂªn quan:", error);
+    console.error("Lỗi lấy video liên quan:", error);
     return [];
   }
 }
@@ -39,19 +52,17 @@ async function getRelatedVideos(currentId: string) {
 export default async function ChiTietVideoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   
-  const video = await getVideoDetails(id);
+  const video = (await getVideoDetails(id)) as VideoItem | null;
   
   if (!video) {
     notFound();
   }
 
-  const relatedVideos = await getRelatedVideos(id);
-  const videoUrl = video.urlTep 
-    ? (video.urlTep.startsWith('http') ? video.urlTep : `http://localhost:5000${video.urlTep}`) 
-    : "";
+  const relatedVideos = (await getRelatedVideos(id)) as VideoItem[];
+  const videoUrl = resolveMediaUrl(video.urlTep, "");
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
+    <div className="relative flex flex-1 h-full w-full flex-col overflow-x-hidden bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
       
 
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-8 md:px-10">
@@ -60,21 +71,21 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
             <li className="inline-flex items-center">
               <Link className="flex items-center text-slate-500 hover:text-primary dark:text-slate-400" href="/">
                 <span className="material-symbols-outlined mr-1 text-lg">home</span>
-                Trang chá»§
+                Trang chủ
               </Link>
             </li>
             <li>
               <div className="flex items-center">
                 <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
                 <Link className="text-slate-500 hover:text-primary dark:text-slate-400" href="/thu-vien">
-                  ThÆ° viá»‡n Media
+                  Thư viện Media
                 </Link>
               </div>
             </li>
             <li aria-current="page">
               <div className="flex items-center">
                 <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-100">Chi tiáº¿t Video</span>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">Chi tiết Video</span>
               </div>
             </li>
           </ol>
@@ -89,14 +100,14 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
                   <video 
                     controls 
                     className="h-full w-full"
-                    poster={video.duongDanAnh ? (video.duongDanAnh.startsWith('http') ? video.duongDanAnh : `http://localhost:5000${video.duongDanAnh}`) : undefined}
+                    poster={resolveMediaUrl(video.duongDanAnh, "") || undefined}
                   >
                     <source src={videoUrl} type={video.loaiNoiDung || "video/mp4"} />
-                    TrĂ¬nh duyá»‡t cá»§a báº¡n khĂ´ng há»— trá»£ tháº» video.
+                    Trình duyệt của bạn không hỗ trợ thẻ video.
                   </video>
                 ) : (
                   <div className="flex h-full items-center justify-center bg-slate-800 text-white">
-                    Video khĂ´ng kháº£ dá»¥ng
+                    Video không khả dụng
                   </div>
                 )}
               </div>
@@ -104,7 +115,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
 
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <h1 className="mb-4 text-2xl font-bold leading-tight text-slate-900 dark:text-slate-100">
-                {video.tieuDe || "Video khĂ´ng cĂ³ tiĂªu Ä‘á»"}
+                {video.tieuDe || "Video không có tiêu đề"}
               </h1>
               
               <div className="mb-6 flex flex-wrap items-center justify-between border-b border-slate-100 pb-6 dark:border-slate-800">
@@ -116,7 +127,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
                   {video.tenNguoiTaiLen && (
                     <span className="flex items-center gap-1">
                       <span className="material-symbols-outlined text-[16px]">person</span> 
-                      ÄÄƒng bá»Ÿi: {video.tenNguoiTaiLen}
+                      Đăng bởi: {video.tenNguoiTaiLen}
                     </span>
                   )}
                   {video.tenAlbum && (
@@ -137,7 +148,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
               <div className="mt-8 flex gap-3">
                 <button className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 font-semibold text-slate-700 transition-colors hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700" type="button">
                   <span className="material-symbols-outlined text-[20px]">share</span>
-                  Chia sáº»
+                  Chia sẻ
                 </button>
               </div>
             </div>
@@ -145,9 +156,9 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
 
           {/* Related Videos Sidebar */}
           <aside className="scrollbar-hide flex-shrink-0 lg:w-80">
-            <h2 className="mb-4 text-lg font-bold text-slate-900 dark:text-slate-100">Video khĂ¡c</h2>
+            <h2 className="mb-4 text-lg font-bold text-slate-900 dark:text-slate-100">Video khác</h2>
             <div className="flex flex-col gap-4">
-                {relatedVideos.map((rv: { id: string, tieuDe: string, duongDanFile?: string, duongDanAnh?: string, thoiGianTao?: string }) => (
+                {relatedVideos.map((rv) => (
                 <Link
                   key={rv.id}
                   className="group flex gap-3 rounded-lg border border-slate-200 bg-white p-3 transition-colors hover:border-primary/30 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800/80"
@@ -155,11 +166,11 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
                 >
                   <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded border border-slate-200 dark:border-slate-800 bg-slate-900">
                     <Image
-                      alt={rv.tieuDe}
+                      alt={rv.tieuDe || "Video"}
                       width={128}
                       height={80}
                       className="h-full w-full object-cover transition-transform group-hover:scale-105 opacity-80"
-                      src={rv.duongDanAnh ? (rv.duongDanAnh.startsWith('http') ? rv.duongDanAnh : `http://localhost:5000${rv.duongDanAnh}`) : "https://placehold.co/128x80?text=Video"}
+                      src={resolveMediaUrl(rv.duongDanAnh, "https://placehold.co/128x80?text=Video")}
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30">
                       <span className="material-symbols-outlined text-xl text-white">play_circle</span>
@@ -167,7 +178,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
                   </div>
                   <div className="flex flex-1 flex-col justify-between">
                     <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100">
-                      {rv.tieuDe}
+                      {rv.tieuDe || "Video chưa có tiêu đề"}
                     </h3>
                     <p className="text-[12px] text-slate-500">
                       {rv.thoiGianTao ? new Date(rv.thoiGianTao).toLocaleDateString("vi-VN") : ""}

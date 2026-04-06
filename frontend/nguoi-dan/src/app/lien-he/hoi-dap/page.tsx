@@ -27,7 +27,7 @@ export default function HoiDapPage() {
   ];
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
+    <div className="relative flex flex-1 h-full w-full flex-col overflow-x-hidden bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
       
 
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-8 md:px-10">

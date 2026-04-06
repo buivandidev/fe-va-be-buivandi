@@ -25,7 +25,9 @@ export default function RootLayout({
     <html lang="vi" className={`${publicSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
         <Header />
-        {children}
+        <main className="flex-grow flex flex-col items-stretch">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

@@ -3,13 +3,9 @@ import Link from 'next/link';
 
 export default function HoSoCaNhan() {
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-      <div className="layout-container flex h-full grow flex-col">
-        {/* Header Section */}
-        
-
-        <main className="flex flex-1 justify-center py-8">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1 px-4 md:px-0">
+    <div className="relative flex flex-1 h-full w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+      <main className="flex flex-1 justify-center py-8">
+        <div className="layout-content-container flex flex-col max-w-[960px] flex-1 px-4 md:px-0">
             <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
               <h1 className="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Hồ sơ cá nhân</h1>
               <div className="flex gap-3">
@@ -111,7 +107,7 @@ export default function HoSoCaNhan() {
             </section>
 
             {/* Account Security */}
-            <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-12">
+          <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-12">
               <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">security</span>
                 <h2 className="text-slate-900 dark:text-white text-lg font-bold">Bảo mật tài khoản</h2>
@@ -137,13 +133,9 @@ export default function HoSoCaNhan() {
                   </label>
                 </div>
               </div>
-            </section>
-          </div>
-        </main>
-
-        {/* Footer Section */}
-        
-      </div>
+          </section>
+        </div>
+      </main>
     </div>
   );
 }
