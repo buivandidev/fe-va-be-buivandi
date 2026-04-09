@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
@@ -165,7 +165,7 @@ export default function NopTrucTuyenMultiStep({
           ? `/tra-cuu?ma=${encodeURIComponent(data.maTheoDoi)}&email=${encodeURIComponent(email.trim())}`
           : "/tra-cuu",
       );
-    } catch (error) {
+    } catch {
       toast.error("Lỗi kết nối máy chủ.");
     } finally {
       setSubmitting(false);

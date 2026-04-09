@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchApi, unwrapApiEnvelope } from '@/lib/api';
 
@@ -145,7 +145,6 @@ export default function DashboardCaNhan() {
     })();
   }, [router]);
 
-  const nhanThongBao = useMemo(() => (soThongBaoChuaDoc > 99 ? '99+' : String(soThongBaoChuaDoc)), [soThongBaoChuaDoc]);
 
   const dangXuat = () => {
     localStorage.removeItem('token');

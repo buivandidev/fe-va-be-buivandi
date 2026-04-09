@@ -19,41 +19,12 @@ type PageToken = number | "ellipsis";
 const tags = ["Chính sách mới", "Phát triển đô thị", "An sinh xã hội", "Số hóa", "Môi trường"];
 const categoryIcons = ["analytics", "account_balance", "map", "medical_services", "school", "article"];
 
-function buildHref(targetPage: number, keyword: string, categoryId: string): string {
-  const query = new URLSearchParams();
-  query.set("page", String(targetPage));
-  if (keyword) query.set("q", keyword);
-  if (categoryId) query.set("category", categoryId);
-  return `/tin-tuc?${query.toString()}`;
-}
-
 function buildCategoryHref(categoryId: string, keyword: string): string {
   const query = new URLSearchParams();
   if (keyword) query.set("q", keyword);
   if (categoryId) query.set("category", categoryId);
   const suffix = query.toString();
   return suffix ? `/tin-tuc?${suffix}` : "/tin-tuc";
-}
-
-function buildPageTokens(currentPage: number, totalPages: number): PageToken[] {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
-  }
-
-  if (currentPage <= 3) {
-    return [1, 2, 3, 4, "ellipsis", totalPages];
-  }
-
-  if (currentPage >= totalPages - 2) {
-    return [1, "ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-  }
-
-  return [1, "ellipsis", currentPage - 1, currentPage, currentPage + 1, "ellipsis", totalPages];
-}
-
-function totalCount(categoryTotals: Record<string, number>, categories: NewsCategory[], fallbackTotal: number): number {
-  const sum = categories.reduce((acc, item) => acc + (categoryTotals[item.id] ?? 0), 0);
-  return sum > 0 ? sum : fallbackTotal;
 }
 
 export default async function NewsListPage({ searchParams }: NewsListPageProps) {

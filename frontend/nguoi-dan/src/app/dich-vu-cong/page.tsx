@@ -47,7 +47,7 @@ async function getServices(page: number, keyword: string = "", category: string 
       };
     }
     return { items: [], totalPages: 1 };
-  } catch (error) {
+  } catch {
     return { items: [], totalPages: 1 };
   }
 }

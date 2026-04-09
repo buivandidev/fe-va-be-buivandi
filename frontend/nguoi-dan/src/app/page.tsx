@@ -33,7 +33,6 @@ type HomepageData = {
 
 export default function Home() {
   const [homepage, setHomepage] = useState<HomepageData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,8 +46,6 @@ export default function Home() {
         }
       } catch (error) {
         console.error("Lỗi tải dữ liệu trang chủ:", error);
-      } finally {
-        setLoading(false);
       }
     }
     loadHomepage();

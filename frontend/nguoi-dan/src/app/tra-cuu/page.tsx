@@ -70,7 +70,7 @@ function TraCuuHoSoContent() {
       }
 
       setResult(data)
-    } catch (err) {
+    } catch {
       setError('Không thể kết nối máy chủ. Vui lòng thử lại sau.')
     } finally {
       setLoading(false)

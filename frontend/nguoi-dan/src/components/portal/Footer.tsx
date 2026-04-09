@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { fetchApi, unwrapApiEnvelope } from "@/lib/api";
 
+interface SettingItem {
+  khoa: string;
+  giaTri: string | null;
+}
+
 async function getSettings() {
   try {
     const res = await fetchApi("/api/settings", { next: { revalidate: 60 } });
     if (!res.ok) return {};
     const configData = await res.json();
-    const env = unwrapApiEnvelope<any[]>(configData);
+    const env = unwrapApiEnvelope<SettingItem[]>(configData);
     if (!env.success || !env.data) return {};
     
     // Map Array of objects {Khoa, GiaTri} to Record<string, string>
