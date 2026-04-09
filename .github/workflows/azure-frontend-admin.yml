@@ -32,17 +32,21 @@ jobs:
           API_BASE_URL: ${{ secrets.ADMIN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          # Go to standalone root
-          cd .next/standalone
+          node scripts/prepare-standalone.mjs
           
-          # Populate nested folder structure for monorepo
-          mkdir -p frontend/public
-          cp -r ../../public/. frontend/public/ || true
+          # Resolve symlinks into real files for Admin as well
+          mkdir -p $GITHUB_WORKSPACE/prep-admin
+          cp -rL .next/standalone/. $GITHUB_WORKSPACE/prep-admin/
           
-          mkdir -p frontend/.next/static
-          cp -r ../static/. frontend/.next/static/ || true
+          # Add assets
+          mkdir -p $GITHUB_WORKSPACE/prep-admin/frontend/public
+          cp -rL public/. $GITHUB_WORKSPACE/prep-admin/frontend/public/ || true
           
-          # ZIP preserving structure
+          mkdir -p $GITHUB_WORKSPACE/prep-admin/frontend/.next/static
+          cp -rL .next/static/. $GITHUB_WORKSPACE/prep-admin/frontend/.next/static/ || true
+          
+          # Zip
+          cd $GITHUB_WORKSPACE/prep-admin
           zip -r $GITHUB_WORKSPACE/deploy-admin.zip .
           
       - name: Upload artifact

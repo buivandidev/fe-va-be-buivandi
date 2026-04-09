@@ -28,18 +28,22 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          # Go to the standalone root
-          cd .next/standalone
+          # 1. Create a workspace to resolve symlinks
+          mkdir -p $GITHUB_WORKSPACE/prep-citizen
           
-          # In Next.js monorepos, standalone keeps the folder structure.
-          # We must put static/public files in the NESTED folder where the app lives.
-          mkdir -p frontend/nguoi-dan/public
-          cp -r ../../public/. frontend/nguoi-dan/public/ || true
+          # 2. Use -L (dereference) to copy real files instead of symlinks!
+          # This is CRITICAL for monorepo standalone folders on Azure.
+          cp -rL .next/standalone/. $GITHUB_WORKSPACE/prep-citizen/
           
-          mkdir -p frontend/nguoi-dan/.next/static
-          cp -r ../static/. frontend/nguoi-dan/.next/static/ || true
+          # 3. Add static and public assets (using -L to be safe)
+          mkdir -p $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/public
+          cp -rL public/. $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/public/ || true
           
-          # ZIP EVERYTHING from the standalone root (preserving structure)
+          mkdir -p $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/.next/static
+          cp -rL .next/static/. $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/.next/static/ || true
+          
+          # 4. Zip from the resolved directory
+          cd $GITHUB_WORKSPACE/prep-citizen
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
           
       - name: Upload artifact
