@@ -41,15 +41,23 @@ apiClient.interceptors.request.use(
  * Handles the custom format: { thanhCong, thongDiep, duLieu }
  */
 export function unwrapApi<T>(response: AxiosResponse<unknown>): T {
-  const payload = response?.data
+  const payload = response?.data as { 
+    thanhCong?: boolean; 
+    ThanhCong?: boolean; 
+    thongDiep?: string; 
+    ThongDiep?: string; 
+    duLieu?: T; 
+    DuLieu?: T;
+  } | null | undefined;
 
   if (!payload) {
     throw new Error('Phản hồi API không hợp lệ')
   }
 
   // Check if response indicates failure
-  if (typeof payload.thanhCong === 'boolean' && !payload.thanhCong) {
-    throw new Error(payload.thongDiep ?? 'Yêu cầu thất bại')
+  const isSuccess = payload.thanhCong ?? payload.ThanhCong ?? false;
+  if (!isSuccess) {
+    throw new Error(payload.thongDiep ?? payload.ThongDiep ?? 'Yêu cầu thất bại')
   }
 
   // Return the data payload (supports both naming conventions)

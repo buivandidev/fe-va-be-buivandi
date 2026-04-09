@@ -85,19 +85,19 @@ export default function DashboardCaNhan() {
       return;
     }
 
-    // Calculate last login label once
-    const rawLastLogin = localStorage.getItem('lastLoginAt');
-    let loginLabel = 'Chưa có thông tin';
-    if (rawLastLogin) {
-      const d = new Date(rawLastLogin);
-      if (!Number.isNaN(d.getTime())) {
-        loginLabel = `${d.toLocaleTimeString('vi-VN')}, ${d.toLocaleDateString('vi-VN')}`;
-      }
-    }
-    setLastLoginLabel(loginLabel);
-
     void (async () => {
       try {
+        // Calculate last login label
+        const rawLastLogin = localStorage.getItem('lastLoginAt');
+        let loginLabel = 'Chưa có thông tin';
+        if (rawLastLogin) {
+          const d = new Date(rawLastLogin);
+          if (!Number.isNaN(d.getTime())) {
+            loginLabel = `${d.toLocaleTimeString('vi-VN')}, ${d.toLocaleDateString('vi-VN')}`;
+          }
+        }
+        setLastLoginLabel(loginLabel);
+
         const [profileRes, appsRes, unreadRes] = await Promise.all([
           fetchApi('/api/public/profile', { cache: 'no-store' }),
           fetchApi('/api/public/applications?trang=1&kichThuocTrang=100', { cache: 'no-store' }),

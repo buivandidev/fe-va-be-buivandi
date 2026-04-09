@@ -11,7 +11,7 @@ interface RichEditorProps {
 }
 
 export default function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
-  const quillRef = useRef<any>(null)
+  const quillRef = useRef<ReactQuill>(null)
 
   const imageHandler = useCallback(() => {
     const input = document.createElement('input')
