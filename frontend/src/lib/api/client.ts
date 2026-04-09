@@ -40,7 +40,7 @@ apiClient.interceptors.request.use(
  * Response wrapper/unwrapper for API responses
  * Handles the custom format: { thanhCong, thongDiep, duLieu }
  */
-export function unwrapApi<T>(response: AxiosResponse<any>): T {
+export function unwrapApi<T>(response: AxiosResponse<unknown>): T {
   const payload = response?.data
 
   if (!payload) {
@@ -59,13 +59,14 @@ export function unwrapApi<T>(response: AxiosResponse<any>): T {
 /**
  * Error handling helper for API errors
  */
-export function getApiErrorMessage(error: any): string {
-  if (error.response?.data?.thongDiep) {
-    return error.response.data.thongDiep
+export function getApiErrorMessage(error: unknown): string {
+  const err = error as { response?: { data?: { thongDiep?: string } }, message?: string };
+  if (err.response?.data?.thongDiep) {
+    return err.response.data.thongDiep
   }
 
-  if (error.message) {
-    return error.message
+  if (err.message) {
+    return err.message
   }
 
   return 'Đã xảy ra lỗi. Vui lòng thử lại sau.'

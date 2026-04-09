@@ -28,8 +28,9 @@ export default function TestApiPage() {
       } else {
         setResult('✗ Login failed: No token received')
       }
-    } catch (error: any) {
-      setResult(`✗ Login error: ${error.message}`)
+    } catch (error: unknown) {
+      const err = error as Error;
+      setResult(`✗ Login error: ${err.message}`)
     }
   }
 
@@ -38,8 +39,9 @@ export default function TestApiPage() {
       setResult('Testing users API...')
       const response = await apiClient.get('/api/admin/users?trang=1&kichThuocTrang=5')
       setResult(`✓ Users API successful! Got ${response.data?.duLieu?.tongSo || 0} users`)
-    } catch (error: any) {
-      setResult(`✗ Users API error: ${error.message}`)
+    } catch (error: unknown) {
+      const err = error as Error;
+      setResult(`✗ Users API error: ${err.message}`)
       console.error('Full error:', error)
     }
   }
@@ -50,8 +52,9 @@ export default function TestApiPage() {
       const response = await apiClient.get('/api/admin/dashboard/stats')
       const stats = response.data?.duLieu
       setResult(`✓ Dashboard API successful! Users: ${stats?.tongNguoiDung}, Articles: ${stats?.tongBaiViet}`)
-    } catch (error: any) {
-      setResult(`✗ Dashboard API error: ${error.message}`)
+    } catch (error: unknown) {
+      const err = error as Error;
+      setResult(`✗ Dashboard API error: ${err.message}`)
       console.error('Full error:', error)
     }
   }

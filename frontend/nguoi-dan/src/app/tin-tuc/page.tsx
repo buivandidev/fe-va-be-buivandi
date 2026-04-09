@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getNewsCategories, getNewsCategoryTotals, NewsCategory } from "@/lib/news-api";
+import { getNewsCategories, getNewsCategoryTotals } from "@/lib/news-api";
 import { NewsList } from "@/components/news/news-list";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +14,6 @@ type NewsListPageProps = {
   searchParams: Promise<SearchParams>;
 };
 
-type PageToken = number | "ellipsis";
 
 const tags = ["Chính sách mới", "Phát triển đô thị", "An sinh xã hội", "Số hóa", "Môi trường"];
 const categoryIcons = ["analytics", "account_balance", "map", "medical_services", "school", "article"];

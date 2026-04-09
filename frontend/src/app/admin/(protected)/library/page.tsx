@@ -58,7 +58,7 @@ export default function LibraryManagerPage() {
   useEffect(() => {
     const drop = dropRef.current;
     if (!drop) return;
-    const prevent = (e: any) => { e.preventDefault(); e.stopPropagation(); };
+    const prevent = (e: React.DragEvent | DragEvent) => { e.preventDefault(); e.stopPropagation(); };
     const handleDrop = (e: DragEvent) => {
       prevent(e);
       if (e.dataTransfer?.files?.length) {
@@ -198,9 +198,10 @@ export default function LibraryManagerPage() {
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
       fetchFiles();
-    } catch (err: any) {
-      console.error('Upload error:', err);
-      const errorMsg = err?.response?.data?.thongDiep || err?.message || 'Lỗi không xác định';
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { thongDiep?: string } }, message?: string };
+      console.error('Upload error:', error);
+      const errorMsg = error?.response?.data?.thongDiep || error?.message || 'Lỗi không xác định';
       setToast('Tải lên thất bại: ' + errorMsg);
     } finally {
       setUploading(false);
@@ -357,7 +358,7 @@ export default function LibraryManagerPage() {
           <select 
             id="sort-select"
             value={sort} 
-            onChange={e => setSort(e.target.value as any)} 
+            onChange={e => setSort(e.target.value as 'date' | 'name')} 
             className="border rounded px-2 py-1 text-sm"
             aria-label="Sort by"
           >

@@ -104,9 +104,10 @@ export default function HomepageManagementPage() {
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
       fetchData();
-    } catch (err: any) {
-      console.error('Upload error:', err);
-      const errorMsg = err?.response?.data?.thongDiep || err?.message || 'Lỗi không xác định';
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { thongDiep?: string } }, message?: string };
+      console.error('Upload error:', error);
+      const errorMsg = error?.response?.data?.thongDiep || error?.message || 'Lỗi không xác định';
       setToast('Tải lên thất bại: ' + errorMsg);
     } finally {
       setUploading(false);

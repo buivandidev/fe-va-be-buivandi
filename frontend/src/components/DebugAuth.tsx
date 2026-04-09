@@ -9,7 +9,7 @@ import { tokenStorage } from '@/lib/auth/token'
  */
 export function DebugAuth() {
   const [token, setToken] = useState<string | null>(null)
-  const [decoded, setDecoded] = useState<any>(null)
+  const [decoded, setDecoded] = useState<Record<string, unknown> | null>(null)
 
   useEffect(() => {
     const checkToken = () => {

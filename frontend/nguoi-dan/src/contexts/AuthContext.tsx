@@ -21,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     return null;
   });
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const router = useRouter();
 
   const login = (newToken: string) => {

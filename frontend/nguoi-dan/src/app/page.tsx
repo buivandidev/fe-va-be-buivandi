@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { fetchApi, unwrapApiEnvelope } from "@/lib/api";
 
 type HomepageData = {
@@ -51,6 +51,14 @@ export default function Home() {
     loadHomepage();
   }, []);
 
+  const handleVideoClick = (videoUrl: string) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const closeVideoModal = useCallback(() => {
+    setSelectedVideo(null);
+  }, []);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && selectedVideo) {
@@ -67,15 +75,7 @@ export default function Home() {
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
-  }, [selectedVideo]);
-
-  const handleVideoClick = (videoUrl: string) => {
-    setSelectedVideo(videoUrl);
-  };
-
-  const closeVideoModal = () => {
-    setSelectedVideo(null);
-  };
+  }, [selectedVideo, closeVideoModal]);
 
   const heroImage = homepage?.banner?.urlTep ||
     "https://lh3.googleusercontent.com/aida-public/AB6AXuCdFKs-drI7Z8zzU48bGqfKoO_wkgHzuh0mk-1bEX6LcReeqkvsNNEf1_kUGN2W9Fwg5iyQBK5O1QzhITqEh1dUNCD6S71wlpjRXGDd_Uu3h0J55VSa38uS05OolRIWmKGZydgK0_jyubmXDIv4IfEQT4WjXKg7fhTbWNPq5sJjJ5ZLpi7gsRZJuWpJEqwyKBtkf5Xpg_nSzq46x0VsD3YJmaPEYrWzR51zirLUmBO6_bfMxsL48rnV48xt31SI8F0chwLje3u8Z8c";
