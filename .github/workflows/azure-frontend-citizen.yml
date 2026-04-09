@@ -35,8 +35,12 @@ jobs:
           cp -r public .next/standalone/
           mkdir -p .next/standalone/.next/static
           cp -r .next/static .next/standalone/.next/static
-          echo "CLEANUP: Listing standalone files..."
-          ls -R .next/standalone
+          # Flatten nested structure: Next.js standalone often nests the app in its own directory structure
+          # For this project, it's likely under frontend/nguoi-dan inside standalone
+          if [ -d ".next/standalone/frontend/nguoi-dan" ]; then
+            echo "Flattening nested structure from frontend/nguoi-dan..."
+            cp -r .next/standalone/frontend/nguoi-dan/* .next/standalone/
+          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

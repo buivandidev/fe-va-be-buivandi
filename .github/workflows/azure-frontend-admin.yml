@@ -35,7 +35,13 @@ jobs:
           NEXT_PUBLIC_API_BASE_URL: ${{ secrets.ADMIN_FE_NEXT_PUBLIC_API_BASE_URL }}
           API_BASE_URL: ${{ secrets.ADMIN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
-        run: node scripts/prepare-standalone.mjs
+        run: |
+          node scripts/prepare-standalone.mjs
+          # Flatten nested structure if exists (common in Next.js monorepos/nested projects)
+          if [ -d ".next/standalone/frontend" ]; then
+            cp -r .next/standalone/frontend/* .next/standalone/
+            rm -rf .next/standalone/frontend
+          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
