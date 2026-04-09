@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { env } from '@/lib/config/environment'
 import { getAuthToken } from './cookies'
+import { logger } from '@/lib/utils/logger'
 
 interface User {
   id: string
@@ -56,7 +57,7 @@ export const getSession = cache(async (): Promise<Session | null> => {
       token,
     }
   } catch (error) {
-    console.error('Session error:', error)
+    logger.error('Session error:', error)
     return null
   }
 })

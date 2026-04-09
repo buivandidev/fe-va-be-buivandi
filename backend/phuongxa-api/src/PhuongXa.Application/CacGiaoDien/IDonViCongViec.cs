@@ -11,6 +11,8 @@ public interface IDonViCongViec : IDisposable, IAsyncDisposable
     IKho<AlbumPhuongTien> AlbumPhuongTiens { get; }
     IKho<DichVu> DichVus { get; }
     IKho<DonUngDichVu> DonUngs { get; }
+    IKho<PhongBan> PhongBans { get; }
+    IKho<LichSuPhanCongDonUng> LichSuPhanCongDonUngs { get; }
     IKho<TepDonUng> TepDonUngs { get; }
     IKho<NhatKyKiemTra> NhatKys { get; }
     IKho<TinNhanLienHe> TinNhanLienHes { get; }
@@ -21,3 +23,5 @@ public interface IDonViCongViec : IDisposable, IAsyncDisposable
     Task<int> LuuThayDoiAsync(CancellationToken ct = default);
     Task<Dictionary<Guid, List<string>>> LayVaiTroNguoiDungAsync(List<Guid> userIds, CancellationToken ct = default);
 }
+
+

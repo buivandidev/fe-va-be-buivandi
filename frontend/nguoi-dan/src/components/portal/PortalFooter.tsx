@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const mapImage =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBbHD5gnk9DUwgIYItWznNwA9GJ_H9dG8hEPZtpqK7TWy2cjaVENDm_kmqf1Bqg1b9Hf80O_KW7m0WJpNOWIvjqCcqUgbyJTgMG2pwGrD-_B3SgUZ1HQgtgyuwl9lZzlHjkzGA6ekU4umwRvqqZ9VXJ_3R94hvXCsU2y--z9Jr35jmCwVzq4kd8AiKhefEmf1w-4lZQhFERwNyMNX_6r7iSonwmW5YreMt45xIK5hCzrQV0kJTZogPmIBsvc3wREqurLX5ggFziZJc";
@@ -23,22 +24,26 @@ export function PortalFooter() {
             <div className="flex gap-4">
               <a
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 transition-all hover:bg-primary hover:text-white dark:bg-slate-800"
-                href="#"
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="material-symbols-outlined">social_leaderboard</span>
               </a>
               <a
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 transition-all hover:bg-primary hover:text-white dark:bg-slate-800"
-                href="#"
+                href="https://www.youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="material-symbols-outlined">smart_display</span>
               </a>
-              <a
+              <Link
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 transition-all hover:bg-primary hover:text-white dark:bg-slate-800"
-                href="#"
+                href="/tin-tuc"
               >
                 <span className="material-symbols-outlined">rss_feed</span>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -46,24 +51,24 @@ export function PortalFooter() {
             <h3 className="mb-6 font-bold text-slate-900 dark:text-white">Dịch vụ trực tuyến</h3>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/dich-vu-cong">
                   Đăng ký kinh doanh
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/dich-vu-cong">
                   Khai báo lưu trú
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/ca-nhan/thanh-toan">
                   Thanh toán thuế đất
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/dich-vu-cong">
                   Cấp đổi giấy phép lái xe
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -72,24 +77,24 @@ export function PortalFooter() {
             <h3 className="mb-6 font-bold text-slate-900 dark:text-white">Thông tin hữu ích</h3>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/tin-tuc">
                   Bản đồ quy hoạch
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/tin-tuc">
                   Giá nông sản hôm nay
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/lien-he">
                   Lịch tiếp công dân
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary" href="#">
+                <Link className="hover:text-primary" href="/lien-he">
                   Danh bạ đường dây nóng
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -124,15 +129,15 @@ export function PortalFooter() {
         <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-semibold tracking-widest text-slate-400 uppercase dark:border-slate-800 md:flex-row">
           <p>© 2024 Cổng thông tin điện tử địa phương. All rights reserved.</p>
           <div className="flex gap-6">
-            <a className="hover:text-primary" href="#">
+            <Link className="hover:text-primary" href="/gioi-thieu">
               Điều khoản
-            </a>
-            <a className="hover:text-primary" href="#">
+            </Link>
+            <Link className="hover:text-primary" href="/gioi-thieu">
               Bảo mật
-            </a>
-            <a className="hover:text-primary" href="#">
+            </Link>
+            <Link className="hover:text-primary" href="/sitemap.xml">
               Sơ đồ site
-            </a>
+            </Link>
           </div>
         </div>
       </div>

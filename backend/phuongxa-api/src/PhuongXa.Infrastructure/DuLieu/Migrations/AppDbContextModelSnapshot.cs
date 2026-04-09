@@ -17,7 +17,7 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -125,40 +125,523 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.AppRole", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.AlbumPhuongTien", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                    b.Property<string>("AnhBia")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<string>("ChuDe")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DangHoatDong")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("AlbumPhuongTiens");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BaiViet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AnhDaiDien")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("DanhMucId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DuongDan")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MoTaMeta")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXuatBan")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("NoiBat")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SoLuotXem")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TacGiaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TheTag")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TieuDe")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TieuDeMeta")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TomTat")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TrangThai")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DaXoa");
+
+                    b.HasIndex("DanhMucId");
+
+                    b.HasIndex("DuongDan")
+                        .IsUnique();
+
+                    b.HasIndex("NgayXuatBan");
+
+                    b.HasIndex("TacGiaId");
+
+                    b.HasIndex("TrangThai");
+
+                    b.HasIndex("DanhMucId", "TrangThai", "NgayXuatBan");
+
+                    b.ToTable("BaiViets");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BinhLuan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BaiVietId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaDuyet")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("EmailKhach")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("NguoiDungId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TenKhach")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaiVietId");
+
+                    b.HasIndex("ChaId");
+
+                    b.HasIndex("DaDuyet");
+
+                    b.HasIndex("NguoiDungId");
+
+                    b.HasIndex("BaiVietId", "DaDuyet");
+
+                    b.ToTable("BinhLuans");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.CaiDatTrangWeb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GiaTri")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Khoa")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Loai")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Khoa")
+                        .IsUnique();
+
+                    b.ToTable("CaiDatTrangWebs");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DanhMuc", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DangHoatDong")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DuongDan")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Loai")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ThuTuSapXep")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChaId");
+
+                    b.HasIndex("DuongDan")
+                        .IsUnique();
+
+                    b.ToTable("DanhMucs");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DichVu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CanCuPhapLy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DangHoatDong")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("DanhMucId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GiayToCanThiet")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("LePhi")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("MaDichVu")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("QuyTrinh")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SoNgayXuLy")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ThuTuSapXep")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UrlBieuMau")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DanhMucId");
+
+                    b.HasIndex("MaDichVu")
+                        .IsUnique();
+
+                    b.ToTable("DichVus");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DonUngDichVu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DiaChiNguoiNop")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DichVuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DienThoaiNguoiNop")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DuongDanBienLai")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmailNguoiNop")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GhiChuNguoiXuLy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("HanXuLy")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HeThongThanhToan")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("LePhiDaNop")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("LePhiTaiThoiDiemNop")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("MaThamChieuThanhToan")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaTheoDoi")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayHenTra")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayNop")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("NgayThanhToan")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXuLy")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("NguoiDungId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("NguoiXuLyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PhongBanHienTaiId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TenNguoiNop")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ThamChieuGiaoDich")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TrangThai")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TrangThaiThanhToanLePhi")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DichVuId");
+
+                    b.HasIndex("MaTheoDoi")
+                        .IsUnique();
+
+                    b.HasIndex("NguoiDungId");
+
+                    b.HasIndex("NguoiXuLyId");
+
+                    b.HasIndex("PhongBanHienTaiId");
+
+                    b.HasIndex("TrangThai");
+
+                    b.ToTable("DonUngDichVus");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.LichSuTrangThaiDonUng", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("DonUngId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NguoiThayDoiId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TrangThaiCu")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TrangThaiMoi")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonUngId");
+
+                    b.HasIndex("NguoiThayDoiId");
+
+                    b.ToTable("LichSuTrangThaiDonUngs");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.MaLamMoi", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaBiThuHoi")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("HetHanLuc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MaToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NguoiDungId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TaoBoiIp")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaToken")
+                        .IsUnique();
+
+                    b.HasIndex("NguoiDungId");
+
+                    b.ToTable("MaLamMois");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.NguoiDung", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,15 +650,15 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Avatar")
+                    b.Property<string>("AnhDaiDien")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("DangHoatDong")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -184,17 +667,20 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("HoTen")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
@@ -220,9 +706,6 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -239,155 +722,7 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ApplicationFile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.ToTable("ApplicationFiles");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ApplicationStatusHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ChangedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("NewStatus")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OldStatus")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.HasIndex("ChangedById");
-
-                    b.ToTable("ApplicationStatusHistories");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Article", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsFeatured")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("MetaDescription")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MetaTitle")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("PublishedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Summary")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Tags")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Thumbnail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ViewCount")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("PublishedAt");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.HasIndex("Status");
-
-                    b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.AuditLog", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.NhatKyKiemTra", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -395,182 +730,87 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Action")
+                    b.Property<string>("DiaChiIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GiaTriCu")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GiaTriMoi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HanhDong")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("EntityId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewValue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OldValue")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid?>("NguoiDungId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("TacNhanNguoiDung")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TenNguoiDung")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TenThucThe")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ThoiGian")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ThucTheId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EntityName");
+                    b.HasIndex("NguoiDungId");
 
-                    b.HasIndex("Timestamp");
+                    b.HasIndex("TenThucThe");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ThoiGian");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("NhatKyKiemTras");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Category", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.PhongBan", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("DaXoa")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<bool>("DangHoatDong")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("GhiChu")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime?>("NgayCapNhat")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TenPhongBan")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.ToTable("Categories");
+                    b.ToTable("PhongBan");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ArticleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("GuestEmail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GuestName")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ContactMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ReadAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactMessages");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Media", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.PhuongTien", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -579,326 +819,230 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
                     b.Property<Guid?>("AlbumId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AltText")
-                        .HasColumnType("text");
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("ContentType")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FileName")
+                    b.Property<string>("DuongDanTep")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("FileSize")
+                    b.Property<long>("KichThuocTep")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
+                    b.Property<int>("Loai")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<string>("LoaiNoiDung")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UploadedById")
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NguoiTaiLenId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("TenTep")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlTep")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VanBanThayThe")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("UploadedById");
+                    b.HasIndex("NguoiTaiLenId");
 
-                    b.ToTable("Medias");
+                    b.ToTable("PhuongTiens");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.MediaAlbum", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.TepDonUng", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CoverImage")
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("DonUngId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DuongDanTep")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<long>("KichThuocTep")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LoaiNoiDung")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TenTep")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<string>("UrlTep")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonUngId");
+
+                    b.ToTable("TepDonUngs");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.ThongBao", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DaDoc")
                         .HasColumnType("boolean");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LienKet")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Loai")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayDoc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NguoiDungId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TieuDe")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NguoiDungId", "DaDoc");
+
+                    b.ToTable("ThongBaos");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.TinNhanLienHe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ChuDe")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DaDoc")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DaXoa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DienThoai")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("NgayCapNhat")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayDoc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TinNhanLienHes");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.VaiTro", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                    b.Property<string>("Theme")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("NgayTao")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("MediaAlbums");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Notification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ReadAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsRead");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Service", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("Fee")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("FormUrl")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LegalBasis")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Procedure")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProcessingDays")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RequiredDocuments")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ServiceApplication", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ApplicantAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ApplicantEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ApplicantName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ApplicantPhone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ProcessedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("ProcessedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ProcessorNote")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("SubmittedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TrackingCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProcessedById");
-
-                    b.HasIndex("ServiceId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("TrackingCode")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ServiceApplications");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.SiteSetting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Key")
-                        .IsUnique();
-
-                    b.ToTable("SiteSettings");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppRole", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.VaiTro", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -907,7 +1051,7 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -916,7 +1060,7 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -925,13 +1069,13 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppRole", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.VaiTro", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -940,231 +1084,237 @@ namespace PhuongXa.Infrastructure.DuLieu.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", null)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ApplicationFile", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BaiViet", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.ServiceApplication", "Application")
-                        .WithMany("Files")
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DanhMuc", "DanhMuc")
+                        .WithMany("DanhSachBaiViet")
+                        .HasForeignKey("DanhMucId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Application");
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "TacGia")
+                        .WithMany("DanhSachBaiViet")
+                        .HasForeignKey("TacGiaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DanhMuc");
+
+                    b.Navigation("TacGia");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ApplicationStatusHistory", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BinhLuan", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.ServiceApplication", "Application")
-                        .WithMany("StatusHistory")
-                        .HasForeignKey("ApplicationId")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.BaiViet", "BaiViet")
+                        .WithMany("DanhSachBinhLuan")
+                        .HasForeignKey("BaiVietId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "ChangedBy")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.BinhLuan", "Cha")
+                        .WithMany("DanhSachTraLoi")
+                        .HasForeignKey("ChaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiDung")
+                        .WithMany("DanhSachBinhLuan")
+                        .HasForeignKey("NguoiDungId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("BaiViet");
+
+                    b.Navigation("Cha");
+
+                    b.Navigation("NguoiDung");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DanhMuc", b =>
+                {
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DanhMuc", "Cha")
+                        .WithMany("DanhSachCon")
+                        .HasForeignKey("ChaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Cha");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DichVu", b =>
+                {
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DanhMuc", "DanhMuc")
+                        .WithMany("DanhSachDichVu")
+                        .HasForeignKey("DanhMucId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("DanhMuc");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DonUngDichVu", b =>
+                {
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DichVu", "DichVu")
+                        .WithMany("DanhSachDonUng")
+                        .HasForeignKey("DichVuId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiDung")
+                        .WithMany("DanhSachDonUng")
+                        .HasForeignKey("NguoiDungId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiXuLy")
                         .WithMany()
-                        .HasForeignKey("ChangedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Application");
-
-                    b.Navigation("ChangedBy");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Article", b =>
-                {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "Author")
-                        .WithMany("Articles")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("PhuongXa.Domain.Entities.Category", "Category")
-                        .WithMany("Articles")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.AuditLog", b =>
-                {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "User")
-                        .WithMany("AuditLogs")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("NguoiXuLyId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("User");
+                    b.HasOne("PhuongXa.Domain.CacThucThe.PhongBan", "PhongBanHienTai")
+                        .WithMany()
+                        .HasForeignKey("PhongBanHienTaiId");
+
+                    b.Navigation("DichVu");
+
+                    b.Navigation("NguoiDung");
+
+                    b.Navigation("NguoiXuLy");
+
+                    b.Navigation("PhongBanHienTai");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Category", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.LichSuTrangThaiDonUng", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.Category", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Comment", b =>
-                {
-                    b.HasOne("PhuongXa.Domain.Entities.Article", "Article")
-                        .WithMany("Comments")
-                        .HasForeignKey("ArticleId")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DonUngDichVu", "DonUng")
+                        .WithMany("LichSuTrangThai")
+                        .HasForeignKey("DonUngId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhuongXa.Domain.Entities.Comment", "Parent")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiThayDoi")
+                        .WithMany()
+                        .HasForeignKey("NguoiThayDoiId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                    b.Navigation("DonUng");
 
-                    b.Navigation("Article");
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("User");
+                    b.Navigation("NguoiThayDoi");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Media", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.MaLamMoi", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.MediaAlbum", "Album")
-                        .WithMany("Medias")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiDung")
+                        .WithMany()
+                        .HasForeignKey("NguoiDungId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NguoiDung");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.NhatKyKiemTra", b =>
+                {
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiDung")
+                        .WithMany("DanhSachNhatKy")
+                        .HasForeignKey("NguoiDungId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("NguoiDung");
+                });
+
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.PhuongTien", b =>
+                {
+                    b.HasOne("PhuongXa.Domain.CacThucThe.AlbumPhuongTien", "Album")
+                        .WithMany("DanhSachPhuongTien")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "UploadedBy")
-                        .WithMany("MediaUploads")
-                        .HasForeignKey("UploadedById")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiTaiLen")
+                        .WithMany("DanhSachTaiLen")
+                        .HasForeignKey("NguoiTaiLenId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Album");
 
-                    b.Navigation("UploadedBy");
+                    b.Navigation("NguoiTaiLen");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Notification", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.TepDonUng", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.DonUngDichVu", "DonUng")
+                        .WithMany("DanhSachTep")
+                        .HasForeignKey("DonUngId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("DonUng");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.ThongBao", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("PhuongXa.Domain.CacThucThe.NguoiDung", "NguoiDung")
+                        .WithMany("DanhSachThongBao")
+                        .HasForeignKey("NguoiDungId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("NguoiDung");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Service", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.AlbumPhuongTien", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.Category", "Category")
-                        .WithMany("Services")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Category");
+                    b.Navigation("DanhSachPhuongTien");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ServiceApplication", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BaiViet", b =>
                 {
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "ProcessedBy")
-                        .WithMany()
-                        .HasForeignKey("ProcessedById")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("PhuongXa.Domain.Entities.Service", "Service")
-                        .WithMany("Applications")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("PhuongXa.Domain.Entities.AppUser", "User")
-                        .WithMany("Applications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("ProcessedBy");
-
-                    b.Navigation("Service");
-
-                    b.Navigation("User");
+                    b.Navigation("DanhSachBinhLuan");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.BinhLuan", b =>
                 {
-                    b.Navigation("Applications");
-
-                    b.Navigation("Articles");
-
-                    b.Navigation("AuditLogs");
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("MediaUploads");
-
-                    b.Navigation("Notifications");
+                    b.Navigation("DanhSachTraLoi");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Article", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DanhMuc", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("DanhSachBaiViet");
+
+                    b.Navigation("DanhSachCon");
+
+                    b.Navigation("DanhSachDichVu");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Category", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DichVu", b =>
                 {
-                    b.Navigation("Articles");
-
-                    b.Navigation("Children");
-
-                    b.Navigation("Services");
+                    b.Navigation("DanhSachDonUng");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.DonUngDichVu", b =>
                 {
-                    b.Navigation("Replies");
+                    b.Navigation("DanhSachTep");
+
+                    b.Navigation("LichSuTrangThai");
                 });
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.MediaAlbum", b =>
+            modelBuilder.Entity("PhuongXa.Domain.CacThucThe.NguoiDung", b =>
                 {
-                    b.Navigation("Medias");
-                });
+                    b.Navigation("DanhSachBaiViet");
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.Service", b =>
-                {
-                    b.Navigation("Applications");
-                });
+                    b.Navigation("DanhSachBinhLuan");
 
-            modelBuilder.Entity("PhuongXa.Domain.Entities.ServiceApplication", b =>
-                {
-                    b.Navigation("Files");
+                    b.Navigation("DanhSachDonUng");
 
-                    b.Navigation("StatusHistory");
+                    b.Navigation("DanhSachNhatKy");
+
+                    b.Navigation("DanhSachTaiLen");
+
+                    b.Navigation("DanhSachThongBao");
                 });
 #pragma warning restore 612, 618
         }

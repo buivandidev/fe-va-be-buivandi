@@ -56,9 +56,14 @@ public class HoSoAnhXa : Profile
         // PhuongTien
         CreateMap<PhuongTien, PhuongTienDto>()
             .ForMember(d => d.TenAlbum, o => o.MapFrom(s => s.Album != null ? s.Album.Ten : null))
-            .ForMember(d => d.TenNguoiTaiLen, o => o.MapFrom(s => s.NguoiTaiLen != null ? s.NguoiTaiLen.HoTen : string.Empty));
+            .ForMember(d => d.TenNguoiTaiLen, o => o.MapFrom(s => s.NguoiTaiLen != null ? s.NguoiTaiLen.HoTen : string.Empty))
+            .ForMember(d => d.TieuDe, o => o.MapFrom(s => s.VanBanThayThe ?? s.TenTep))
+            .ForMember(d => d.DuongDanAnh, o => o.MapFrom(s => s.UrlTep))
+            .ForMember(d => d.ThoiGianTao, o => o.MapFrom(s => s.NgayTao));
         CreateMap<AlbumPhuongTien, AlbumPhuongTienDto>()
-            .ForMember(d => d.SoPhuongTien, o => o.MapFrom(s => s.DanhSachPhuongTien.Count));
+            .ForMember(d => d.SoPhuongTien, o => o.MapFrom(s => s.DanhSachPhuongTien.Count))
+            .ForMember(d => d.DuongDanAnh, o => o.MapFrom(s => s.AnhBia))
+            .ForMember(d => d.ThoiGianTao, o => o.MapFrom(s => s.NgayTao));
         CreateMap<TaoAlbumPhuongTienDto, AlbumPhuongTien>();
         CreateMap<CapNhatAlbumPhuongTienDto, AlbumPhuongTien>();
         CreateMap<CapNhatPhuongTienDto, PhuongTien>();
@@ -71,7 +76,8 @@ public class HoSoAnhXa : Profile
 
         // DonUng
         CreateMap<DonUngDichVu, DonUngDto>()
-            .ForMember(d => d.TenDichVu, o => o.MapFrom(s => s.DichVu != null ? s.DichVu.Ten : ""));
+            .ForMember(d => d.TenDichVu, o => o.MapFrom(s => s.DichVu != null ? s.DichVu.Ten : ""))
+            .ForMember(d => d.NgayHenTra, o => o.MapFrom(s => s.HanXuLy));
         CreateMap<TepDonUng, TepDonUngDto>();
         CreateMap<NopDonUngDto, DonUngDichVu>()
             .ForMember(d => d.MaTheoDoi, o => o.Ignore())

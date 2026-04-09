@@ -1,6 +1,5 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using PhuongXa.Application.Chung;
 using PhuongXa.Application.DTOs.TimKiem;
@@ -23,7 +22,6 @@ public class TimKiemController : BaseApiController
     }
 
     [HttpGet]
-    [EnableRateLimiting("search")]
     public async Task<IActionResult> TimKiem([FromQuery] string tuKhoa, [FromQuery] int gioiHan = 10)
     {
         if (string.IsNullOrWhiteSpace(tuKhoa) || tuKhoa.Length < 2)

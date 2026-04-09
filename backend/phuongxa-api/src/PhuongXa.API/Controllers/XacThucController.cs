@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PhuongXa.Application.Chung;
@@ -12,7 +11,7 @@ using PhuongXa.Domain.CacThucThe;
 namespace PhuongXa.API.Controllers;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/legacy/auth")]
 public class XacThucController : BaseApiController
 {
     private readonly UserManager<NguoiDung> _quanLyNguoiDung;
@@ -71,7 +70,6 @@ public class XacThucController : BaseApiController
     // ── Endpoints ───────────────────────────────────────────
 
     [HttpPost("login")]
-    [EnableRateLimiting("login")]
     public async Task<IActionResult> DangNhap([FromBody] DangNhapDto dto)
     {
         var nguoiDung = await _quanLyNguoiDung.FindByEmailAsync(dto.Email);
@@ -115,7 +113,6 @@ public class XacThucController : BaseApiController
     }
 
     [HttpPost("register")]
-    [EnableRateLimiting("register")]
     public async Task<IActionResult> DangKy([FromBody] DangKyDto dto)
     {
         var daTonTai = await _quanLyNguoiDung.FindByEmailAsync(dto.Email);
@@ -135,8 +132,6 @@ public class XacThucController : BaseApiController
         if (!ketQua.Succeeded)
             return BadRequest(PhanHoiApi.ThatBai("Tạo tài khoản thất bại",
                 ketQua.Errors.Select(e => e.Description).ToList()));
-
-        await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, "Viewer");
 
         var ketQuaVaiTro = await _quanLyNguoiDung.AddToRoleAsync(nguoiDung, "Viewer");
         if (!ketQuaVaiTro.Succeeded)

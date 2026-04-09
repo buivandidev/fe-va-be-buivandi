@@ -1,0 +1,70 @@
+â  Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of D:\febecuoiki\frontend\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * D:\febecuoiki\frontend\nguoi-dan\package-lock.json
+
+â–² Next.js 16.2.2 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+âœ“ Compiled successfully in 3.5s
+  Running TypeScript ...
+  Finished TypeScript in 4.4s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/33) ...
+  Generating static pages using 15 workers (8/33) 
+  Generating static pages using 15 workers (16/33) 
+  Generating static pages using 15 workers (24/33) 
+âœ“ Generating static pages using 15 workers (33/33) in 438ms
+  Finalizing page optimization ...
+
+Route (app)
+â”Œ â—‹ /
+â”œ â—‹ /_not-found
+â”œ â—‹ /ca-nhan
+â”œ â—‹ /ca-nhan/doi-mat-khau
+â”œ â—‹ /ca-nhan/ho-so
+â”œ â—‹ /ca-nhan/lich-hen
+â”œ â—‹ /ca-nhan/quan-ly-ho-so
+â”œ â—‹ /ca-nhan/quan-ly-tai-lieu
+â”œ â—‹ /ca-nhan/tai-lieu
+â”œ â—‹ /ca-nhan/thanh-toan
+â”œ â—‹ /ca-nhan/thong-bao
+â”œ â—‹ /chinh-sach
+â”œ â—‹ /dang-ky
+â”œ â—‹ /dang-nhap
+â”œ â—‹ /dat-lai-mat-khau
+â”œ Æ’ /dich-vu-cong
+â”œ Æ’ /dich-vu-cong/[id]
+â”œ Æ’ /dich-vu-cong/[id]/nop-truc-tuyen
+â”œ â—‹ /dieu-khoan
+â”œ â—‹ /doi-mat-khau-thanh-cong
+â”œ â—‹ /gioi-thieu
+â”œ â—‹ /khao-sat
+â”œ â—‹ /lien-he
+â”œ â—‹ /lien-he/gop-y
+â”œ â—‹ /lien-he/hoi-dap
+â”œ â—‹ /mot-cua
+â”œ â—‹ /nop-ho-so
+â”œ â—‹ /quen-mat-khau
+â”œ â—‹ /quy-hoach
+â”œ â—‹ /so-do-trang
+â”œ Æ’ /thu-vien
+â”œ Æ’ /thu-vien/album/[id]
+â”œ Æ’ /thu-vien/video/[id]
+â”œ Æ’ /tim-kiem
+â”œ Æ’ /tin-tuc
+â”œ Æ’ /tin-tuc/[slug]
+â”œ Æ’ /to-chuc
+â”œ â—‹ /tra-cuu
+â”œ â—‹ /van-ban-phap-luat
+â”” Æ’ /van-ban/[id]
+
+
+Æ’ Proxy (Middleware)
+
+â—‹  (Static)   prerendered as static content
+Æ’  (Dynamic)  server-rendered on demand
+

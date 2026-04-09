@@ -15,6 +15,9 @@ public class DonUngDto
     public string DienThoaiNguoiNop { get; set; } = string.Empty;
     public string? DiaChiNguoiNop { get; set; }
     public string? GhiChu { get; set; }
+    public Guid? PhongBanId { get; set; }
+    public DateTime? HanXuLy { get; set; }
+    public DateTime? NgayHenTra { get; set; }
     public TrangThaiDonUng TrangThai { get; set; }
     public string NhanTrangThai => TrangThai.ToString();
     public DateTime NgayNop { get; set; }
@@ -39,6 +42,8 @@ public class NopDonUngDto
     [Required] public string DienThoaiNguoiNop { get; set; } = string.Empty;
     public string? DiaChiNguoiNop { get; set; }
     public string? GhiChu { get; set; }
+    public Guid? PhongBanId { get; set; }
+    public DateTime? HanXuLy { get; set; }
 }
 
 public class CapNhatTrangThaiDonUngDto
@@ -55,6 +60,35 @@ public class LichSuTrangThaiDonUngDto
     public TrangThaiDonUng TrangThaiMoi { get; set; }
     public string NhanTrangThaiMoi => TrangThaiMoi.ToString();
     public string? GhiChu { get; set; }
+    public Guid? PhongBanId { get; set; }
+    public DateTime? HanXuLy { get; set; }
     public string TenNguoiThayDoi { get; set; } = string.Empty;
     public DateTime NgayTao { get; set; }
 }
+
+public class TaoLienKetThanhToanLePhiDto
+{
+    public string? DiaChiIp { get; set; }
+}
+
+public class KetQuaTaoLienKetThanhToanLePhiDto
+{
+    public string MaThamChieuThanhToan { get; set; } = string.Empty;
+    public string UrlThanhToan { get; set; } = string.Empty;
+    public decimal SoTien { get; set; }
+}
+
+
+public class PhanCongXuLyDonUngDto
+{
+    public Guid NguoiXuLyId { get; set; }
+    public string? GhiChu { get; set; }
+    public Guid? PhongBanId { get; set; }
+    public DateTime? HanXuLy { get; set; }
+}
+
+public class XuatPhieuHoSoPdfQueryDto
+{
+    public bool ToBase64 { get; set; }
+}
+

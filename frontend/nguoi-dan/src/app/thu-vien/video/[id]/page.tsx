@@ -70,13 +70,13 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link className="flex items-center text-slate-500 hover:text-primary dark:text-slate-400" href="/">
-                <span className="material-symbols-outlined mr-1 text-lg">home</span>
+                <span className="material-symbols-outlined gov-icon mr-1 text-lg">home</span>
                 Trang chủ
               </Link>
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <Link className="text-slate-500 hover:text-primary dark:text-slate-400" href="/thu-vien">
                   Thư viện Media
                 </Link>
@@ -84,7 +84,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
             </li>
             <li aria-current="page">
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">Chi tiết Video</span>
               </div>
             </li>
@@ -114,25 +114,25 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
             </div>
 
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h1 className="mb-4 text-2xl font-bold leading-tight text-slate-900 dark:text-slate-100">
+              <h1 className="gov-section-title mb-4 text-2xl font-bold leading-tight text-slate-900 dark:text-slate-100">
                 {video.tieuDe || "Video không có tiêu đề"}
               </h1>
               
               <div className="mb-6 flex flex-wrap items-center justify-between border-b border-slate-100 pb-6 dark:border-slate-800">
                 <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">calendar_today</span> 
+                      <span className="material-symbols-outlined gov-icon text-[16px]">calendar_today</span> 
                     {video.thoiGianTao ? new Date(video.thoiGianTao).toLocaleDateString("vi-VN") : ""}
                   </span>
                   {video.tenNguoiTaiLen && (
                     <span className="flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[16px]">person</span> 
+                      <span className="material-symbols-outlined gov-icon text-[16px]">person</span> 
                       Đăng bởi: {video.tenNguoiTaiLen}
                     </span>
                   )}
                   {video.tenAlbum && (
                     <span className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                      <span className="material-symbols-outlined text-[16px]">folder</span> 
+                      <span className="material-symbols-outlined gov-icon text-[16px]">folder</span> 
                       {video.tenAlbum}
                     </span>
                   )}
@@ -147,7 +147,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
               
               <div className="mt-8 flex gap-3">
                 <button className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 font-semibold text-slate-700 transition-colors hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700" type="button">
-                  <span className="material-symbols-outlined text-[20px]">share</span>
+                  <span className="material-symbols-outlined gov-icon text-[20px]">share</span>
                   Chia sẻ
                 </button>
               </div>
@@ -173,7 +173,7 @@ export default async function ChiTietVideoPage({ params }: { params: Promise<{ i
                       src={resolveMediaUrl(rv.duongDanAnh, "https://placehold.co/128x80?text=Video")}
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30">
-                      <span className="material-symbols-outlined text-xl text-white">play_circle</span>
+                       <span className="material-symbols-outlined gov-icon text-xl text-white">play_circle</span>
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col justify-between">

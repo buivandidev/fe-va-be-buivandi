@@ -1,0 +1,120 @@
+   â–² Next.js 15.5.14
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     Â· cpus: 1
+
+   Creating an optimized production build ...
+Found 1 warning while optimizing generated CSS:
+
+â”‚   width: 100%;
+â”‚ }
+â”‚ @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+â”†        ^-- @import rules must precede all rules aside from @charset and @layer statements
+â”†
+â”‚ @layer theme, base, components, utilities;
+â”‚ @layer theme {
+
+ âœ“ Compiled successfully in 3.3s
+   Linting and checking validity of types ...
+
+./src/app/admin/(protected)/applications/page.tsx
+102:6  Warning: React Hook useEffect has a missing dependency: 'loadApplications'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/admin/(protected)/articles/page.tsx
+79:6  Warning: React Hook useEffect has a missing dependency: 'loadArticles'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+435:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/admin/(protected)/audit-logs/page.tsx
+4:39  Warning: 'getApiErrorMessage' is defined but never used.  @typescript-eslint/no-unused-vars
+16:6  Warning: React Hook useEffect has a missing dependency: 'loadLogs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/admin/(protected)/comments/page.tsx
+32:6  Warning: React Hook useEffect has a missing dependency: 'loadComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/admin/(protected)/contacts/page.tsx
+17:6  Warning: React Hook useEffect has a missing dependency: 'loadContacts'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/admin/(protected)/homepage/page.tsx
+21:6  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+93:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+302:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/admin/(protected)/library/page.tsx
+61:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+201:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+360:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+387:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/admin/(protected)/settings/page.tsx
+4:42  Warning: 'CapNhatCaiDatTrangWebDto' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/admin/(protected)/users/page.tsx
+48:6  Warning: React Hook useEffect has a missing dependency: 'loadUsers'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/admin/test-api/page.tsx
+31:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+41:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+53:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/DebugAuth.tsx
+12:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ErrorBoundary.tsx
+26:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/api/client.ts
+43:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/utils/logger.ts
+9:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+17:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+21:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+25:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ âœ“ Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+â”Œ â—‹ /                                      142 B         102 kB
+â”œ â—‹ /_not-found                            142 B         102 kB
+â”œ â—‹ /admin                                 142 B         102 kB
+â”œ Æ’ /admin/applications                  7.06 kB         130 kB
+â”œ Æ’ /admin/articles                      5.55 kB         128 kB
+â”œ Æ’ /admin/audit-logs                    2.72 kB         126 kB
+â”œ Æ’ /admin/categories                    3.92 kB         127 kB
+â”œ Æ’ /admin/comments                      3.88 kB         127 kB
+â”œ Æ’ /admin/contacts                      3.04 kB         126 kB
+â”œ Æ’ /admin/dashboard                     70.7 kB         197 kB
+â”œ â—‹ /admin/forbidden                       167 B         106 kB
+â”œ Æ’ /admin/homepage                      5.29 kB         128 kB
+â”œ Æ’ /admin/library                       6.06 kB         129 kB
+â”œ â—‹ /admin/login                         1.33 kB         107 kB
+â”œ Æ’ /admin/logout                          142 B         102 kB
+â”œ Æ’ /admin/services                      5.06 kB         128 kB
+â”œ Æ’ /admin/settings                      2.89 kB         126 kB
+â”œ â—‹ /admin/test-api                      2.34 kB         125 kB
+â”œ Æ’ /admin/users                         4.79 kB         128 kB
+â”œ Æ’ /api/admin/login                       142 B         102 kB
+â”œ Æ’ /api/admin/media                       142 B         102 kB
+â”œ Æ’ /api/admin/media/[id]                  142 B         102 kB
+â”” â—‹ /login                                 142 B         102 kB
++ First Load JS shared by all             102 kB
+  â”œ chunks/493-2e7dd1da600aaefb.js       45.8 kB
+  â”œ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  â”” other shared chunks (total)          1.99 kB
+
+
+Æ’ Middleware                             34.2 kB
+
+â—‹  (Static)   prerendered as static content
+Æ’  (Dynamic)  server-rendered on demand
+

@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using PhuongXa.Application.Chung;
 using PhuongXa.Application.DTOs.PhuongTien;
@@ -102,6 +101,7 @@ public class ThongTinController : BaseApiController
         {
             if (!string.IsNullOrEmpty(d.DuongDanTep))
                 d.UrlTep = _luuTruTep.LayUrlTep(d.DuongDanTep);
+            d.ThoiGianTao = d.NgayTao;
         }
         return Ok(PhanHoiApi<KetQuaPhanTrang<PhuongTienDto>>.ThanhCongKetQua(new KetQuaPhanTrang<PhuongTienDto>
         {
@@ -119,8 +119,13 @@ public class ThongTinController : BaseApiController
     {
         var albums = await _donViCongViec.AlbumPhuongTiens.TruyVan().AsNoTracking()
             .Where(a => a.DangHoatDong)
+            .Include(a => a.DanhSachPhuongTien)
             .OrderBy(a => a.Ten)
-            .Select(a => new AlbumPhuongTienDto
+            .ToListAsync();
+
+        var dtos = albums.Select(a =>
+        {
+            var dto = new AlbumPhuongTienDto
             {
                 Id = a.Id,
                 Ten = a.Ten,
@@ -129,10 +134,31 @@ public class ThongTinController : BaseApiController
                 AnhBia = a.AnhBia,
                 DangHoatDong = a.DangHoatDong,
                 NgayTao = a.NgayTao,
+                ThoiGianTao = a.NgayTao,
                 SoPhuongTien = a.DanhSachPhuongTien.Count
-            })
-            .ToListAsync();
-        return Ok(PhanHoiApi<List<AlbumPhuongTienDto>>.ThanhCongKetQua(albums));
+            };
+
+            // Nếu album không có ảnh bìa, lấy ảnh đầu tiên trong album
+            if (string.IsNullOrEmpty(dto.AnhBia))
+            {
+                var anhDauTien = a.DanhSachPhuongTien
+                    .Where(p => p.Loai == LoaiPhuongTien.HinhAnh)
+                    .OrderBy(p => p.NgayTao)
+                    .FirstOrDefault();
+                if (anhDauTien != null)
+                {
+                    dto.DuongDanAnh = _luuTruTep.LayUrlTep(anhDauTien.DuongDanTep);
+                }
+            }
+            else
+            {
+                dto.DuongDanAnh = _luuTruTep.LayUrlTep(dto.AnhBia);
+            }
+
+            return dto;
+        }).ToList();
+
+        return Ok(PhanHoiApi<List<AlbumPhuongTienDto>>.ThanhCongKetQua(dtos, "Thư viện tư liệu - V2"));
     }
 
     [HttpGet("albums/{id:guid}")]
@@ -214,7 +240,6 @@ public class ThongTinController : BaseApiController
 
     [HttpPost("upload")]
     [Authorize(Roles = "Admin,Editor")]
-    [EnableRateLimiting("file-upload")]
     [RequestSizeLimit(50_000_000)]
     public async Task<IActionResult> TaiLen([FromForm] IFormFile tep, [FromForm] Guid? albumId, [FromForm] string? vanBanThayThe)
     {

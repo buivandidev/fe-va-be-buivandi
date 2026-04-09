@@ -16,7 +16,13 @@ interface PageProps {
 async function getGlobalSearch(keyword: string) {
   if (!keyword) return [];
   try {
-    const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(keyword)}`, { 
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+    if (!apiBaseUrl) {
+      throw new Error("Thiếu biến môi trường bắt buộc: NEXT_PUBLIC_API_BASE_URL");
+    }
+
+    const normalizedBase = apiBaseUrl.replace(/\/+$/, "");
+    const res = await fetch(`${normalizedBase}/api/public/search?q=${encodeURIComponent(keyword)}`, {
         cache: "no-store" 
     });
     if (!res.ok) return [];
@@ -58,7 +64,7 @@ export default async function GlobalSearchPage({ searchParams }: PageProps) {
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12 md:px-10">
         
         <div className="mb-10 text-center">
-             <h1 className="mb-6 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl">Tìm kiếm</h1>
+             <h1 className="gov-section-title mb-6 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl">Tìm kiếm</h1>
              <form action="/tim-kiem" method="GET" className="mx-auto flex max-w-2xl flex-col items-center gap-3 sm:flex-row">
                 <div className="relative w-full">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">

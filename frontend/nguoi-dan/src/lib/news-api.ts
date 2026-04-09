@@ -1,4 +1,4 @@
-import { buildApiUrl, isGuid as isGuidValue } from "@/lib/api";
+import { buildApiUrl, isGuid as isGuidValue, resolveMediaUrl } from "@/lib/api";
 
 type RawObject = Record<string, unknown>;
 
@@ -310,7 +310,7 @@ function normalizeListItem(raw: RawListItem): NewsListItem {
     title,
     slug,
     excerpt: raw.tomTat ?? raw.TomTat ?? "Nội dung đang được cập nhật.",
-    imageUrl: raw.anhDaiDien ?? raw.AnhDaiDien ?? DEFAULT_NEWS_IMAGE,
+    imageUrl: resolveMediaUrl((raw.anhDaiDien ?? raw.AnhDaiDien) as string, DEFAULT_NEWS_IMAGE),
     category: raw.tenDanhMuc ?? raw.TenDanhMuc ?? "Tin tức",
     categoryId: raw.danhMucId ?? raw.DanhMucId,
     author: raw.tenTacGia ?? raw.TenTacGia ?? "Ban Biên Tập",
@@ -504,7 +504,7 @@ export async function getNewsDetailBySlug(slug: string): Promise<NewsDetailPaylo
   if (!cleanSlug) return null;
 
   try {
-    const payload = await fetchJson(`/api/articles/slug/${encodeURIComponent(cleanSlug)}`);
+    const payload = await fetchJson(`/api/articles/${encodeURIComponent(cleanSlug)}`);
     const unwrapped = unwrapEnvelope<RawDetailItem>(payload);
 
     if (!unwrapped.success || !unwrapped.data) {
@@ -642,4 +642,104 @@ export function formatViDateTime(value?: string): string {
     hour: "2-digit",
     minute: "2-digit",
   }).format(date);
+}
+
+// --- Service (Dịch vụ công) API ---
+
+export type PublicService = {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  requiredDocuments: string;
+  itemsToUpload?: string;
+  processingDays: number;
+  fee: number;
+  categoryName: string;
+  isActive: boolean;
+};
+
+type RawServiceItem = {
+  id?: string;
+  Id?: string;
+  maDichVu?: string;
+  MaDichVu?: string;
+  ten?: string;
+  Ten?: string;
+  moTa?: string;
+  MoTa?: string;
+  giayToCanThiet?: string;
+  GiayToCanThiet?: string;
+  soNgayXuLy?: number;
+  SoNgayXuLy?: number;
+  lePhi?: number;
+  LePhi?: number;
+  tenDanhMuc?: string;
+  TenDanhMuc?: string;
+  dangHoatDong?: boolean;
+  DangHoatDong?: boolean;
+};
+
+function normalizeServiceItem(raw: RawServiceItem): PublicService {
+  return {
+    id: raw.id ?? raw.Id ?? "",
+    code: raw.maDichVu ?? raw.MaDichVu ?? "DV-000",
+    name: raw.ten ?? raw.Ten ?? "Dịch vụ công",
+    description: raw.moTa ?? raw.MoTa ?? "Nội dung đang được cập nhật.",
+    requiredDocuments: raw.giayToCanThiet ?? raw.GiayToCanThiet ?? "Tờ khai theo mẫu.",
+    processingDays: raw.soNgayXuLy ?? raw.SoNgayXuLy ?? 1,
+    fee: raw.lePhi ?? raw.LePhi ?? 0,
+    categoryName: raw.tenDanhMuc ?? raw.TenDanhMuc ?? "Hành chính",
+    isActive: raw.dangHoatDong ?? raw.DangHoatDong ?? true,
+  };
+}
+
+export async function getServiceDetail(id: string): Promise<PublicService | null> {
+  const cleanId = id.trim();
+  if (!cleanId) return null;
+
+  try {
+    const payload = await fetchJson(`/api/services/${encodeURIComponent(cleanId)}`);
+    const unwrapped = unwrapEnvelope<RawServiceItem>(payload);
+
+    if (!unwrapped.success || !unwrapped.data) {
+      throw new Error(unwrapped.message ?? "Không tìm thấy dịch vụ.");
+    }
+
+    return normalizeServiceItem(unwrapped.data);
+  } catch {
+    // Fallback if needed or return null
+    return null;
+  }
+}
+
+export async function getServiceCategories(): Promise<NewsCategoryPayload> {
+  const query = new URLSearchParams({
+    loai: "1", // LoaiDanhMuc.DichVu
+    trang: "1",
+    kichThuocTrang: "200",
+  });
+
+  try {
+    const payload = await fetchJson(`/api/categories?${query.toString()}`);
+    const unwrapped = unwrapEnvelope<RawCategoryItem[]>(payload);
+
+    if (!unwrapped.success || !Array.isArray(unwrapped.data)) {
+      throw new Error(unwrapped.message ?? "Không lấy được danh mục dịch vụ.");
+    }
+
+    const categories = unwrapped.data.map((item) => normalizeCategoryItem(item));
+
+    return { categories, source: "api" };
+  } catch {
+    return {
+      categories: [
+        { id: "ho-tich", name: "Hộ tịch", slug: "ho-tich" },
+        { id: "dat-dai", name: "Đất đai", slug: "dat-dai" },
+        { id: "xay-dung", name: "Xây dựng", slug: "xay-dung" },
+      ],
+      source: "fallback",
+      warning: "Không kết nối được API danh mục dịch vụ, đang hiển thị dữ liệu mẫu.",
+    };
+  }
 }

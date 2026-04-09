@@ -21,6 +21,7 @@ public class CaiDatController : BaseApiController
 
     [HttpGet]
     [AllowAnonymous]
+    [OutputCache(PolicyName = "Expire30s")]
     public async Task<IActionResult> LayTatCa()
     {
         var laQuanTri = User.Identity?.IsAuthenticated == true && User.IsInRole("Admin");
@@ -48,6 +49,7 @@ public class CaiDatController : BaseApiController
 
     [HttpGet("{khoa}")]
     [AllowAnonymous]
+    [OutputCache(PolicyName = "Expire30s", VaryByRouteValueNames = new[] { "khoa" })]
     public async Task<IActionResult> LayTheoKhoa(string khoa)
     {
         var laQuanTri = User.Identity?.IsAuthenticated == true && User.IsInRole("Admin");
@@ -77,6 +79,10 @@ public class CaiDatController : BaseApiController
 
         caiDat.GiaTri = dto.GiaTri ?? string.Empty;
         await _donViCongViec.LuuThayDoiAsync();
+        
+        // Xóa cache khi dữ liệu thay đổi
+        await HttpContext.RequestServices.GetRequiredService<IOutputCacheStore>().EvictByTagAsync("settings", default);
+
         return Ok(PhanHoiApi.ThanhCongKetQua("Cập nhật cài đặt thành công"));
     }
 
@@ -94,6 +100,10 @@ public class CaiDatController : BaseApiController
         };
         await _donViCongViec.CaiDats.ThemAsync(caiDat);
         await _donViCongViec.LuuThayDoiAsync();
+        
+        // Xóa cache khi dữ liệu thay đổi
+        await HttpContext.RequestServices.GetRequiredService<IOutputCacheStore>().EvictByTagAsync("settings", default);
+        
         return Ok(PhanHoiApi<object>.ThanhCongKetQua(new { caiDat.Id, caiDat.Khoa }, "Tạo cài đặt thành công"));
     }
 }

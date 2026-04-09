@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PhuongXa.Application.Chung;
@@ -39,7 +38,6 @@ public class DonUngController : BaseApiController
     }
 
     [HttpPost("submit")]
-    [EnableRateLimiting("submit-application")]
     public async Task<IActionResult> NopDon([FromBody] NopDonUngDto dto)
     {
         var dichVu = await _donViCongViec.DichVus.LayTheoIdAsync(dto.DichVuId);
@@ -72,7 +70,6 @@ public class DonUngController : BaseApiController
 
     [HttpPost("{id:guid}/upload-files")]
     [Authorize]
-    [EnableRateLimiting("file-upload")]
     [RequestSizeLimit(20_000_000)]
     public async Task<IActionResult> TaiLenTepTin(Guid id, [FromForm] List<IFormFile> cacTep)
     {
@@ -114,7 +111,6 @@ public class DonUngController : BaseApiController
     }
 
     [HttpGet("track/{maTheoDoi}")]
-    [EnableRateLimiting("application-track")]
     public async Task<IActionResult> TheoDoi(string maTheoDoi, [FromQuery] string? emailNguoiNop)
     {
         if (string.IsNullOrWhiteSpace(maTheoDoi) || string.IsNullOrWhiteSpace(emailNguoiNop))
@@ -218,6 +214,24 @@ public class DonUngController : BaseApiController
         donUng.NguoiXuLyId = nguoiXuLyId;
         donUng.NgayCapNhat = DateTime.UtcNow;
         _donViCongViec.DonUngs.CapNhat(donUng);
+
+        // Tạo notification cho user nếu có NguoiDungId
+        if (donUng.NguoiDungId.HasValue)
+        {
+            var tieuDe = $"Hồ sơ {donUng.MaTheoDoi} đã được cập nhật trạng thái";
+            var noiDung = $"Trạng thái mới: <b>{dto.TrangThai}</b> cho hồ sơ <b>{donUng.MaTheoDoi}</b> - {donUng.DichVu.Ten}.";
+            if (!string.IsNullOrWhiteSpace(dto.GhiChuNguoiXuLy))
+                noiDung += $"<br/>Ghi chú: {dto.GhiChuNguoiXuLy}";
+            await _donViCongViec.ThongBaos.ThemAsync(new ThongBao
+            {
+                NguoiDungId = donUng.NguoiDungId.Value,
+                TieuDe = tieuDe,
+                NoiDung = noiDung,
+                LienKet = $"/tra-cuu?ma={donUng.MaTheoDoi}",
+                Loai = LoaiThongBao.TrangThaiDonUngThayDoi
+            });
+        }
+
         await _donViCongViec.LuuThayDoiAsync();
 
         try

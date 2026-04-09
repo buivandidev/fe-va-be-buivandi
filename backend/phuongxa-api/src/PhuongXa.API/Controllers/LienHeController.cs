@@ -2,7 +2,6 @@ using AutoMapper;
 using PhuongXa.API.TienIch;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using PhuongXa.Application.Chung;
 using PhuongXa.Application.DTOs.LienHe;
@@ -27,7 +26,6 @@ public class LienHeController : BaseApiController
     }
 
     [HttpPost]
-    [EnableRateLimiting("contact")]
     public async Task<IActionResult> Gui([FromBody] TaoTinNhanLienHeDto dto)
     {
         dto.NoiDung = _boLamSach.LamSachVanBan(dto.NoiDung);

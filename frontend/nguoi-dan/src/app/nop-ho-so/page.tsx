@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
+import { fetchApi, unwrapApiEnvelope } from "@/lib/api";
 
 // Types
 interface Service {
@@ -15,7 +16,15 @@ interface Service {
   dangHoatDong?: boolean;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:5187";
+interface ServicesEnvelope {
+  muc?: Service[];
+  danhSach?: Service[];
+}
+
+interface SubmitApplicationResult {
+  id?: string;
+  maTheoDoi?: string;
+}
 
 function ApplicationForm() {
   const searchParams = useSearchParams();
@@ -24,6 +33,7 @@ function ApplicationForm() {
 
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [serviceLoadError, setServiceLoadError] = useState<string | null>(null);
   
   // Form State
   const [dichVuId, setDichVuId] = useState(serviceIdParam || "");
@@ -43,7 +53,7 @@ function ApplicationForm() {
   useEffect(() => {
     // [CẬP NHẬT THEO ĐỀ XUẤT]: Kiểm tra Auth (Token/Cookie)
     // Giả lập bằng localStorage hoặc logic thực tế của bạn
-    const token = document.cookie.includes("token=") || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     
     if (!token) {
       toast.error("Vui lòng đăng nhập hệ thống để thực hiện Nộp hồ sơ.");
@@ -60,21 +70,37 @@ function ApplicationForm() {
 
     async function fetchServices() {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/services?kichThuocTrang=100`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.thanhCong && data.duLieu) {
-            const danhSach = Array.isArray(data.duLieu.muc)
-              ? data.duLieu.muc
-              : Array.isArray(data.duLieu.danhSach)
-                ? data.duLieu.danhSach
-                : [];
+        setServiceLoadError(null);
+        const res = await fetchApi("/api/public/services?kichThuocTrang=100", {
+          cache: "no-store",
+        });
 
-            setServices(danhSach.filter((s: Service) => s.dangHoatDong ?? true));
-          }
+        if (!res.ok) {
+          setServiceLoadError("Không tải được danh sách thủ tục. Vui lòng thử lại.");
+          return;
+        }
+
+        const payload = await res.json().catch(() => null);
+        const { success, data } = unwrapApiEnvelope<ServicesEnvelope>(payload);
+        if (!success || !data) {
+          setServiceLoadError("Không tải được danh sách thủ tục. Vui lòng thử lại.");
+          return;
+        }
+
+        const danhSach = Array.isArray(data.muc)
+          ? data.muc
+          : Array.isArray(data.danhSach)
+            ? data.danhSach
+            : [];
+
+        const activeServices = danhSach.filter((s: Service) => s.dangHoatDong ?? true);
+        setServices(activeServices);
+        if (activeServices.length === 0) {
+          setServiceLoadError("Hiện chưa có thủ tục đang mở để nộp hồ sơ.");
         }
       } catch (error) {
         console.error("Lỗi lấy danh sách thủ tục:", error);
+        setServiceLoadError("Không thể kết nối để tải danh sách thủ tục.");
       } finally {
         setLoading(false);
       }
@@ -98,6 +124,12 @@ function ApplicationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!email.trim()) {
+      toast.error("Vui lòng nhập email để nhận mã tra cứu hồ sơ.");
+      return;
+    }
+
     if (!dichVuId) {
       toast.error("Vui lòng chọn thủ tục bạn muốn nộp hồ sơ.");
       return;
@@ -105,41 +137,69 @@ function ApplicationForm() {
 
     setSubmitting(true);
     try {
-      // Build FormData vì có file đính kèm
-      const formData = new FormData();
-      formData.append("dichVuId", dichVuId);
-      formData.append("hoTenNguoiNop", hoTen);
-      formData.append("soDienThoai", soDienThoai);
-      formData.append("cccd", cccd);
-      
-      if (email) formData.append("email", email);
-      if (diaChi) formData.append("diaChi", diaChi);
-      
-      // Upload files
-      tepDinhKemList.forEach((file) => {
-         formData.append(`tepDinhKem`, file);
-      });
+      const requestBody = {
+        dichVuId,
+        tenNguoiNop: hoTen.trim(),
+        emailNguoiNop: email.trim(),
+        dienThoaiNguoiNop: soDienThoai.trim(),
+        diaChiNguoiNop: diaChi.trim() || undefined,
+        ghiChu: cccd.trim() ? `CCCD: ${cccd.trim()}` : undefined,
+      };
 
-      const res = await fetch(`${API_BASE_URL}/api/applications`, {
+      const res = await fetchApi("/api/public/applications/submit", {
         method: "POST",
-        // Note: No 'Content-Type' header when using FormData, browser sets it automatically with boundary
-        body: formData, 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+        credentials: "include",
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.thanhCong) {
-          toast.success("Nộp hồ sơ thành công! Chuyển hướng...");
-          // Chuyển hướng sang xem chi tiết hồ sơ hoặc trang chủ báo thành công
-          // Ví dụ endpoint trả về data.duLieu.id là id hồ sơ mới
-          router.push(`/ca-nhan/ho-so/${data.duLieu?.id || ""}?success=true`);
-        } else {
-          toast.error(data.thongDiep || "Gặp lỗi khi nộp hồ sơ.");
-        }
-      } else {
-         const errData = await res.json().catch(() => null);
-         toast.error(errData?.thongDiep || "Thao tác không thành công. Vui lòng kiểm tra lại.");
+      const payload = await res.json().catch(() => null);
+      const { success, message, data } = unwrapApiEnvelope<SubmitApplicationResult>(payload);
+
+      if (!res.ok || !success || !data?.id) {
+        toast.error(message || "Thao tác không thành công. Vui lòng kiểm tra lại.");
+        return;
       }
+
+      if (tepDinhKemList.length > 0) {
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        const formData = new FormData();
+        tepDinhKemList.forEach((file) => {
+          formData.append("cacTep", file);
+        });
+
+        const headers: Record<string, string> = {};
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        const uploadRes = await fetchApi(`/api/public/applications/${data.id}/upload-files`, {
+          method: "POST",
+          headers,
+          body: formData,
+          credentials: "include",
+        });
+
+        if (!uploadRes.ok) {
+          const uploadPayload = await uploadRes.json().catch(() => null);
+          const { message: uploadMessage } = unwrapApiEnvelope(uploadPayload);
+          toast.error(uploadMessage || "Đã tạo hồ sơ nhưng tải tệp đính kèm thất bại.");
+        }
+      }
+
+      toast.success(
+        data.maTheoDoi
+          ? `Nộp hồ sơ thành công. Mã tra cứu: ${data.maTheoDoi}`
+          : "Nộp hồ sơ thành công.",
+      );
+
+      router.push(
+        data.maTheoDoi
+          ? `/tra-cuu?ma=${encodeURIComponent(data.maTheoDoi)}&email=${encodeURIComponent(email.trim())}`
+          : "/tra-cuu",
+      );
     } catch (error) {
       console.error(error);
       toast.error("Lỗi kết nối máy chủ.");
@@ -173,14 +233,20 @@ function ApplicationForm() {
                 aria-label="Chọn thủ tục"
                 value={dichVuId}
                 onChange={(e) => setDichVuId(e.target.value)}
-                required
+                required={services.length > 0}
+                disabled={services.length === 0}
                 className="w-full rounded-lg border border-slate-300 bg-slate-50 p-3 text-slate-900 shadow-sm focus:border-primary focus:ring-primary dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
             >
-                <option value="" disabled>--- Chọn thủ tục hành chính ---</option>
+                <option value="" disabled>
+                  {services.length > 0 ? "--- Chọn thủ tục hành chính ---" : "--- Chưa có thủ tục khả dụng ---"}
+                </option>
                 {services.map(s => (
                 <option key={s.id} value={s.id}>{s.ten}</option>
                 ))}
             </select>
+          )}
+          {serviceLoadError && (
+            <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">{serviceLoadError}</p>
           )}
         </div>
 
@@ -324,7 +390,7 @@ function ApplicationForm() {
             </button>
             <button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || loading || services.length === 0}
                 className="flex items-center rounded-lg bg-primary px-8 py-2.5 font-semibold text-white shadow-md hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-70"
             >
                 {submitting ? (
@@ -353,16 +419,19 @@ export default function NopHoSoPage() {
 
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12 md:px-10">
         
-        <div className="mb-8 flex items-center justify-between">
-           <div>
-             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Nộp hồ sơ trực tuyến</h1>
+         <div className="mb-8 flex items-center justify-between">
+            <div>
+             <h1 className="gov-section-title text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Nộp hồ sơ trực tuyến</h1>
              <p className="mt-2 text-slate-600 dark:text-slate-400">Vui lòng điền đầy đủ và chính xác thông tin để bộ phận Một Cửa xử lý nhanh chóng.</p>
-           </div>
-           
-           <Link href="/dich-vu-cong" className="hidden flex-col items-center gap-1 text-sm font-medium text-primary hover:underline sm:flex">
-                <span className="material-symbols-outlined rounded-full bg-primary/10 p-2 text-primary">menu_book</span>
-                Tra cứu thủ tục
-           </Link>
+            </div>
+            
+            <Link href="/dich-vu-cong" className="hidden flex-col items-center gap-1 text-sm font-medium text-primary hover:underline sm:flex">
+                 <span className="material-symbols-outlined gov-icon rounded-full bg-primary/10 p-2 text-primary">menu_book</span>
+                 Tra cứu thủ tục
+            </Link>
+        </div>
+        <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+          Hồ sơ nộp trực tuyến cần đầy đủ thành phần theo yêu cầu từng thủ tục; thông tin kê khai phải trung thực và chịu trách nhiệm trước pháp luật.
         </div>
 
         <Suspense fallback={<div className="h-64 w-full animate-pulse rounded-xl bg-white dark:bg-slate-900"></div>}>

@@ -4,7 +4,7 @@ export default function SoDoTrang() {
   return (
     <main className="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
       <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-12">
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-8 border-b pb-6 dark:border-slate-800">Sơ đồ trang web (Sitemap)</h1>
+        <h1 className="gov-section-title text-3xl font-black text-slate-900 dark:text-white mb-8 border-b pb-6 dark:border-slate-800">Sơ đồ trang web (Sitemap)</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-blue-600 dark:text-blue-400 font-medium">
           <ul className="space-y-3">
             <li className="font-bold text-slate-900 dark:text-white">Thông tin chung</li>

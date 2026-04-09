@@ -1,10 +1,86 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { fetchApi, unwrapApiEnvelope } from "@/lib/api";
 
-
+type HomepageData = {
+  banner?: {
+    id: string;
+    tenTep: string;
+    urlTep: string;
+    tieuDe?: string;
+    ngayTao: string;
+  };
+  videos: Array<{
+    id: string;
+    tenTep: string;
+    urlTep: string;
+    tieuDe?: string;
+    loai: number;
+    ngayTao: string;
+  }>;
+  gallery: Array<{
+    id: string;
+    tenTep: string;
+    urlTep: string;
+    tieuDe?: string;
+    ngayTao: string;
+  }>;
+};
 
 export default function Home() {
-  const heroImage =
+  const [homepage, setHomepage] = useState<HomepageData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadHomepage() {
+      try {
+        const res = await fetchApi("/api/homepage/sections");
+        const json = await res.json();
+        const { success, data } = unwrapApiEnvelope<HomepageData>(json);
+        if (success && data) {
+          setHomepage(data);
+        }
+      } catch (error) {
+        console.error("Lỗi tải dữ liệu trang chủ:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadHomepage();
+  }, []);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedVideo) {
+        closeVideoModal();
+      }
+    };
+    
+    if (selectedVideo) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    }
+    
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedVideo]);
+
+  const handleVideoClick = (videoUrl: string) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const closeVideoModal = () => {
+    setSelectedVideo(null);
+  };
+
+  const heroImage = homepage?.banner?.urlTep ||
     "https://lh3.googleusercontent.com/aida-public/AB6AXuCdFKs-drI7Z8zzU48bGqfKoO_wkgHzuh0mk-1bEX6LcReeqkvsNNEf1_kUGN2W9Fwg5iyQBK5O1QzhITqEh1dUNCD6S71wlpjRXGDd_Uu3h0J55VSa38uS05OolRIWmKGZydgK0_jyubmXDIv4IfEQT4WjXKg7fhTbWNPq5sJjJ5ZLpi7gsRZJuWpJEqwyKBtkf5Xpg_nSzq46x0VsD3YJmaPEYrWzR51zirLUmBO6_bfMxsL48rnV48xt31SI8F0chwLje3u8Z8c";
   const conferenceImage =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuBS27jvw3boywaPh3K-87t7twnQXcgItg4Pd-o3Ez9Q4HFzE94R0heA2O8mJfiXYl7WpXpt2fo9UCXjundP7hkxhJCCZCt8dtbMYSb9qXSUcwBsGbcLFNVATxis249IcmIBwp95bcpulEzigUlu4213ek4REfyUm8bPWWq8MTDyPum_osWgCC3jNiun7u0Ib_P4JI6I1hVNXOmbz740VZGa3GFvkfQSJDGNmq3gemYjnQFhXnUDgLIHjhCMQiMeDr4oGBQuc7nhSpo";
@@ -71,31 +147,37 @@ export default function Home() {
   ];
 
   const services = [
-    { icon: "badge", title: "Cư trú & Hộ tịch" },
-    { icon: "apartment", title: "Xây dựng & Nhà đất" },
-    { icon: "medical_services", title: "Y tế & Bảo hiểm" },
-    { icon: "school", title: "Giáo dục & Đào tạo" },
-    { icon: "business_center", title: "Đăng ký Kinh doanh" },
-    { icon: "directions_car", title: "Giao thông Vận tải" },
+    { icon: "badge", title: "Cư trú & Hộ tịch", href: "/dich-vu-cong" },
+    { icon: "apartment", title: "Xây dựng & Nhà đất", href: "/dich-vu-cong" },
+    { icon: "medical_services", title: "Y tế & Bảo hiểm", href: "/dich-vu-cong" },
+    { icon: "school", title: "Giáo dục & Đào tạo", href: "/dich-vu-cong" },
+    { icon: "business_center", title: "Đăng ký Kinh doanh", href: "/dich-vu-cong" },
+    { icon: "directions_car", title: "Giao thông Vận tải", href: "/dich-vu-cong" },
   ];
 
-  const sideVideos = [
-    {
-      title: "Khai mạc lễ hội văn hóa đặc sắc vùng cao 2023",
-      date: "10/10/2023",
-      image: bridgeImage,
-    },
-    {
-      title: "Hướng dẫn nộp hồ sơ trực tuyến chỉ trong 5 phút",
-      date: "08/10/2023",
-      image: digitalImage,
-    },
-    {
-      title: "Toàn cảnh quy hoạch hạ tầng giao thông giai đoạn 2025-2030",
-      date: "05/10/2023",
-      image: heroImage,
-    },
-  ];
+  const sideVideos = homepage?.videos.length
+    ? homepage.videos.slice(0, 3).map((v) => ({
+        title: v.tieuDe || v.tenTep,
+        date: new Date(v.ngayTao).toLocaleDateString("vi-VN"),
+        image: v.urlTep,
+      }))
+    : [
+        {
+          title: "Khai mạc lễ hội văn hóa đặc sắc vùng cao 2023",
+          date: "10/10/2023",
+          image: bridgeImage,
+        },
+        {
+          title: "Hướng dẫn nộp hồ sơ trực tuyến chỉ trong 5 phút",
+          date: "08/10/2023",
+          image: digitalImage,
+        },
+        {
+          title: "Toàn cảnh quy hoạch hạ tầng giao thông giai đoạn 2025-2030",
+          date: "05/10/2023",
+          image: heroImage,
+        },
+      ];
 
   const documents = [
     {
@@ -134,8 +216,6 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-1 h-full w-full flex-col overflow-x-hidden bg-background-light text-slate-900 dark:bg-background-dark dark:text-slate-100 font-display">
-      
-
       <main>
         <section className="relative flex h-[560px] items-center">
           <div className="absolute inset-0">
@@ -156,19 +236,19 @@ export default function Home() {
                 hội và phản hồi ý kiến đến chính quyền địa phương.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button
-                  className="flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-bold text-white transition-all hover:bg-blue-700"
-                  type="button"
+                <Link
+                  href="/dich-vu-cong"
+                  className="flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-bold text-white transition-all hover:bg-primary-dark"
                 >
                   Dịch vụ công trực tuyến
-                  <span className="material-symbols-outlined">arrow_forward</span>
-                </button>
-                <button
+                  <span className="material-symbols-outlined gov-icon">arrow_forward</span>
+                </Link>
+                <Link
+                  href="/tin-tuc"
                   className="rounded-lg border border-white/30 bg-white/10 px-8 py-4 font-bold text-white backdrop-blur-md transition-all hover:bg-white/20"
-                  type="button"
                 >
                   Xem tin tức mới nhất
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -200,10 +280,10 @@ export default function Home() {
                   Cập nhật thông tin mới nhất từ các cơ quan ban ngành
                 </p>
               </div>
-              <a className="flex items-center gap-1 font-bold text-primary hover:underline" href="#">
+              <Link className="flex items-center gap-1 font-bold text-primary hover:underline" href="/tin-tuc">
                 Xem tất cả
-                <span className="material-symbols-outlined text-sm">open_in_new</span>
-              </a>
+                <span className="material-symbols-outlined gov-icon text-sm">open_in_new</span>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -253,16 +333,16 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
               {services.map((item) => (
-                <a
+                <Link
                   key={item.title}
                   className="group flex flex-col items-center gap-3 rounded-xl border border-slate-100 p-6 text-center transition-all hover:border-primary hover:shadow-lg dark:border-slate-800 dark:hover:border-primary"
-                  href="#"
+                  href={item.href}
                 >
                   <div className="flex size-16 items-center justify-center rounded-full bg-slate-50 text-slate-600 transition-colors group-hover:bg-primary/10 group-hover:text-primary dark:bg-slate-800 dark:text-slate-300">
-                    <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                    <span className="material-symbols-outlined gov-icon text-3xl">{item.icon}</span>
                   </div>
                   <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{item.title}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -277,43 +357,64 @@ export default function Home() {
                   Hoạt động nổi bật của chính quyền địa phương qua hình ảnh video
                 </p>
               </div>
-              <a className="flex items-center gap-1 text-sm font-bold text-primary hover:underline" href="#">
+              <Link className="flex items-center gap-1 text-sm font-bold text-primary hover:underline" href="/thu-vien">
                 Xem thêm video
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="lg:col-span-2">
-                <div className="group relative aspect-video cursor-pointer overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
-                  <img alt="Video chính" className="h-full w-full object-cover" src={conferenceImage} />
+                <div 
+                  className="group relative aspect-video cursor-pointer overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800"
+                  onClick={() => homepage?.videos[0] && handleVideoClick(homepage.videos[0].urlTep)}
+                >
+                  {/* Dùng ảnh từ gallery hoặc banner làm thumbnail cho video */}
+                  <img 
+                    alt={homepage?.videos[0]?.tieuDe || "Video chính"} 
+                    className="h-full w-full object-cover" 
+                    src={homepage?.gallery?.[0]?.urlTep || homepage?.banner?.urlTep || conferenceImage} 
+                  />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                     <div className="flex size-20 items-center justify-center rounded-full bg-primary text-white shadow-2xl transition-transform group-hover:scale-110">
-                      <span className="material-symbols-outlined material-symbols-filled text-4xl">play_arrow</span>
+                      <span className="material-symbols-outlined gov-icon material-symbols-filled text-4xl">play_arrow</span>
                     </div>
                   </div>
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                     <h4 className="text-xl font-bold text-white">
-                      Phóng sự: Thành phố thay đổi từng ngày sau 5 năm thực hiện chuyển đổi số
+                      {homepage?.videos[0]?.tieuDe || "Phóng sự: Thành phố thay đổi từng ngày sau 5 năm thực hiện chuyển đổi số"}
                     </h4>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-6">
-                {sideVideos.map((item) => (
-                  <article key={item.title} className="group flex cursor-pointer gap-4">
-                    <div className="h-20 w-32 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200">
-                      <img alt={item.title} className="h-full w-full object-cover" src={item.image} />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="line-clamp-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-primary dark:text-white">
-                        {item.title}
-                      </h5>
-                      <p className="mt-1 text-xs text-slate-500">{item.date}</p>
-                    </div>
-                  </article>
-                ))}
+                {sideVideos.map((item, index) => {
+                  const video = homepage?.videos[index + 1];
+                  const thumbnailSrc = homepage?.gallery?.[index + 1]?.urlTep || item.image;
+                  return (
+                    <article 
+                      key={item.title} 
+                      className="group flex cursor-pointer gap-4"
+                      onClick={() => video && handleVideoClick(video.urlTep)}
+                    >
+                      <div className="h-20 w-32 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 relative">
+                        <img alt={item.title} className="h-full w-full object-cover" src={thumbnailSrc} />
+                        {video && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                            <span className="material-symbols-outlined text-white text-2xl">play_circle</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="line-clamp-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-primary dark:text-white">
+                          {item.title}
+                        </h5>
+                        <p className="mt-1 text-xs text-slate-500">{item.date}</p>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -329,54 +430,70 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button
+                <Link
+                  href="/van-ban-phap-luat"
                   className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-primary dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                  type="button"
                 >
                   Tất cả văn bản
-                </button>
-                <button
+                </Link>
+                <Link
+                  href="/van-ban-phap-luat"
                   className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-primary dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                  type="button"
                 >
                   Công báo
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {documents.map((item) => (
-                <article
-                  key={item.title}
-                  className="group flex items-start gap-4 rounded-xl border border-slate-100 bg-white p-5 transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
-                >
-                  <div className={`flex size-12 flex-shrink-0 items-center justify-center rounded-lg ${item.iconStyle}`}>
-                    <span className="material-symbols-outlined text-2xl">{item.icon}</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="mb-1 flex items-start justify-between">
-                      <span className="text-[10px] font-bold uppercase text-slate-400">{item.code}</span>
-                      <span className="text-[10px] text-slate-400">{item.date}</span>
+              {documents.map((item, index) => {
+                const docIds = ["102-2023-qd-ubnd", "85-ct-ubnd", "231-kh-stp", "102-2023-qd-ubnd"];
+                const docId = docIds[index] || "102-2023-qd-ubnd";
+                
+                return (
+                  <article
+                    key={item.title}
+                    className="group flex items-start gap-4 rounded-xl border border-slate-100 bg-white p-5 transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+                  >
+                    <div className={`flex size-12 flex-shrink-0 items-center justify-center rounded-lg ${item.iconStyle}`}>
+                      <span className="material-symbols-outlined text-2xl">{item.icon}</span>
                     </div>
-                    <h5 className="mb-2 line-clamp-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-primary dark:text-white">
-                      {item.title}
-                    </h5>
-                    <div className="flex items-center gap-4">
-                      <a className="flex items-center gap-1 text-xs font-bold text-primary hover:underline" href="#">
-                        <span className="material-symbols-outlined text-sm">download</span>
-                        Tải về
-                      </a>
-                      <a
-                        className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:underline"
-                        href="#"
-                      >
-                        <span className="material-symbols-outlined text-sm">visibility</span>
-                        Xem chi tiết
-                      </a>
+                    <div className="flex-1">
+                      <div className="mb-1 flex items-start justify-between">
+                        <span className="text-[10px] font-bold uppercase text-slate-400">{item.code}</span>
+                        <span className="text-[10px] text-slate-400">{item.date}</span>
+                      </div>
+                      <h5 className="mb-2 line-clamp-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-primary dark:text-white">
+                        {item.title}
+                      </h5>
+                      <div className="flex items-center gap-4">
+                        <Link 
+                          className="flex items-center gap-1 text-xs font-bold text-primary hover:underline" 
+                          href={`/van-ban/${docId}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = `/van-ban/${docId}`;
+                            setTimeout(() => {
+                              const downloadBtn = document.querySelector('[data-download]') as HTMLButtonElement;
+                              downloadBtn?.click();
+                            }, 500);
+                          }}
+                        >
+                          <span className="material-symbols-outlined gov-icon text-sm">download</span>
+                          Tải về
+                        </Link>
+                        <Link
+                          className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:underline"
+                          href={`/van-ban/${docId}`}
+                        >
+                          <span className="material-symbols-outlined text-sm">visibility</span>
+                          Xem chi tiết
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -391,47 +508,135 @@ export default function Home() {
             </div>
 
             <div className="grid auto-rows-[200px] grid-cols-2 gap-4 md:grid-cols-4">
-              <article className="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl">
-                <img
-                  alt="Cầu Ánh Sao"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  src={heroImage}
-                />
-                <div className="absolute inset-0 flex flex-col justify-end bg-black/40 p-6 opacity-0 transition-opacity group-hover:opacity-100">
-                  <h5 className="font-bold text-white">Cầu Ánh Sao - Biểu tượng hiện đại</h5>
-                  <p className="text-sm text-white/80">Trung tâm thành phố về đêm</p>
-                </div>
-              </article>
+              {homepage?.gallery && homepage.gallery.length > 0 ? (
+                <>
+                  <article className="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl">
+                    <img
+                      alt={homepage.gallery[0]?.tieuDe || "Ảnh địa phương"}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      src={homepage.gallery[0]?.urlTep}
+                    />
+                    <div className="absolute inset-0 flex flex-col justify-end bg-black/40 p-6 opacity-0 transition-opacity group-hover:opacity-100">
+                      <h5 className="font-bold text-white">{homepage.gallery[0]?.tieuDe || "Hình ảnh địa phương"}</h5>
+                      <p className="text-sm text-white/80">Địa phương nổi bật</p>
+                    </div>
+                  </article>
 
-              <div className="overflow-hidden rounded-2xl">
-                <img
-                  alt="Ảnh địa phương 2"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-                  src={conferenceImage}
-                />
-              </div>
+                  {homepage.gallery[1] && (
+                    <div className="overflow-hidden rounded-2xl">
+                      <img
+                        alt={homepage.gallery[1]?.tieuDe || "Ảnh địa phương"}
+                        className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                        src={homepage.gallery[1]?.urlTep}
+                      />
+                    </div>
+                  )}
 
-              <div className="overflow-hidden rounded-2xl">
-                <img
-                  alt="Ảnh địa phương 3"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-                  src={bridgeImage}
-                />
-              </div>
+                  {homepage.gallery[2] && (
+                    <div className="overflow-hidden rounded-2xl">
+                      <img
+                        alt={homepage.gallery[2]?.tieuDe || "Ảnh địa phương"}
+                        className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                        src={homepage.gallery[2]?.urlTep}
+                      />
+                    </div>
+                  )}
 
-              <div className="col-span-2 overflow-hidden rounded-2xl">
-                <img
-                  alt="Ảnh địa phương 4"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-                  src={digitalImage}
-                />
-              </div>
+                  {homepage.gallery[3] && (
+                    <div className="col-span-2 overflow-hidden rounded-2xl">
+                      <img
+                        alt={homepage.gallery[3]?.tieuDe || "Ảnh địa phương"}
+                        className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                        src={homepage.gallery[3]?.urlTep}
+                      />
+                    </div>
+                  )}
+
+                  {homepage.gallery[4] && (
+                    <div className="col-span-2 overflow-hidden rounded-2xl">
+                      <img
+                        alt={homepage.gallery[4]?.tieuDe || "Ảnh địa phương"}
+                        className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                        src={homepage.gallery[4]?.urlTep}
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <article className="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl">
+                    <img
+                      alt="Cầu Ánh Sao"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      src={heroImage}
+                    />
+                    <div className="absolute inset-0 flex flex-col justify-end bg-black/40 p-6 opacity-0 transition-opacity group-hover:opacity-100">
+                      <h5 className="font-bold text-white">Cầu Ánh Sao - Biểu tượng hiện đại</h5>
+                      <p className="text-sm text-white/80">Trung tâm thành phố về đêm</p>
+                    </div>
+                  </article>
+
+                  <div className="overflow-hidden rounded-2xl">
+                    <img
+                      alt="Ảnh địa phương 2"
+                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                      src={conferenceImage}
+                    />
+                  </div>
+
+                  <div className="overflow-hidden rounded-2xl">
+                    <img
+                      alt="Ảnh địa phương 3"
+                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                      src={bridgeImage}
+                    />
+                  </div>
+
+                  <div className="col-span-2 overflow-hidden rounded-2xl">
+                    <img
+                      alt="Ảnh địa phương 4"
+                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                      src={digitalImage}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </section>
       </main>
 
-      
+      {selectedVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={closeVideoModal}
+        >
+          <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={closeVideoModal}
+              className="absolute -top-12 right-0 flex items-center gap-2 text-white hover:text-primary transition-colors"
+            >
+              <span className="text-sm font-semibold">Đóng</span>
+              <span className="material-symbols-outlined text-3xl">close</span>
+            </button>
+            <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
+              <video 
+                className="h-full w-full" 
+                src={selectedVideo}
+                controls
+                autoPlay
+                onError={(e) => {
+                  console.error("Lỗi phát video:", e);
+                }}
+              >
+                <source src={selectedVideo} type="video/mp4" />
+                <source src={selectedVideo} type="video/webm" />
+                Trình duyệt của bạn không hỗ trợ phát video.
+              </video>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

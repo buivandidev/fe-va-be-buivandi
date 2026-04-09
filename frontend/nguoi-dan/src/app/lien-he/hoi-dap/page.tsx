@@ -35,13 +35,13 @@ export default function HoiDapPage() {
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link className="flex items-center text-slate-500 hover:text-primary dark:text-slate-400" href="/">
-                <span className="material-symbols-outlined mr-1 text-lg">home</span>
+                <span className="material-symbols-outlined gov-icon mr-1 text-lg">home</span>
                 Trang chủ
               </Link>
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <Link className="text-slate-500 hover:text-primary dark:text-slate-400" href="/lien-he">
                   Liên hệ & Hỗ trợ
                 </Link>
@@ -49,7 +49,7 @@ export default function HoiDapPage() {
             </li>
             <li aria-current="page">
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">Câu hỏi thường gặp</span>
               </div>
             </li>
@@ -58,9 +58,9 @@ export default function HoiDapPage() {
 
         <div className="mb-10 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <span className="material-symbols-outlined text-3xl">live_help</span>
+            <span className="material-symbols-outlined gov-icon text-3xl">live_help</span>
           </div>
-          <h1 className="mb-3 text-3xl font-bold text-slate-900 dark:text-slate-100">Câu hỏi thường gặp (FAQ)</h1>
+          <h1 className="gov-section-title mb-3 text-3xl font-bold text-slate-900 dark:text-slate-100">Câu hỏi thường gặp (FAQ)</h1>
           <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400">
             Tổng hợp các câu hỏi phổ biến và lời giải đáp từ Ban quản trị cổng dịch vụ. Nếu bạn không tìm thấy câu trả lời cho vấn đề của mình, vui lòng gửi kiến nghị phản ánh.
           </p>
@@ -91,11 +91,11 @@ export default function HoiDapPage() {
           <p className="mb-6 text-slate-600 dark:text-slate-400">Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng giúp đỡ.</p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/lien-he/gop-y" className="flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 font-semibold text-white transition-colors hover:bg-primary/90">
-              <span className="material-symbols-outlined">edit_square</span>
+              <span className="material-symbols-outlined gov-icon">edit_square</span>
               Gửi câu hỏi / Phản ánh mới
             </Link>
             <Link href="/lien-he" className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-2.5 font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/80">
-              <span className="material-symbols-outlined">call</span>
+              <span className="material-symbols-outlined gov-icon">call</span>
               Xem thông tin liên hệ
             </Link>
           </div>

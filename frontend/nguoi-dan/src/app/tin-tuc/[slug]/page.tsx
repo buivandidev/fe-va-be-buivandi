@@ -157,9 +157,9 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             Tin tức
           </Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <a className="hover:text-primary" href="#">
+          <Link className="hover:text-primary" href="/tin-tuc">
             {article.category}
-          </a>
+          </Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
           <span className="font-bold text-primary">Chi tiết tin tức</span>
         </nav>
@@ -168,7 +168,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           <div className="lg:col-span-8">
             <article className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="p-6 md:p-8">
-                <h1 className="mb-6 text-3xl font-black leading-tight text-slate-900 dark:text-white md:text-5xl">
+                <h1 className="gov-section-title mb-6 text-3xl font-black leading-tight text-slate-900 dark:text-white md:text-5xl">
                   {article.title}
                 </h1>
 
@@ -188,11 +188,17 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 </div>
 
                 <figure className="mb-8">
-                  <img
-                    alt={article.title}
-                    className="aspect-video h-auto w-full rounded-lg object-cover"
-                    src={article.imageUrl}
-                  />
+                  {article.imageUrl ? (
+                    <img
+                      alt={article.title}
+                      className="aspect-video h-auto w-full rounded-lg object-cover"
+                      src={article.imageUrl}
+                    />
+                  ) : (
+                    <div className="aspect-video h-auto w-full rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 dark:bg-slate-800">
+                      <span className="material-symbols-outlined text-4xl">newspaper</span>
+                    </div>
+                  )}
                   <figcaption className="mt-3 text-center text-sm italic text-slate-500 dark:text-slate-400">
                     Ảnh minh họa cho nội dung bài viết
                   </figcaption>
@@ -248,7 +254,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
             <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 md:p-8">
               <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white">
-                <span className="material-symbols-outlined">forum</span>
+                <span className="material-symbols-outlined gov-icon">forum</span>
                 Bình luận ({commentsTotal})
               </h3>
 
@@ -280,11 +286,17 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                       href={`/tin-tuc/${related.slug}`}
                     >
                       <div className="h-24 w-24 flex-shrink-0">
-                        <img
-                          alt={related.title}
-                          className="h-full w-full rounded-lg object-cover"
-                          src={related.imageUrl}
-                        />
+                        {related.imageUrl ? (
+                          <img
+                            alt={related.title}
+                            className="h-full w-full rounded-lg object-cover"
+                            src={related.imageUrl}
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
+                            <span className="material-symbols-outlined text-2xl">newspaper</span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex flex-col justify-center">
                         <h4 className="line-clamp-2 font-bold leading-snug text-slate-900 transition-colors group-hover:text-primary dark:text-white">
@@ -350,13 +362,13 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
               <div className="flex flex-wrap gap-2">
                 {keywords.map((keyword) => (
-                  <a
+                  <Link
                     key={keyword}
                     className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-primary hover:text-white dark:bg-slate-800 dark:text-slate-300"
-                    href="#"
+                    href={`/tin-tuc?q=${encodeURIComponent(keyword.replace(/^#/, ""))}`}
                   >
                     {keyword}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

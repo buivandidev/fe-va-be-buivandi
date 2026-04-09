@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using PhuongXa.Domain.CacThucThe;
@@ -40,9 +41,12 @@ public static class BoGiongDuLieu
                 "DefaultAdmin:Password phải được cấu hình. " +
                 "Đặt bằng user-secrets: dotnet user-secrets set \"DefaultAdmin:Password\" \"MatKhauManh@123\"");
 
-        if (await quanLyNguoiDung.FindByEmailAsync(emailQuanTri) == null)
+        var moiTruong = dichVu.GetRequiredService<IHostEnvironment>();
+        var quanTri = await quanLyNguoiDung.FindByEmailAsync(emailQuanTri);
+
+        if (quanTri is null)
         {
-            var quanTri = new NguoiDung
+            quanTri = new NguoiDung
             {
                 HoTen = "Quản Trị Viên",
                 Email = emailQuanTri,
@@ -53,16 +57,35 @@ public static class BoGiongDuLieu
             var ketQua = await quanLyNguoiDung.CreateAsync(quanTri, matKhauQuanTri);
             if (ketQua.Succeeded)
             {
-                var ketQuaVaiTro = await quanLyNguoiDung.AddToRoleAsync(quanTri, "Admin");
-                if (!ketQuaVaiTro.Succeeded)
-                    nhatKy.LogWarning("Gán vai trò Admin thất bại: {Loi}",
-                        string.Join(", ", ketQuaVaiTro.Errors.Select(e => e.Description)));
+                nhatKy.LogInformation("Đã tạo tài khoản quản trị mặc định: {Email}", emailQuanTri);
             }
             else
             {
                 nhatKy.LogWarning("Tạo người dùng quản trị thất bại: {Loi}",
                     string.Join(", ", ketQua.Errors.Select(e => e.Description)));
+                return;
             }
+        }
+
+        // Trong môi trường Development, luôn đồng bộ mật khẩu admin theo cấu hình
+        // để tránh sai lệch khi tài khoản admin đã tồn tại từ lần chạy trước.
+        if (moiTruong.IsDevelopment())
+        {
+            var maDatLaiMatKhau = await quanLyNguoiDung.GeneratePasswordResetTokenAsync(quanTri);
+            var ketQuaDatLaiMatKhau = await quanLyNguoiDung.ResetPasswordAsync(quanTri, maDatLaiMatKhau, matKhauQuanTri);
+            if (!ketQuaDatLaiMatKhau.Succeeded)
+            {
+                nhatKy.LogWarning("Đồng bộ mật khẩu tài khoản quản trị thất bại: {Loi}",
+                    string.Join(", ", ketQuaDatLaiMatKhau.Errors.Select(e => e.Description)));
+            }
+        }
+
+        if (!await quanLyNguoiDung.IsInRoleAsync(quanTri, "Admin"))
+        {
+            var ketQuaVaiTro = await quanLyNguoiDung.AddToRoleAsync(quanTri, "Admin");
+            if (!ketQuaVaiTro.Succeeded)
+                nhatKy.LogWarning("Gán vai trò Admin thất bại: {Loi}",
+                    string.Join(", ", ketQuaVaiTro.Errors.Select(e => e.Description)));
         }
 
         // Khởi tạo danh mục mặc định
@@ -83,6 +106,58 @@ public static class BoGiongDuLieu
             };
             csdl.DanhMucs.AddRange(danhMucTinTuc);
             csdl.DanhMucs.AddRange(danhMucDichVu);
+            await csdl.SaveChangesAsync();
+        }
+
+        // Khởi tạo dịch vụ công mặc định để luồng nộp hồ sơ luôn có dữ liệu
+        if (!await csdl.DichVus.AnyAsync())
+        {
+            var danhMucDichVuMap = await csdl.DanhMucs
+                .Where(x => x.Loai == LoaiDanhMuc.DichVu)
+                .ToDictionaryAsync(x => x.DuongDan, x => x.Id);
+
+            Guid? LayDanhMucId(string duongDan) =>
+                danhMucDichVuMap.TryGetValue(duongDan, out var id) ? id : null;
+
+            csdl.DichVus.AddRange(
+                new DichVu
+                {
+                    Ten = "Đăng ký khai sinh",
+                    MaDichVu = "HTHK-001",
+                    MoTa = "Đăng ký khai sinh cho trẻ em theo quy định hiện hành.",
+                    GiayToCanThiet = "Tờ khai đăng ký khai sinh; giấy chứng sinh; CCCD của cha/mẹ.",
+                    SoNgayXuLy = 3,
+                    LePhi = 0,
+                    DanhMucId = LayDanhMucId("ho-tich-ho-khau"),
+                    DangHoatDong = true,
+                    ThuTuSapXep = 1
+                },
+                new DichVu
+                {
+                    Ten = "Xác nhận thông tin cư trú",
+                    MaDichVu = "HTHK-002",
+                    MoTa = "Cấp giấy xác nhận thông tin cư trú phục vụ thủ tục hành chính.",
+                    GiayToCanThiet = "Đơn đề nghị; CCCD/CMND; giấy tờ chứng minh nơi cư trú (nếu có).",
+                    SoNgayXuLy = 2,
+                    LePhi = 0,
+                    DanhMucId = LayDanhMucId("ho-tich-ho-khau"),
+                    DangHoatDong = true,
+                    ThuTuSapXep = 2
+                },
+                new DichVu
+                {
+                    Ten = "Cấp giấy phép sửa chữa nhà ở riêng lẻ",
+                    MaDichVu = "XDDD-001",
+                    MoTa = "Thủ tục cấp phép sửa chữa, cải tạo nhà ở riêng lẻ.",
+                    GiayToCanThiet = "Đơn đề nghị; bản vẽ hiện trạng; giấy tờ quyền sử dụng đất.",
+                    SoNgayXuLy = 7,
+                    LePhi = 75000,
+                    DanhMucId = LayDanhMucId("xay-dung-dat-dai"),
+                    DangHoatDong = true,
+                    ThuTuSapXep = 1
+                }
+            );
+
             await csdl.SaveChangesAsync();
         }
 

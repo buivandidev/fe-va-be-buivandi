@@ -14,7 +14,8 @@ public class DichVuLuuTruTepCucBo : IDichVuLuuTruTep
     public DichVuLuuTruTepCucBo(IWebHostEnvironment moiTruong, IConfiguration cauHinh, ILogger<DichVuLuuTruTepCucBo> nhatKy)
     {
         _duongDanGocWeb = moiTruong.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-        _urlGoc = cauHinh["FileStorage:BaseUrl"] ?? "http://localhost:5000";
+        _urlGoc = cauHinh["FileStorage:BaseUrl"]
+            ?? throw new InvalidOperationException("Thiếu cấu hình bắt buộc: FileStorage:BaseUrl");
         _nhatKy = nhatKy;
     }
 

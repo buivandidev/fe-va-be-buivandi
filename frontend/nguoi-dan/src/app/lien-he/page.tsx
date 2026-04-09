@@ -82,13 +82,13 @@ export default function LienHePage() {
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link className="flex items-center text-slate-500 hover:text-primary dark:text-slate-400" href="/">
-                <span className="material-symbols-outlined mr-1 text-lg">home</span>
+                <span className="material-symbols-outlined gov-icon mr-1 text-lg">home</span>
                 Trang chủ
               </Link>
             </li>
             <li aria-current="page">
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">Liên hệ & Hỗ trợ</span>
               </div>
             </li>
@@ -96,17 +96,17 @@ export default function LienHePage() {
         </nav>
 
         <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:text-slate-100">Liên hệ & Hỗ trợ</h1>
+          <h1 className="gov-section-title mb-2 text-3xl font-bold text-slate-900 dark:text-slate-100">Liên hệ & Hỗ trợ</h1>
           <p className="text-slate-600 dark:text-slate-400">Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc của bạn.</p>
         </div>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <Link href="/lien-he/gop-y" className="flex items-center gap-2 rounded-lg bg-primary px-5 py-3 font-semibold text-white shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
-            <span className="material-symbols-outlined">rate_review</span>
+            <span className="material-symbols-outlined gov-icon">rate_review</span>
             Gửi phản ánh, kiến nghị
           </Link>
           <Link href="/lien-he/hoi-dap" className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 font-semibold text-slate-700 shadow-sm transition-transform hover:-translate-y-1 hover:border-primary/50 hover:text-primary dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-primary/50 dark:hover:text-primary">
-            <span className="material-symbols-outlined">help</span>
+            <span className="material-symbols-outlined gov-icon">help</span>
             Câu hỏi thường gặp (FAQ)
           </Link>
         </div>
@@ -119,7 +119,7 @@ export default function LienHePage() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <span className="material-symbols-outlined">location_on</span>
+                    <span className="material-symbols-outlined gov-icon">location_on</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 dark:text-slate-100">Trụ sở làm việc</h3>
@@ -128,7 +128,7 @@ export default function LienHePage() {
                 </li>
                 <li className="flex items-start gap-4">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <span className="material-symbols-outlined">phone</span>
+                    <span className="material-symbols-outlined gov-icon">phone</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 dark:text-slate-100">Điện thoại</h3>
@@ -137,7 +137,7 @@ export default function LienHePage() {
                 </li>
                 <li className="flex items-start gap-4">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <span className="material-symbols-outlined">mail</span>
+                    <span className="material-symbols-outlined gov-icon">mail</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 dark:text-slate-100">Email</h3>
@@ -146,7 +146,7 @@ export default function LienHePage() {
                 </li>
                 <li className="flex items-start gap-4">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <span className="material-symbols-outlined">schedule</span>
+                    <span className="material-symbols-outlined gov-icon">schedule</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 dark:text-slate-100">Giờ làm việc</h3>

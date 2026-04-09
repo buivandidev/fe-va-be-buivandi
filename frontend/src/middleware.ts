@@ -15,11 +15,6 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect authenticated users away from login page
-  if (pathname === '/admin/login' && token) {
-    return NextResponse.redirect(new URL('/admin/dashboard', request.url))
-  }
-
   return NextResponse.next()
 }
 

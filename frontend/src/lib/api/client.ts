@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { env } from '@/lib/config/environment'
+import { logger } from '@/lib/utils/logger'
+import { tokenStorage } from '@/lib/auth/token'
 
 /**
  * Client-side Axios instance (for Client Components)
@@ -13,6 +15,26 @@ export const apiClient: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+// Add request interceptor to include auth token from localStorage
+apiClient.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = tokenStorage.get()
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+        logger.log('[API Client] Request with token:', config.method?.toUpperCase(), config.url)
+      } else {
+        logger.warn('[API Client] No token found in localStorage for:', config.method?.toUpperCase(), config.url)
+      }
+    }
+    return config
+  },
+  (error) => {
+    logger.error('[API Client] Request error:', error)
+    return Promise.reject(error)
+  }
+)
 
 /**
  * Response wrapper/unwrapper for API responses
@@ -53,13 +75,19 @@ export function getApiErrorMessage(error: any): string {
  * Add response interceptor to handle 401 errors globally
  */
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    logger.log('[API Client] Response:', response.status, response.config.method?.toUpperCase(), response.config.url)
+    return response
+  },
   (error) => {
     const status = error?.response?.status
+    logger.error('[API Client] Response error:', status, error.config?.method?.toUpperCase(), error.config?.url, error.message)
 
     if (status === 401) {
       // Clear auth and redirect to login
       if (typeof window !== 'undefined') {
+        logger.warn('[API Client] 401 Unauthorized - clearing auth')
+        tokenStorage.clear()
         window.dispatchEvent(new Event('auth:unauthorized'))
       }
     }

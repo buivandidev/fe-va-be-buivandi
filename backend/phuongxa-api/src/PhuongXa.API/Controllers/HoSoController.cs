@@ -69,8 +69,10 @@ public class HoSoController : BaseApiController
 
     [HttpPost("avatar")]
     [RequestSizeLimit(5_000_000)]
-    public async Task<IActionResult> TaiLenAnhDaiDien([FromForm] IFormFile tep)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> TaiLenAnhDaiDien([FromForm] TaiLenAnhDaiDienDto dto)
     {
+        var tep = dto.Tep;
         if (tep == null || tep.Length == 0)
             return BadRequest(PhanHoiApi.ThatBai("Vui lòng chọn file ảnh"));
 

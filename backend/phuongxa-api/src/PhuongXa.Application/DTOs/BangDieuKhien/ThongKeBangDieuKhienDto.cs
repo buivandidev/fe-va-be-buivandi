@@ -9,6 +9,8 @@ public class ThongKeBangDieuKhienDto
     public int TongDichVu { get; set; }
     public int TongDonUng { get; set; }
     public int DonUngChoXuLy { get; set; }
+    public int DonUngQuaHan { get; set; }
+    public int DonUngSapDenHan { get; set; }
     public int LienHeChuaDoc { get; set; }
     public int TongBinhLuan { get; set; }
     public int BinhLuanChoDuyet { get; set; }
@@ -27,3 +29,5 @@ public class TapDuLieuBieuDoDto
     public string? MauNen { get; set; }
     public string? MauVien { get; set; }
 }
+
+

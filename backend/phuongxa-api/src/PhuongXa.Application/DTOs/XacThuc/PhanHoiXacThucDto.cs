@@ -3,6 +3,7 @@ namespace PhuongXa.Application.DTOs.XacThuc;
 public class PhanHoiXacThucDto
 {
     public string MaTruyCap { get; set; } = string.Empty;
+    public string MaLamMoi { get; set; } = string.Empty;
     public DateTime HetHanLuc { get; set; }
     public ThongTinNguoiDungDto NguoiDung { get; set; } = null!;
 }
@@ -34,3 +35,8 @@ public class DoiMatKhauDto
     [System.ComponentModel.DataAnnotations.Compare("MatKhauMoi")]
     public string XacNhanMatKhauMoi { get; set; } = string.Empty;
 }
+
+
+
+
+

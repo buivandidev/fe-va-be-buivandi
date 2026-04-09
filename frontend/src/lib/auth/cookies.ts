@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 
-const AUTH_COOKIE_NAME = 'auth_token'
-const COOKIE_OPTIONS = {
+export const AUTH_COOKIE_NAME = 'auth_token'
+export const AUTH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax' as const,
@@ -11,7 +11,7 @@ const COOKIE_OPTIONS = {
 
 export async function setAuthCookie(token: string): Promise<void> {
   const cookieStore = await cookies()
-  cookieStore.set(AUTH_COOKIE_NAME, token, COOKIE_OPTIONS)
+  cookieStore.set(AUTH_COOKIE_NAME, token, AUTH_COOKIE_OPTIONS)
 }
 
 export async function getAuthToken(): Promise<string | null> {

@@ -1,0 +1,94 @@
+const http = require("http");
+const https = require("https");
+
+const FRONTEND_URL = "http://localhost:3000";
+const BACKEND_CANDIDATES = ["http://localhost:5187", "http://localhost:5000"];
+
+console.log("🔍 Đang kiểm tra kết nối FE người dân ↔ Backend...\n");
+
+function requestWithRedirects(url, options = {}, timeout = 5000, depth = 0) {
+  return new Promise((resolve) => {
+    if (depth > 3) {
+      resolve({ ok: false, error: "Redirect quá nhiều" });
+      return;
+    }
+
+    const target = new URL(url);
+    const transport = target.protocol === "https:" ? https : http;
+    const req = transport.request(
+      {
+        hostname: target.hostname,
+        port: target.port,
+        path: target.pathname + target.search,
+        method: options.method || "GET",
+        headers: options.headers || {},
+        ...(target.protocol === "https:" && target.hostname === "localhost"
+          ? { rejectUnauthorized: false }
+          : {}),
+      },
+      (res) => {
+        if (res.statusCode && [301, 302, 307, 308].includes(res.statusCode) && res.headers.location) {
+          const nextUrl = new URL(res.headers.location, url).toString();
+          resolve(requestWithRedirects(nextUrl, options, timeout, depth + 1));
+          return;
+        }
+
+        resolve({
+          ok: true,
+          status: res.statusCode,
+          headers: res.headers,
+          finalUrl: url,
+        });
+      }
+    );
+
+    req.on("error", (err) => resolve({ ok: false, error: err.message }));
+    req.setTimeout(timeout, () => {
+      req.destroy();
+      resolve({ ok: false, error: `Timeout sau ${timeout}ms` });
+    });
+
+    req.end(options.body || undefined);
+  });
+}
+
+async function detectBackendBase() {
+  for (const base of BACKEND_CANDIDATES) {
+    const probe = await requestWithRedirects(`${base}/swagger`);
+    if (probe.ok && probe.status && probe.status < 500) return base;
+  }
+  return BACKEND_CANDIDATES[0];
+}
+
+async function main() {
+  const backendBase = await detectBackendBase();
+  const backend = await requestWithRedirects(`${backendBase}/api/public/articles`);
+  const frontend = await requestWithRedirects(FRONTEND_URL);
+  const cors = await requestWithRedirects(`${backendBase}/api/public/articles`, {
+    method: "OPTIONS",
+    headers: {
+      Origin: FRONTEND_URL,
+      "Access-Control-Request-Method": "GET",
+      "Access-Control-Request-Headers": "content-type,authorization",
+    },
+  });
+
+  console.log("=".repeat(60));
+  console.log("📊 KẾT QUẢ KIỂM TRA FE NGƯỜI DÂN ↔ BE");
+  console.log("=".repeat(60));
+  console.log(`Backend base đang dùng: ${backendBase}`);
+  console.log(`Backend (${backendBase}/api/public/articles): ${backend.ok ? `✅ ${backend.status}` : `❌ ${backend.error}`}`);
+  console.log(`Frontend người dân (${FRONTEND_URL}): ${frontend.ok ? `✅ ${frontend.status}` : `❌ ${frontend.error}`}`);
+  console.log(`CORS preflight (${backendBase}/api/public/articles): ${cors.ok ? `✅ ${cors.status}` : `❌ ${cors.error}`}`);
+  if (cors.ok) {
+    console.log(`  - Allow-Origin: ${cors.headers["access-control-allow-origin"] || "(none)"}`);
+    console.log(`  - Allow-Credentials: ${cors.headers["access-control-allow-credentials"] || "(none)"}`);
+  }
+
+  const pass = backend.ok && frontend.ok && cors.ok;
+
+  console.log("\n" + (pass ? "🎉 PASS: FE người dân kết nối BE ổn định." : "⚠️ FAIL: Cần kiểm tra lại endpoint/port/CORS."));
+  console.log("=".repeat(60) + "\n");
+}
+
+main();

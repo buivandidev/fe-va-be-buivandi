@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { buildApiUrl } from "@/lib/api";
+import { fetchApi } from "@/lib/api";
 
 type ApiEnvelope = {
   thanhCong?: boolean;
@@ -49,7 +49,7 @@ export function NewsCommentForm({ articleId, enabled }: NewsCommentFormProps) {
     setStatus(null);
 
     try {
-      const response = await fetch(buildApiUrl("/api/comments"), {
+      const response = await fetchApi("/api/comments", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

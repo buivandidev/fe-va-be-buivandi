@@ -20,7 +20,7 @@ export default function DoiMatKhauThanhCong() {
               </p>
               
               <div className="space-y-4">
-                <Link href="/dang-nhap" className="block w-full bg-primary text-white py-3 px-6 rounded-lg font-bold text-base hover:bg-blue-700 transition-all shadow-lg shadow-primary/20">
+                <Link href="/dang-nhap" className="block w-full bg-primary text-white py-3 px-6 rounded-lg font-bold text-base hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
                   Đăng nhập ngay
                 </Link>
                 <Link href="/" className="block text-primary font-medium hover:underline text-sm py-2">

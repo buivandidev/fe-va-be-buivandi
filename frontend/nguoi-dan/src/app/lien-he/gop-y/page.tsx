@@ -86,13 +86,13 @@ export default function PhienAnhKienNghiPage() {
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link className="flex items-center text-slate-500 hover:text-primary dark:text-slate-400" href="/">
-                <span className="material-symbols-outlined mr-1 text-lg">home</span>
+                <span className="material-symbols-outlined gov-icon mr-1 text-lg">home</span>
                 Trang chủ
               </Link>
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <Link className="text-slate-500 hover:text-primary dark:text-slate-400" href="/lien-he">
                   Liên hệ & Hỗ trợ
                 </Link>
@@ -100,7 +100,7 @@ export default function PhienAnhKienNghiPage() {
             </li>
             <li aria-current="page">
               <div className="flex items-center">
-                <span className="material-symbols-outlined mx-1 text-sm text-slate-400">chevron_right</span>
+                <span className="material-symbols-outlined gov-icon mx-1 text-sm text-slate-400">chevron_right</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">Góp ý, Phản ánh</span>
               </div>
             </li>
@@ -108,7 +108,7 @@ export default function PhienAnhKienNghiPage() {
         </nav>
 
         <div className="mb-8 text-center">
-          <h1 className="mb-3 text-3xl font-bold text-slate-900 dark:text-slate-100">Gửi Phản ánh & Kiến nghị</h1>
+          <h1 className="gov-section-title mb-3 text-3xl font-bold text-slate-900 dark:text-slate-100">Gửi Phản ánh & Kiến nghị</h1>
           <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400">
             Xin vui lòng điền đầy đủ thông tin vào biểu mẫu dưới đây. Các ý kiến đóng góp, phản ánh của bạn sẽ được tiếp nhận và xử lý nhanh chóng nhằm nâng cao chất lượng dịch vụ công.
           </p>

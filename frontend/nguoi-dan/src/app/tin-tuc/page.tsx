@@ -1,15 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
-
-import Link from "next/link";
-
-
-import {
-  formatViDateTime,
-  getNewsCategories,
-  getNewsCategoryTotals,
-  getNewsList,
-  type NewsCategory,
-} from "@/lib/news-api";
+import Link from 'next/link';
+import { getNewsCategories, getNewsCategoryTotals, NewsCategory } from "@/lib/news-api";
+import { NewsList } from "@/components/news/news-list";
 
 export const dynamic = "force-dynamic";
 
@@ -78,20 +69,9 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
 
   const activeCategory = categories.find((item) => item.id === selectedCategoryId);
 
-  const [newsResult, categoryTotals] = await Promise.all([
-    getNewsList({
-      page: currentPage,
-      pageSize: 6,
-      keyword,
-      categoryId: selectedCategoryId,
-      fallbackCategoryName: activeCategory?.name,
-    }),
-    getNewsCategoryTotals(categories.map((item) => item.id)),
-  ]);
+  const categoryTotals = await getNewsCategoryTotals(categories.map((item) => item.id));
 
-  const warning = newsResult.warning ?? categoriesResult.warning;
-  const pageTokens = buildPageTokens(newsResult.pagination.page, newsResult.pagination.totalPages);
-  const totalAll = totalCount(categoryTotals, categories, newsResult.pagination.total);
+  const warning = categoriesResult.warning;
 
   return (
     <div className="relative flex flex-1 h-full w-full flex-col overflow-x-hidden bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
@@ -155,7 +135,7 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
                   }`}
                   href={buildCategoryHref("", keyword)}
                 >
-                  <span className="material-symbols-outlined">analytics</span>
+                  <span className="material-symbols-outlined gov-icon">analytics</span>
                   <span className={selectedCategoryId ? "text-sm font-medium" : "text-sm font-semibold"}>Tất cả</span>
                   <span
                     className={
@@ -164,7 +144,7 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
                         : "ml-auto rounded-full bg-primary/20 px-2 py-0.5 text-xs"
                     }
                   >
-                    {totalAll}
+                    {Object.values(categoryTotals).reduce((a, b) => a + b, 0)}
                   </span>
                 </Link>
 
@@ -181,7 +161,7 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
                       }`}
                       href={buildCategoryHref(category.id, keyword)}
                     >
-                      <span className="material-symbols-outlined">{icon}</span>
+                      <span className="material-symbols-outlined gov-icon">{icon}</span>
                       <span className={isActive ? "text-sm font-semibold" : "text-sm font-medium"}>{category.name}</span>
                       <span
                         className={
@@ -202,13 +182,13 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
               <h2 className="mb-4 px-1 text-base font-bold">Tags phổ biến</h2>
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
-                  <a
+                  <Link
                     key={tag}
                     className="rounded-lg bg-slate-200 px-3 py-1.5 text-xs font-medium transition-colors hover:bg-primary hover:text-white dark:bg-slate-800"
-                    href="#"
+                    href={`/tin-tuc?q=${encodeURIComponent(tag)}`}
                   >
                     {tag}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </section>
@@ -230,7 +210,7 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
           <section className="order-1 flex-1 lg:order-2">
             <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
               <div>
-                <h1 className="mb-3 text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                <h1 className="gov-section-title mb-3 text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">
                   Tin tức &amp; Sự kiện
                 </h1>
                 <div className="h-1.5 w-20 rounded-full bg-primary" />
@@ -253,121 +233,13 @@ export default async function NewsListPage({ searchParams }: NewsListPageProps) 
                 </button>
               </form>
             </div>
-
-            {newsResult.items.length === 0 ? (
-              <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
-                Không tìm thấy bài viết phù hợp với điều kiện hiện tại.
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {newsResult.items.map((item) => (
-                  <article
-                    key={item.id}
-                    className="group flex flex-col gap-6 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary/40 sm:flex-row"
-                  >
-                    <div className="h-40 w-full shrink-0 overflow-hidden rounded-lg sm:w-56">
-                      <img
-                        alt={item.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        src={item.imageUrl}
-                      />
-                    </div>
-
-                    <div className="flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs font-bold tracking-wider text-primary uppercase">{item.category}</span>
-                          <span className="flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
-                            <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-                            {formatViDateTime(item.publishedAt ?? item.createdAt)}
-                          </span>
-                        </div>
-
-                        <h2 className="text-xl font-bold leading-snug text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100">
-                          <Link href={`/tin-tuc/${item.slug}`}>{item.title}</Link>
-                        </h2>
-
-                        <p className="line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                          {item.excerpt}
-                        </p>
-                      </div>
-
-                      <div className="mt-4 flex items-center justify-between">
-                        <Link
-                          className="flex items-center gap-1 text-sm font-bold text-primary hover:underline"
-                          href={`/tin-tuc/${item.slug}`}
-                        >
-                          Xem chi tiết
-                          <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                        </Link>
-
-                        <button className="text-slate-400 hover:text-primary" type="button">
-                          <span className="material-symbols-outlined">bookmark</span>
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-12 flex items-center justify-center gap-2">
-              <Link
-                aria-disabled={!newsResult.pagination.hasPrev}
-                className={`flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors dark:border-slate-800 dark:text-slate-400 ${
-                  newsResult.pagination.hasPrev
-                    ? "hover:bg-slate-100 dark:hover:bg-slate-800"
-                    : "pointer-events-none opacity-40"
-                }`}
-                href={buildHref(Math.max(newsResult.pagination.page - 1, 1), keyword, selectedCategoryId)}
-              >
-                <span className="material-symbols-outlined">chevron_left</span>
-              </Link>
-
-              {pageTokens.map((token, index) => {
-                if (token === "ellipsis") {
-                  return (
-                    <span key={`ellipsis-${index}`} className="px-2 text-slate-400">
-                      ...
-                    </span>
-                  );
-                }
-
-                const isActive = token === newsResult.pagination.page;
-                return isActive ? (
-                  <span
-                    key={token}
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-bold text-white"
-                  >
-                    {token}
-                  </span>
-                ) : (
-                  <Link
-                    key={token}
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
-                    href={buildHref(token, keyword, selectedCategoryId)}
-                  >
-                    {token}
-                  </Link>
-                );
-              })}
-
-              <Link
-                aria-disabled={!newsResult.pagination.hasNext}
-                className={`flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors dark:border-slate-800 dark:text-slate-400 ${
-                  newsResult.pagination.hasNext
-                    ? "hover:bg-slate-100 dark:hover:bg-slate-800"
-                    : "pointer-events-none opacity-40"
-                }`}
-                href={buildHref(
-                  Math.min(newsResult.pagination.page + 1, newsResult.pagination.totalPages),
-                  keyword,
-                  selectedCategoryId,
-                )}
-              >
-                <span className="material-symbols-outlined">chevron_right</span>
-              </Link>
-            </div>
+            <NewsList
+              page={currentPage}
+              pageSize={6}
+              keyword={keyword}
+              categoryId={selectedCategoryId}
+              fallbackCategoryName={activeCategory?.name}
+            />
           </section>
         </div>
       </main>

@@ -1,0 +1,287 @@
+2026-04-08T20:48:22.1046990Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-04-08T20:48:24.3745914Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-04-08T20:48:24.3751293Z Container start method called.
+2026-04-08T20:48:24.3753715Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:48:24.3820142Z Establishing network.
+2026-04-08T20:48:24.3830668Z Pulling image: appsvc/dotnetcore:10.0_20260115.4.tuxprod.
+2026-04-08T20:49:28.2165069Z Image appsvc/dotnetcore:10.0_20260115.4.tuxprod is pulled from registry 10.1.0.5:13209
+2026-04-08T20:49:28.2292792Z Container is starting.
+2026-04-08T20:49:28.2394258Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:49:28.2401278Z Establishing user namespace if not established already.
+2026-04-08T20:49:28.2442523Z Establishing network if not established already.
+2026-04-08T20:49:28.2459956Z Mounting volumes.
+2026-04-08T20:49:28.2543739Z Nested mountpoint 
+2026-04-08T20:49:28.2731267Z Nested mountpoint volatile/logs
+2026-04-08T20:49:28.3177950Z Nested mountpoint 
+2026-04-08T20:49:28.4190609Z Nested mountpoint 
+2026-04-08T20:49:28.4503271Z Nested mountpoint 
+2026-04-08T20:49:28.4859364Z Nested mountpoint 
+2026-04-08T20:49:28.5504715Z Nested mountpoint 
+2026-04-08T20:49:29.8629132Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for project-api-phuongxa. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-04-08T20:49:29.8631622Z Creating container.
+2026-04-08T20:49:29.8638807Z Creating pipes for streaming container io.
+2026-04-08T20:49:29.8899266Z Creating stdout named pipe at /podr/container/pipe/13b2a6882882_project-api-phuongxa/stdout_7e84bf1ccd1b40798f8ff2f55ba7e032.
+2026-04-08T20:49:29.9175269Z Successfully created stdout named pipe at: /podr/container/pipe/13b2a6882882_project-api-phuongxa/stdout_7e84bf1ccd1b40798f8ff2f55ba7e032.
+2026-04-08T20:49:29.9177615Z Opening named pipe /podr/container/pipe/13b2a6882882_project-api-phuongxa/stdout_7e84bf1ccd1b40798f8ff2f55ba7e032 for reading in non-blocking mode.
+2026-04-08T20:49:29.9181199Z Successfully opened named pipe: /podr/container/pipe/13b2a6882882_project-api-phuongxa/stdout_7e84bf1ccd1b40798f8ff2f55ba7e032.
+2026-04-08T20:49:29.9184710Z Successfully removed non-blocking flag from /podr/container/pipe/13b2a6882882_project-api-phuongxa/stdout_7e84bf1ccd1b40798f8ff2f55ba7e032.
+2026-04-08T20:49:29.9392200Z Creating stderr named pipe at /podr/container/pipe/13b2a6882882_project-api-phuongxa/stderr_8193c4f7e2aa4090984c826e952eebda.
+2026-04-08T20:49:29.9397347Z Successfully created stderr named pipe at: /podr/container/pipe/13b2a6882882_project-api-phuongxa/stderr_8193c4f7e2aa4090984c826e952eebda.
+2026-04-08T20:49:29.9399002Z Opening named pipe /podr/container/pipe/13b2a6882882_project-api-phuongxa/stderr_8193c4f7e2aa4090984c826e952eebda for reading in non-blocking mode.
+2026-04-08T20:49:29.9400461Z Successfully opened named pipe: /podr/container/pipe/13b2a6882882_project-api-phuongxa/stderr_8193c4f7e2aa4090984c826e952eebda.
+2026-04-08T20:49:29.9401445Z Successfully removed non-blocking flag from /podr/container/pipe/13b2a6882882_project-api-phuongxa/stderr_8193c4f7e2aa4090984c826e952eebda.
+2026-04-08T20:49:29.9566265Z Creating container with image: appsvc/dotnetcore:10.0_20260115.4.tuxprod from registry: 10.1.0.5:13209 and fully qualified image name: 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod
+2026-04-08T20:49:30.9852487Z Starting container: 13b2a6882882_project-api-phuongxa.
+2026-04-08T20:49:31.0831463Z Starting watchers and probes.
+2026-04-08T20:49:31.0993391Z Starting metrics collection.
+2026-04-08T20:49:31.1011001Z Container is running.
+2026-04-08T20:49:31.1017616Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:49:31.4215588Z Container start method finished after 67046 ms.
+2026-04-08T20:49:31.4329451Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:49:31.4696173Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-04-08T20:50:36.3383012Z Container has finished running with exit code: 134.
+2026-04-08T20:50:36.3409033Z Container is terminating. Grace period: 5 seconds.
+2026-04-08T20:50:36.3859004Z Stop and delete container. Retry count = 0
+2026-04-08T20:50:36.3941641Z Stopping container: 13b2a6882882_project-api-phuongxa.
+2026-04-08T20:50:36.5335284Z Deleting container: 13b2a6882882_project-api-phuongxa. Retry count = 0
+2026-04-08T20:50:37.0527037Z Container spec TerminationMessagePolicy  path 
+2026-04-08T20:50:37.0777912Z Container is terminated. Total time elapsed: 691 ms.
+2026-04-08T20:50:37.0986059Z Site container: project-api-phuongxa terminated during site startup.
+2026-04-08T20:50:37.2006471Z State: Stopping, Action: CancellingStartup, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:37.2347730Z Site startup probe failed after 65.5422617 seconds.
+2026-04-08T20:50:37.4706552Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:37.4806894Z Failed to start site. Revert by stopping site.
+2026-04-08T20:50:37.4900564Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:37.4991293Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:37.4991617Z Site: project-api-phuongxa stopped.
+2026-04-08T20:50:37.5359167Z State: Stopping, Action: UnmountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:38.5718234Z State: Stopping, Action: StoppingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:50:38.9189604Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:50:38 (UTC), DetailsLevel: ERR
+2026-04-08T20:50:39.3504555Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:50:38 (UTC), DetailsLevel: ERR
+2026-04-08T20:50:40.3875261Z State: Starting, Action: EstablishingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:50:38 (UTC), DetailsLevel: ERR
+2026-04-08T20:50:43.3239688Z State: Starting, Action: StartingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:50:38 (UTC), DetailsLevel: ERR
+2026-04-08T20:50:43.3242237Z Container start method called.
+2026-04-08T20:50:43.3292687Z State: Starting, Action: PullingImage, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pulling image 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:50:43.3315724Z Establishing network.
+2026-04-08T20:50:43.3318001Z Pulling image: appsvc/dotnetcore:10.0_20260115.4.tuxprod.
+2026-04-08T20:50:43.8994810Z Container is starting.
+2026-04-08T20:50:43.8998544Z State: Starting, Action: MountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Mounting volumes for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:50:43.9003704Z Establishing user namespace if not established already.
+2026-04-08T20:50:43.9079845Z Establishing network if not established already.
+2026-04-08T20:50:43.9083248Z Mounting volumes.
+2026-04-08T20:50:43.9087289Z Nested mountpoint 
+2026-04-08T20:50:43.9844035Z Nested mountpoint volatile/logs
+2026-04-08T20:50:44.0042930Z Nested mountpoint 
+2026-04-08T20:50:44.0605841Z Nested mountpoint 
+2026-04-08T20:50:44.0863664Z Nested mountpoint 
+2026-04-08T20:50:44.2045946Z Nested mountpoint 
+2026-04-08T20:50:44.3643331Z Nested mountpoint 
+2026-04-08T20:50:45.4898189Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Finished pulling container image and mounting volumes for project-api-phuongxa. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-04-08T20:50:45.4902220Z Creating container.
+2026-04-08T20:50:45.4913285Z Creating pipes for streaming container io.
+2026-04-08T20:50:45.4920405Z Creating stdout named pipe at /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stdout_0c78679937ab4ff29a96c9a5b9407b63.
+2026-04-08T20:50:45.4930454Z Successfully created stdout named pipe at: /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stdout_0c78679937ab4ff29a96c9a5b9407b63.
+2026-04-08T20:50:45.5208374Z Opening named pipe /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stdout_0c78679937ab4ff29a96c9a5b9407b63 for reading in non-blocking mode.
+2026-04-08T20:50:45.5211052Z Successfully opened named pipe: /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stdout_0c78679937ab4ff29a96c9a5b9407b63.
+2026-04-08T20:50:45.5222794Z Successfully removed non-blocking flag from /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stdout_0c78679937ab4ff29a96c9a5b9407b63.
+2026-04-08T20:50:45.5285479Z Creating stderr named pipe at /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stderr_3beeb2cd7e2542ea90e979eacfc87101.
+2026-04-08T20:50:45.5292474Z Successfully created stderr named pipe at: /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stderr_3beeb2cd7e2542ea90e979eacfc87101.
+2026-04-08T20:50:45.5294782Z Opening named pipe /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stderr_3beeb2cd7e2542ea90e979eacfc87101 for reading in non-blocking mode.
+2026-04-08T20:50:45.5313164Z Successfully opened named pipe: /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stderr_3beeb2cd7e2542ea90e979eacfc87101.
+2026-04-08T20:50:45.5491414Z Successfully removed non-blocking flag from /podr/container/pipe/654ea27dbe2c_project-api-phuongxa/stderr_3beeb2cd7e2542ea90e979eacfc87101.
+2026-04-08T20:50:45.5500730Z Creating container with image: appsvc/dotnetcore:10.0_20260115.4.tuxprod from registry: 10.1.0.5:13209 and fully qualified image name: 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod
+2026-04-08T20:50:46.7901059Z Starting container: 654ea27dbe2c_project-api-phuongxa.
+2026-04-08T20:50:46.9185851Z Starting watchers and probes.
+2026-04-08T20:50:46.9283358Z Starting metrics collection.
+2026-04-08T20:50:46.9348129Z Container is running.
+2026-04-08T20:50:46.9372165Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:50:47.3245037Z Container start method finished after 4000 ms.
+2026-04-08T20:50:47.3262279Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:50:47.3263105Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-04-08T20:51:42.5821762Z Container has finished running with exit code: 134.
+2026-04-08T20:51:42.5823103Z Container is terminating. Grace period: 5 seconds.
+2026-04-08T20:51:42.6004741Z Stop and delete container. Retry count = 0
+2026-04-08T20:51:42.6006417Z Stopping container: 654ea27dbe2c_project-api-phuongxa.
+2026-04-08T20:51:42.9576249Z Deleting container: 654ea27dbe2c_project-api-phuongxa. Retry count = 0
+2026-04-08T20:51:43.2802698Z Container spec TerminationMessagePolicy  path 
+2026-04-08T20:51:43.2836298Z Container is terminated. Total time elapsed: 683 ms.
+2026-04-08T20:51:43.2853967Z Site container: project-api-phuongxa terminated during site startup.
+2026-04-08T20:51:43.2976791Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:50:37, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:43.3126400Z Site startup probe failed after 55.9852591 seconds.
+2026-04-08T20:51:43.6990294Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:43.7931183Z Failed to start site. Revert by stopping site.
+2026-04-08T20:51:43.7942376Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:43.8006797Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:43.8007293Z Site: project-api-phuongxa stopped.
+2026-04-08T20:51:43.8029051Z State: Stopping, Action: UnmountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:44.7254866Z State: Stopping, Action: StoppingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:51:45.1323677Z Site: project-api-phuongxa will be blocked for 1 minutes till 04/08/2026 20:52:45
+2026-04-08T20:51:45.1410875Z State: Blocked, Action: StoppingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site: project-api-phuongxa will be blocked for 1 minutes till 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:45.1567305Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:51:45 (UTC), DetailsLevel: WARN
+2026-04-08T20:51:45.5565479Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:51:45 (UTC), DetailsLevel: WARN
+2026-04-08T20:51:50.8342888Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:50.8343397Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:52.9686044Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:52.9686422Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:53.1595722Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:53.1596238Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:55.9275239Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:55.9275554Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:56.3309639Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:56.3310144Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:56.6462066Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:56.6465140Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:56.8851452Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:56.8852445Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:57.0727989Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:57.0730298Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:58.8526982Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:58.8527322Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:59.1274043Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:59.1277330Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:51:59.3253190Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:51:59.3253524Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:01.0684201Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:01.0685631Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:06.2330476Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:06.2331008Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:11.3715923Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:11.3716826Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:16.6813241Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:16.6814016Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:22.0263784Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:22.0634324Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:27.2498882Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:27.2499565Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:32.5596880Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:32.5598157Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:37.7939646Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:37.7942033Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:43.0170751Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:43.0171071Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:52:45.1459645Z Site: project-api-phuongxa is unblocked.
+2026-04-08T20:52:48.2449390Z State: Starting, Action: EstablishingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:52.6651929Z State: Starting, Action: StartingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:52:45, DetailsLevel: WARN
+2026-04-08T20:52:52.6654045Z Container start method called.
+2026-04-08T20:52:52.6654600Z State: Starting, Action: PullingImage, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pulling image 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:52:52.6656878Z Establishing network.
+2026-04-08T20:52:52.6658158Z Pulling image: appsvc/dotnetcore:10.0_20260115.4.tuxprod.
+2026-04-08T20:52:53.5844504Z Container is starting.
+2026-04-08T20:52:53.5915474Z State: Starting, Action: MountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Mounting volumes for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:52:53.6007884Z Establishing user namespace if not established already.
+2026-04-08T20:52:53.6014425Z Establishing network if not established already.
+2026-04-08T20:52:53.6034749Z Mounting volumes.
+2026-04-08T20:52:53.6038517Z Nested mountpoint 
+2026-04-08T20:52:53.7255661Z Nested mountpoint volatile/logs
+2026-04-08T20:52:53.7379656Z Nested mountpoint 
+2026-04-08T20:52:53.7484934Z Nested mountpoint 
+2026-04-08T20:52:53.8146149Z Nested mountpoint 
+2026-04-08T20:52:53.8249729Z Nested mountpoint 
+2026-04-08T20:52:54.0003160Z Nested mountpoint 
+2026-04-08T20:52:55.7347734Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Finished pulling container image and mounting volumes for project-api-phuongxa. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-04-08T20:52:55.7360991Z Creating container.
+2026-04-08T20:52:55.7915009Z Creating pipes for streaming container io.
+2026-04-08T20:52:55.7926004Z Creating stdout named pipe at /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stdout_1dbfc07fb84b457da25a9094cdf0ac2c.
+2026-04-08T20:52:55.7935649Z Successfully created stdout named pipe at: /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stdout_1dbfc07fb84b457da25a9094cdf0ac2c.
+2026-04-08T20:52:55.8302360Z Opening named pipe /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stdout_1dbfc07fb84b457da25a9094cdf0ac2c for reading in non-blocking mode.
+2026-04-08T20:52:55.8305505Z Successfully opened named pipe: /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stdout_1dbfc07fb84b457da25a9094cdf0ac2c.
+2026-04-08T20:52:55.8308143Z Successfully removed non-blocking flag from /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stdout_1dbfc07fb84b457da25a9094cdf0ac2c.
+2026-04-08T20:52:55.8825118Z Creating stderr named pipe at /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stderr_53f5d911f60e4c90ad39e45e09120836.
+2026-04-08T20:52:55.9117390Z Successfully created stderr named pipe at: /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stderr_53f5d911f60e4c90ad39e45e09120836.
+2026-04-08T20:52:55.9178633Z Opening named pipe /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stderr_53f5d911f60e4c90ad39e45e09120836 for reading in non-blocking mode.
+2026-04-08T20:52:55.9184115Z Successfully opened named pipe: /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stderr_53f5d911f60e4c90ad39e45e09120836.
+2026-04-08T20:52:55.9188639Z Successfully removed non-blocking flag from /podr/container/pipe/2f6572afb17b_project-api-phuongxa/stderr_53f5d911f60e4c90ad39e45e09120836.
+2026-04-08T20:52:55.9192408Z Creating container with image: appsvc/dotnetcore:10.0_20260115.4.tuxprod from registry: 10.1.0.5:13209 and fully qualified image name: 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod
+2026-04-08T20:52:58.0999977Z Starting container: 2f6572afb17b_project-api-phuongxa.
+2026-04-08T20:52:58.2404994Z Starting watchers and probes.
+2026-04-08T20:52:58.2523728Z Starting metrics collection.
+2026-04-08T20:52:58.2607758Z Container is running.
+2026-04-08T20:52:58.2613082Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:52:58.7304171Z Container start method finished after 6064 ms.
+2026-04-08T20:52:58.7306315Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:52:58.7306579Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-04-08T20:54:51.7985302Z Container has finished running with exit code: 134.
+2026-04-08T20:54:51.7991552Z Container is terminating. Grace period: 5 seconds.
+2026-04-08T20:54:51.8770303Z Stop and delete container. Retry count = 0
+2026-04-08T20:54:51.9050962Z Stopping container: 2f6572afb17b_project-api-phuongxa.
+2026-04-08T20:54:52.2077737Z Container get mounts received unexpected exception.
+2026-04-08T20:54:52.2662142Z Deleting container: 2f6572afb17b_project-api-phuongxa. Retry count = 0
+2026-04-08T20:54:53.0118252Z Container spec TerminationMessagePolicy  path 
+2026-04-08T20:54:53.0277622Z Container is terminated. Total time elapsed: 1218 ms.
+2026-04-08T20:54:53.0364530Z Site container: project-api-phuongxa terminated during site startup.
+2026-04-08T20:54:53.0645780Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:51:43, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:53.1362906Z Site startup probe failed after 114.3467458 seconds.
+2026-04-08T20:54:53.6379064Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:53.6594139Z Failed to start site. Revert by stopping site.
+2026-04-08T20:54:53.6662094Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:53.6692600Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:53.6693036Z Site: project-api-phuongxa stopped.
+2026-04-08T20:54:53.6861920Z State: Stopping, Action: UnmountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:54.4916050Z State: Stopping, Action: StoppingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: project-api-phuongxa terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-04-08T20:54:54.7379469Z Site: project-api-phuongxa will be blocked for 1 minutes till 04/08/2026 20:55:54
+2026-04-08T20:54:54.7386386Z State: Blocked, Action: StoppingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site: project-api-phuongxa will be blocked for 1 minutes till 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:54:54.7553108Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:54:54 (UTC), DetailsLevel: WARN
+2026-04-08T20:54:55.0986751Z State: Stopped, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 04/08/2026 20:54:54 (UTC), DetailsLevel: WARN
+2026-04-08T20:55:00.6185254Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:00.6193396Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:06.3504514Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:06.3505678Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:11.7990458Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:11.7991504Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:17.0101449Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:17.0107735Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:22.3597119Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:22.3597980Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:27.5294606Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:27.5295626Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:32.7619512Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:32.7619831Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:37.9439046Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:37.9439882Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:43.1616626Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:43.1617338Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:48.3086891Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:48.3087241Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:53.4839611Z State: Blocked, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:55:53.4840533Z Start site prohibitted because the site is being blocked.
+2026-04-08T20:55:54.7369774Z Site: project-api-phuongxa is unblocked.
+2026-04-08T20:55:58.6032710Z State: Starting, Action: EstablishingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:56:02.7962201Z State: Starting, Action: StartingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site is blocked due to multiple, consecutive cold start failures. Site scheduled to be unblocked at 04/08/2026 20:55:54, DetailsLevel: WARN
+2026-04-08T20:56:02.7963753Z Container start method called.
+2026-04-08T20:56:02.7964338Z State: Starting, Action: PullingImage, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pulling image 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:56:02.7965566Z Establishing network.
+2026-04-08T20:56:02.7966974Z Pulling image: appsvc/dotnetcore:10.0_20260115.4.tuxprod.
+2026-04-08T20:56:05.0185944Z Container is starting.
+2026-04-08T20:56:05.0192029Z State: Starting, Action: MountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Mounting volumes for project-api-phuongxa., DetailsLevel: INFO
+2026-04-08T20:56:05.0206036Z Establishing user namespace if not established already.
+2026-04-08T20:56:05.0286735Z Establishing network if not established already.
+2026-04-08T20:56:05.0374247Z Mounting volumes.
+2026-04-08T20:56:05.4340303Z Nested mountpoint 
+2026-04-08T20:56:05.6489313Z Nested mountpoint volatile/logs
+2026-04-08T20:56:05.6682883Z Nested mountpoint 
+2026-04-08T20:56:05.6840315Z Nested mountpoint 
+2026-04-08T20:56:05.6941609Z Nested mountpoint 
+2026-04-08T20:56:05.7260240Z Nested mountpoint 
+2026-04-08T20:56:05.9309578Z Nested mountpoint 
+2026-04-08T20:56:10.3510798Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Finished pulling container image and mounting volumes for project-api-phuongxa. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-04-08T20:56:10.3516328Z Creating container.
+2026-04-08T20:56:10.3531944Z Creating pipes for streaming container io.
+2026-04-08T20:56:10.4322384Z Creating stdout named pipe at /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stdout_2b7d0e25964f4bfea6dcb088f633b121.
+2026-04-08T20:56:10.4325236Z Successfully created stdout named pipe at: /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stdout_2b7d0e25964f4bfea6dcb088f633b121.
+2026-04-08T20:56:10.4326137Z Opening named pipe /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stdout_2b7d0e25964f4bfea6dcb088f633b121 for reading in non-blocking mode.
+2026-04-08T20:56:10.4327448Z Successfully opened named pipe: /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stdout_2b7d0e25964f4bfea6dcb088f633b121.
+2026-04-08T20:56:10.4328395Z Successfully removed non-blocking flag from /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stdout_2b7d0e25964f4bfea6dcb088f633b121.
+2026-04-08T20:56:10.4334407Z Creating stderr named pipe at /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stderr_aaf04625dcd7457983d26ce06a378e0f.
+2026-04-08T20:56:10.4336786Z Successfully created stderr named pipe at: /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stderr_aaf04625dcd7457983d26ce06a378e0f.
+2026-04-08T20:56:10.4337682Z Opening named pipe /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stderr_aaf04625dcd7457983d26ce06a378e0f for reading in non-blocking mode.
+2026-04-08T20:56:10.4339860Z Successfully opened named pipe: /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stderr_aaf04625dcd7457983d26ce06a378e0f.
+2026-04-08T20:56:10.4340845Z Successfully removed non-blocking flag from /podr/container/pipe/7b55fa64e67b_project-api-phuongxa/stderr_aaf04625dcd7457983d26ce06a378e0f.
+2026-04-08T20:56:10.4342107Z Creating container with image: appsvc/dotnetcore:10.0_20260115.4.tuxprod from registry: 10.1.0.5:13209 and fully qualified image name: 10.1.0.5:13209/appsvc/dotnetcore:10.0_20260115.4.tuxprod
+2026-04-08T20:56:13.6322984Z Starting container: 7b55fa64e67b_project-api-phuongxa.
+2026-04-08T20:56:13.8051683Z Starting watchers and probes.
+2026-04-08T20:56:13.8063550Z Starting metrics collection.
+2026-04-08T20:56:13.8068073Z Container is running.
+2026-04-08T20:56:13.8257287Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:56:14.1406453Z Container start method finished after 11344 ms.
+2026-04-08T20:56:14.1966169Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container project-api-phuongxa successfully created and is running., DetailsLevel: INFO
+2026-04-08T20:56:14.1967761Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: ContainerTimeout, LastErrorTimestamp: 04/08/2026 20:54:53, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO

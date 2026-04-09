@@ -23,9 +23,10 @@ public class DichVuJwt : IDichVuJwt
         var key = _cauHinh["Jwt:Key"]
             ?? throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Jwt:Key");
 
+        // Use UTF8 encoding for the key (same as Program.cs)
         var keyBytes = Encoding.UTF8.GetBytes(key);
         if (keyBytes.Length < 32)
-            throw new ArgumentException("Jwt:Key phải có ít nhất 32 byte (256 bit) để đảm bảo bảo mật.");
+            throw new InvalidOperationException($"Jwt:Key phải có ít nhất 32 bytes (256 bits) cho HMAC-SHA256. Hiện tại: {keyBytes.Length} bytes. Vui lòng sử dụng key dài hơn 32 ký tự.");
 
         if (string.IsNullOrEmpty(_cauHinh["Jwt:Issuer"]))
             throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Jwt:Issuer");

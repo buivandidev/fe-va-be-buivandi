@@ -14,21 +14,42 @@ public static class TiemPhuThuocHaTang
 {
     public static IServiceCollection ThemHaTang(this IServiceCollection dichVu, IConfiguration cauHinh)
     {
-        // EF Core + PostgreSQL
-        dichVu.AddDbContext<BuiCanhCSDL>(options =>
-            options.UseNpgsql(cauHinh.GetConnectionString("DefaultConnection"),
-                npgsql => npgsql.MigrationsAssembly("PhuongXa.Infrastructure")));
+        var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
+        var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
-        dichVu.AddHttpContextAccessor();
+        if (!isTesting)
+        {
+            // EF Core + PostgreSQL
+            dichVu.AddDbContext<BuiCanhCSDL>(options =>
+                options.UseNpgsql(cauHinh.GetConnectionString("DefaultConnection"), 
+                    npgsql => npgsql.MigrationsAssembly("PhuongXa.Infrastructure")));
+        }
+        else
+        {
+            // Dành cho Integration Tests
+            dichVu.AddDbContext<BuiCanhCSDL>(options =>
+                options.UseInMemoryDatabase("InMemoryDbForTesting"));
+        }
 
         // ASP.NET Identity
         dichVu.AddIdentity<NguoiDung, VaiTro>(options =>
         {
-            options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 8;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequireLowercase = true;
+            if (isDevelopment)
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            }
+            else
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+            }
             options.User.RequireUniqueEmail = true;
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             options.Lockout.MaxFailedAccessAttempts = 5;
@@ -44,6 +65,8 @@ public static class TiemPhuThuocHaTang
         dichVu.AddScoped<IDichVuJwt, DichVuJwt>();
         dichVu.AddScoped<IDichVuLuuTruTep, DichVuLuuTruTepCucBo>();
         dichVu.AddScoped<IDichVuEmail, DichVuEmailSmtp>();
+        dichVu.AddScoped<IDichVuThanhToanVnPay, DichVuThanhToanVnPay>();
+        dichVu.AddScoped<IDichVuXuatPhieuHoSoPdf, DichVuXuatPhieuHoSoPdf>();
         dichVu.AddSingleton<IDichVuLamSachHtml, DichVuLamSachHtml>();
 
         // Background services

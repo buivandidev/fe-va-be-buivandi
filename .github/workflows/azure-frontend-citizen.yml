@@ -1,0 +1,54 @@
+name: Azure Frontend Citizen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/nguoi-dan/**'
+      - '.github/workflows/azure-frontend-citizen.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend/nguoi-dan
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/nguoi-dan/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-citizen-source
+          path: frontend/nguoi-dan
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-citizen-source
+          path: frontend/nguoi-dan
+      - name: Deploy to Azure Web App (Citizen FE)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_CITIZEN_FE_APP_NAME }}
+          publish-profile: ${{ secrets.AZURE_CITIZEN_FE_PUBLISH_PROFILE }}
+          package: frontend/nguoi-dan

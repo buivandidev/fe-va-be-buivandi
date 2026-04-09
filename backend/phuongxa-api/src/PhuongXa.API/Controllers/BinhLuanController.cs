@@ -8,7 +8,6 @@ using PhuongXa.Application.DTOs.BinhLuan;
 using PhuongXa.Application.CacGiaoDien;
 using PhuongXa.Domain.CacThucThe;
 using PhuongXa.Domain.CacKieuLietKe;
-using Microsoft.AspNetCore.RateLimiting;
 
 namespace PhuongXa.API.Controllers;
 
@@ -68,7 +67,7 @@ public class BinhLuanController : BaseApiController
     }
 
     [HttpPost]
-    [EnableRateLimiting("contact")]
+    [AllowAnonymous]
     public async Task<IActionResult> Tao([FromBody] TaoBinhLuanDto dto)
     {
         var baiViet = await _donViCongViec.BaiViets.TruyVan()

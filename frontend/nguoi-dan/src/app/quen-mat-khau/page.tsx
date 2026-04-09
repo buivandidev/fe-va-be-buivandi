@@ -12,13 +12,13 @@ export default function QuenMatKhau() {
               {/* Branding/Icon */}
               <div className="mb-8 flex justify-center">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <span className="material-symbols-outlined text-primary text-4xl">lock_reset</span>
+                  <span className="material-symbols-outlined gov-icon text-primary text-4xl">lock_reset</span>
                 </div>
               </div>
               
               {/* Header Text */}
               <div className="text-center mb-8">
-                <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-3">Quên mật khẩu?</h1>
+                <h1 className="gov-section-title text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-3">Quên mật khẩu?</h1>
                 <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed">
                   Vui lòng nhập email đã đăng ký để nhận liên kết đặt lại mật khẩu.
                 </p>

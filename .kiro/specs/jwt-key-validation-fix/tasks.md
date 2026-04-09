@@ -1,0 +1,83 @@
+# Implementation Plan
+
+- [ ] 1. Write bug condition exploration test
+  - **Property 1: Bug Condition** - User Secrets Override với JWT Key Ngắn
+  - **CRITICAL**: Test này PHẢI FAIL trên unfixed code - failure xác nhận bug tồn tại
+  - **DO NOT attempt to fix the test or the code when it fails**
+  - **NOTE**: Test này encode expected behavior - sẽ validate fix khi pass sau implementation
+  - **GOAL**: Surface counterexamples chứng minh bug tồn tại
+  - **Scoped PBT Approach**: Scope property đến concrete failing case - User Secrets chứa Jwt:Key có độ dài < 32 bytes
+  - Test implementation details từ Bug Condition trong design:
+    - Tạo User Secrets với `"Jwt:Key": "short_key_16byte"` (16 bytes)
+    - Khởi động backend
+    - Assert backend crash với error message chứa "16 bytes"
+  - Test assertions phải match Expected Behavior Properties từ design:
+    - Backend SHOULD crash khi User Secrets chứa key < 32 bytes (trên unfixed code)
+    - Error message SHOULD chứa "Jwt:Key phải có ít nhất 32 bytes"
+  - Run test trên UNFIXED code
+  - **EXPECTED OUTCOME**: Test FAILS (đúng - chứng minh bug tồn tại)
+  - Document counterexamples tìm được để hiểu root cause:
+    - User Secrets location: `%APPDATA%\Microsoft\UserSecrets\49d42c98-143d-4337-84fc-56297ff24e32\secrets.json` (Windows)
+    - Key value causing crash: "short_key_16byte" (16 bytes)
+    - Error message: "Jwt:Key phải có ít nhất 32 bytes (256 bits) cho HMAC-SHA256. Hiện tại: 16 bytes"
+  - Mark task complete khi test được viết, chạy, và failure được document
+  - _Requirements: 1.1, 1.2, 1.3_
+
+- [ ] 2. Write preservation property tests (BEFORE implementing fix)
+  - **Property 2: Preservation** - JWT Authentication và Configuration Hierarchy
+  - **IMPORTANT**: Follow observation-first methodology
+  - Observe behavior trên UNFIXED code cho non-buggy inputs:
+    - Backend khởi động thành công khi User Secrets không tồn tại
+    - Backend khởi động thành công khi User Secrets chứa key hợp lệ (≥ 32 bytes)
+    - JWT authentication hoạt động đúng với key từ appsettings.Development.json
+    - Configuration hierarchy được tôn trọng (User Secrets > appsettings)
+  - Write property-based tests capturing observed behavior patterns từ Preservation Requirements:
+    - Property: FOR ALL valid JWT keys (≥ 32 bytes) from any source, backend SHALL start successfully
+    - Property: FOR ALL valid configurations, JWT token generation SHALL produce valid tokens
+    - Property: FOR ALL valid configurations, JWT validation logic SHALL work correctly
+  - Property-based testing generates nhiều test cases cho stronger guarantees
+  - Run tests trên UNFIXED code
+  - **EXPECTED OUTCOME**: Tests PASS (xác nhận baseline behavior để preserve)
+  - Mark task complete khi tests được viết, chạy, và passing trên unfixed code
+  - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [-] 3. Fix User Secrets JWT Key Override
+
+  - [x] 3.1 Locate và xóa/cập nhật User Secrets
+    - Locate User Secrets file:
+      - Windows: `%APPDATA%\Microsoft\UserSecrets\49d42c98-143d-4337-84fc-56297ff24e32\secrets.json`
+      - Linux/macOS: `~/.microsoft/usersecrets/49d42c98-143d-4337-84fc-56297ff24e32/secrets.json`
+    - Option A (Recommended): Xóa entry "Jwt:Key" khỏi secrets.json để backend fallback sang appsettings.Development.json
+    - Option B: Cập nhật "Jwt:Key" với giá trị hợp lệ từ appsettings.Development.json: `"CCFZhl54yGAhYN4DHTDEb14Zzs6Swc6QJHrGAAEw/SZYyYyk/skj+qMKaM5MLyhJ"`
+    - Option C: Xóa toàn bộ thư mục User Secrets nếu không có secrets quan trọng khác
+    - _Bug_Condition: isBugCondition(input) where input.userSecrets["Jwt:Key"] length < 32 bytes_
+    - _Expected_Behavior: Backend khởi động thành công với JWT key ≥ 32 bytes từ appsettings.Development.json_
+    - _Preservation: JWT authentication logic, validation logic, và configuration hierarchy phải giữ nguyên_
+    - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3, 3.4_
+
+  - [x] 3.2 Verify bug condition exploration test now passes
+    - **Property 1: Expected Behavior** - Backend Khởi Động Với JWT Key Hợp Lệ
+    - **IMPORTANT**: Re-run SAME test từ task 1 - do NOT write new test
+    - Test từ task 1 encode expected behavior
+    - Khi test này pass, xác nhận expected behavior được satisfy
+    - Run bug condition exploration test từ step 1
+    - **EXPECTED OUTCOME**: Test PASSES (xác nhận bug đã fixed)
+    - Verify console log hiển thị: "DEBUG: JWT Key as UTF8: 64 bytes" (hoặc ≥32)
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+
+  - [x] 3.3 Verify preservation tests still pass
+    - **Property 2: Preservation** - JWT Authentication và Configuration Hierarchy
+    - **IMPORTANT**: Re-run SAME tests từ task 2 - do NOT write new tests
+    - Run preservation property tests từ step 2
+    - **EXPECTED OUTCOME**: Tests PASS (xác nhận no regressions)
+    - Confirm tất cả tests vẫn pass sau fix (no regressions):
+      - Backend khởi động thành công với key từ appsettings.Development.json
+      - JWT authentication hoạt động bình thường
+      - Configuration hierarchy được tôn trọng
+      - Validation logic vẫn throw exception cho invalid keys
+
+- [ ] 4. Checkpoint - Ensure all tests pass
+  - Verify backend khởi động thành công
+  - Verify JWT authentication hoạt động end-to-end
+  - Verify không có regressions trong existing functionality
+  - Ask user nếu có questions arise
