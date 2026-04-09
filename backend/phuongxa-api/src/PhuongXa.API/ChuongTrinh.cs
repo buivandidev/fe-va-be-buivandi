@@ -162,6 +162,8 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseCors("FrontendPolicy");
+
 app.UseMiddleware<PhanMemGhiNhanYeuCau>();
 app.UseMiddleware<PhanMemNgoaiLeKichThuoc>();
 
@@ -205,7 +207,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 app.UseStaticFiles();
-app.UseCors("FrontendPolicy");
+// app.UseCors("FrontendPolicy");
 // app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();

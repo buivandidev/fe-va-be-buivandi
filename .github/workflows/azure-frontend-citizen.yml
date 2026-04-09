@@ -28,20 +28,30 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          # Copy static and public into the standalone folder
-          cp -r public .next/standalone/frontend/nguoi-dan/ || true
-          mkdir -p .next/standalone/frontend/nguoi-dan/.next
-          cp -r .next/static .next/standalone/frontend/nguoi-dan/.next/static || true
+          # Go to the nested standalone app directory
+          cd .next/standalone
           
-          # CREATE A COMPLETELY FLAT ZIP FROM THE NESTED STANDALONE DIR
-          # This is the most reliable way for Next.js monorepos
-          cd .next/standalone/frontend/nguoi-dan
+          # 1. Bring everything from nested app folder to standalone root
+          if [ -d "frontend/nguoi-dan" ]; then
+            echo "Flattening nested app folder..."
+            cp -rv frontend/nguoi-dan/. .
+            rm -rf frontend
+          fi
+          
+          # 2. Copy static assets to the root .next folder
+          mkdir -p .next/static
+          cp -rv ../static/. .next/static/ || true
+          
+          # 3. Copy public assets to the root public folder
+          mkdir -p public
+          cp -rv ../../public/. ./public/ || true
+          
+          # 4. Verify critical files exist at the root
+          ls -la .
+          ls -la .next
+          
+          # 5. Create the final ZIP from the now-perfectly-flat standalone root
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
-          
-          # Also include node_modules from the parent standalone dir
-          cd ..
-          cd ..
-          zip -g $GITHUB_WORKSPACE/deploy-citizen.zip node_modules server.js .next
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
