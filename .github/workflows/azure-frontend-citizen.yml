@@ -32,18 +32,23 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          cp -r public .next/standalone/
-          mkdir -p .next/standalone/.next/static
-          cp -r .next/static .next/standalone/.next/static
+          mkdir -p .next/standalone/public
+          cp -r public/. .next/standalone/public/ || true
           
-          # Flatten nested structure
+          mkdir -p .next/standalone/.next/static
+          cp -r .next/static/. .next/standalone/.next/static/ || true
+          
+          # Aggressive flattening: find and bring everything to the root of standalone
           cd .next/standalone
+          
+          # If Next.js nested it inside 'frontend/nguoi-dan', move it out
           if [ -d "frontend/nguoi-dan" ]; then
+            echo "Moving files out of frontend/nguoi-dan..."
             cp -r frontend/nguoi-dan/. .
             rm -rf frontend
           fi
           
-          # Create ZIP (using absolute-like path to be safe)
+          # Create ZIP of EVERYTHING in the current directory (standalone root)
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
           
       - name: Upload artifact
