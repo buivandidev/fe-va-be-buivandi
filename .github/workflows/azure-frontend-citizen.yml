@@ -36,21 +36,21 @@ jobs:
           mkdir -p .next/standalone/.next/static
           cp -r .next/static .next/standalone/.next/static
           
-          # Flatten nested structure accurately including hidden files
+          # Flatten nested structure
           cd .next/standalone
           if [ -d "frontend/nguoi-dan" ]; then
             cp -r frontend/nguoi-dan/. .
             rm -rf frontend
           fi
           
-          # CREATE A ZIP TO PRESERVE STRUCTURE
-          zip -r ../../../deploy.zip .
+          # Create ZIP (using absolute-like path to be safe)
+          zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: citizen-standalone-bundle
-          path: frontend/nguoi-dan/deploy.zip
+          path: deploy-citizen.zip
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: ${{ secrets.AZURE_CITIZEN_FE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_CITIZEN_FE_PUBLISH_PROFILE }}
-          package: deploy.zip
+          package: deploy-citizen.zip
