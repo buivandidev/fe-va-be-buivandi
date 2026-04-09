@@ -29,11 +29,15 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
+      - name: Prepare standalone assets
+        run: |
+          cp -r public .next/standalone/
+          mkdir -p .next/standalone/.next/static
+          cp -r .next/static .next/standalone/.next/static
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
         with:
           name: frontend-citizen-source
-          path: frontend/nguoi-dan
+          path: frontend/nguoi-dan/.next/standalone
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -45,10 +49,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-citizen-source
-          path: frontend/nguoi-dan
+          path: frontend/nguoi-dan/.next/standalone
       - name: Deploy to Azure Web App (Citizen FE)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_CITIZEN_FE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_CITIZEN_FE_PUBLISH_PROFILE }}
-          package: frontend/nguoi-dan
+          package: frontend/nguoi-dan/.next/standalone
