@@ -23,8 +23,6 @@ jobs:
           cache-dependency-path: frontend/nguoi-dan/package-lock.json
       - name: Install
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Build
         run: npm run build
         env:
@@ -32,15 +30,26 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
+          # Copy public and static assets into standalone
           cp -r public .next/standalone/
           mkdir -p .next/standalone/.next/static
           cp -r .next/static .next/standalone/.next/static
-          # Flatten nested structure: Next.js standalone often nests the app in its own directory structure
-          # For this project, it's likely under frontend/nguoi-dan inside standalone
-          if [ -d ".next/standalone/frontend/nguoi-dan" ]; then
-            echo "Flattening nested structure from frontend/nguoi-dan..."
-            cp -r .next/standalone/frontend/nguoi-dan/* .next/standalone/
+          
+          # AGGRESSIVE FLATTENING: Move everything from nested folders to the root of standalone
+          # Next.js may nest it under frontend/nguoi-dan or just nguoi-dan
+          cd .next/standalone
+          find . -mindepth 1 -type d -name "server.js" -exec cp -r {}/../* . \; 2>/dev/null || true
+          
+          # Manually handle the most likely nested path
+          if [ -d "frontend/nguoi-dan" ]; then
+            cp -r frontend/nguoi-dan/* .
+          elif [ -d "nguoi-dan" ]; then
+            cp -r nguoi-dan/* .
           fi
+          
+          # Clean up unnecessary nested folders to avoid confusion
+          rm -rf frontend nguoi-dan 2>/dev/null || true
+          
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

@@ -37,11 +37,14 @@ jobs:
       - name: Prepare standalone assets
         run: |
           node scripts/prepare-standalone.mjs
-          # Flatten nested structure if exists (common in Next.js monorepos/nested projects)
-          if [ -d ".next/standalone/frontend" ]; then
-            cp -r .next/standalone/frontend/* .next/standalone/
-            rm -rf .next/standalone/frontend
+          
+          # AGGRESSIVE FLATTENING for Admin
+          cd .next/standalone
+          if [ -d "frontend" ]; then
+            cp -r frontend/* .
+            rm -rf frontend
           fi
+          
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
