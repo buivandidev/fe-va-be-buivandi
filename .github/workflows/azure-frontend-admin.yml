@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-admin-source
+          name: admin-standalone-bundle
           path: frontend/.next/standalone
 
   deploy:
@@ -51,11 +51,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: frontend-admin-source
-          path: frontend/.next/standalone
+          name: admin-standalone-bundle
+          path: admin-deploy-package
       - name: Deploy to Azure Web App (Admin FE)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_ADMIN_FE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_ADMIN_FE_PUBLISH_PROFILE }}
-          package: frontend/.next/standalone
+          package: admin-deploy-package

@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-citizen-source
+          name: citizen-standalone-bundle
           path: frontend/nguoi-dan/.next/standalone
 
   deploy:
@@ -50,11 +50,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: frontend-citizen-source
-          path: frontend/nguoi-dan/.next/standalone
+          name: citizen-standalone-bundle
+          path: citizen-deploy-package
       - name: Deploy to Azure Web App (Citizen FE)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_CITIZEN_FE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_CITIZEN_FE_PUBLISH_PROFILE }}
-          package: frontend/nguoi-dan/.next/standalone
+          package: citizen-deploy-package
