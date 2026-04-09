@@ -150,12 +150,15 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
-var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]
+var allowedOriginsSetting = builder.Configuration["Cors:AllowedOrigins"]
     ?? throw new InvalidOperationException("Thiếu cấu hình bắt buộc: Cors:AllowedOrigins");
+
+var origins = allowedOriginsSetting.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+    .Select(o => o.TrimEnd('/')).ToArray();
 
 builder.Services.AddCors(opt =>
     opt.AddPolicy("FrontendPolicy", policy =>
-        policy.WithOrigins(allowedOrigins.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        policy.WithOrigins(origins)
         .AllowAnyHeader()
         .WithMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
         .AllowCredentials()
