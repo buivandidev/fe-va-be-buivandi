@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 namespace PhuongXa.Application.DTOs.HoSo;
 
 public class TaiLenAnhDaiDienDto

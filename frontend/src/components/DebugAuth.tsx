@@ -65,10 +65,10 @@ export function DebugAuth() {
             <div className="mb-2">
               <div className="font-semibold">Decoded payload:</div>
               <div className="text-gray-300">
-                <div>User: {decoded.sub || decoded.email || 'N/A'}</div>
-                <div>Role: {decoded.role || 'N/A'}</div>
-                <div>Exp: {decoded.exp ? new Date(decoded.exp * 1000).toLocaleString() : 'N/A'}</div>
-                <div>Expired: {decoded.exp && decoded.exp * 1000 < Date.now() ? '✗ Yes' : '✓ No'}</div>
+                <div>User: {String(decoded.sub || decoded.email || 'N/A')}</div>
+                <div>Role: {String(decoded.role || 'N/A')}</div>
+                <div>Exp: {decoded.exp ? new Date(Number(decoded.exp) * 1000).toLocaleString() : 'N/A'}</div>
+                <div>Expired: {decoded.exp && Number(decoded.exp) * 1000 < Date.now() ? '✗ Yes' : '✓ No'}</div>
               </div>
             </div>
           )}
