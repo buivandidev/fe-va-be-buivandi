@@ -23,6 +23,8 @@ jobs:
           cache-dependency-path: frontend/nguoi-dan/package-lock.json
       - name: Install
         run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Build
         run: npm run build
         env:
@@ -35,20 +37,13 @@ jobs:
           mkdir -p .next/standalone/.next/static
           cp -r .next/static .next/standalone/.next/static
           
-          # AGGRESSIVE FLATTENING: Move everything from nested folders to the root of standalone
-          # Next.js may nest it under frontend/nguoi-dan or just nguoi-dan
+          # ULTRA AGGRESSIVE FLATTENING (including hidden files like .next)
           cd .next/standalone
-          find . -mindepth 1 -type d -name "server.js" -exec cp -r {}/../* . \; 2>/dev/null || true
-          
-          # Manually handle the most likely nested path
           if [ -d "frontend/nguoi-dan" ]; then
-            cp -r frontend/nguoi-dan/* .
-          elif [ -d "nguoi-dan" ]; then
-            cp -r nguoi-dan/* .
+            echo "Flattening frontend/nguoi-dan including hidden files..."
+            cp -r frontend/nguoi-dan/. .
+            rm -rf frontend
           fi
-          
-          # Clean up unnecessary nested folders to avoid confusion
-          rm -rf frontend nguoi-dan 2>/dev/null || true
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
