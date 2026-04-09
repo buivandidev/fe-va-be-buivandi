@@ -8,11 +8,11 @@ type PortalHeaderProps = {
 };
 
 const navItems: Array<{ key: NavKey; label: string; href: string }> = [
-  { key: "gioi-thieu", label: "Giới thiệu", href: "/" },
-  { key: "tin-tuc", label: "Tin tức", href: "/tin-tuc" },
-  { key: "dich-vu", label: "Dịch vụ công", href: "/dich-vu-cong" },
-  { key: "thu-vien", label: "Thư viện", href: "/thu-vien" },
-  { key: "lien-he", label: "Liên hệ", href: "/lien-he" },
+  { key: "gioi-thieu", label: "GIỚI THIỆU", href: "/" },
+  { key: "tin-tuc", label: "TIN TỨC", href: "/tin-tuc" },
+  { key: "dich-vu", label: "DỊCH VỤ CÔNG", href: "/dich-vu-cong" },
+  { key: "thu-vien", label: "THƯ VIỆN", href: "/thu-vien" },
+  { key: "lien-he", label: "LIÊN HỆ", href: "/lien-he" },
 ];
 
 export function PortalHeader({ active = "tin-tuc", showProfileButton = false }: PortalHeaderProps) {
@@ -32,10 +32,10 @@ export function PortalHeader({ active = "tin-tuc", showProfileButton = false }: 
             </div>
             <div className="hidden md:block">
               <h1 className="text-xl font-extrabold leading-none tracking-tight text-primary uppercase">
-                Cổng Thông Tin
+                HỆ THỐNG THÔNG TIN
               </h1>
               <p className="text-xs font-semibold tracking-widest text-slate-500 uppercase">
-                Điện tử địa phương
+                GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH
               </p>
             </div>
           </Link>

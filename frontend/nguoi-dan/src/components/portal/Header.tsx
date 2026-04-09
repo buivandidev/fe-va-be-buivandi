@@ -127,12 +127,12 @@ export default function Header() {
             </Link>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="gov-nav-link hover:text-primary transition-colors">Trang chủ</Link>
-            <Link href="/tin-tuc" className="gov-nav-link hover:text-primary transition-colors">Tin tức</Link>
-            <Link href="/dich-vu-cong" className="gov-nav-link hover:text-primary transition-colors">Thủ tục hành chính</Link>
-            <Link href="/thu-vien" className="gov-nav-link hover:text-primary transition-colors">Thư viện</Link>
-            <Link href="/tra-cuu" className="gov-nav-link hover:text-primary transition-colors">Tra cứu hồ sơ</Link>
-            <Link href="/lien-he" className="gov-nav-link hover:text-primary transition-colors">Liên hệ</Link>
+            <Link href="/" className="gov-nav-link hover:text-primary transition-colors">TRANG CHỦ</Link>
+            <Link href="/tin-tuc" className="gov-nav-link hover:text-primary transition-colors">TIN TỨC</Link>
+            <Link href="/dich-vu-cong" className="gov-nav-link hover:text-primary transition-colors">DỊCH VỤ CÔNG</Link>
+            <Link href="/thu-vien" className="gov-nav-link hover:text-primary transition-colors">THƯ VIỆN</Link>
+            <Link href="/tra-cuu" className="gov-nav-link hover:text-primary transition-colors">TRA CỨU</Link>
+            <Link href="/lien-he" className="gov-nav-link hover:text-primary transition-colors">LIÊN HỆ</Link>
           </nav>
           <div className="flex items-center gap-4">
             {isLoading ? (

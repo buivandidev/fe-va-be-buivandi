@@ -78,7 +78,7 @@ export default async function Footer() {
 
           {/* Column 2: Liên kết nhanh */}
           <div>
-              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">Liên kết nhanh</h3>
+              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">LIÊN KẾT NHANH</h3>
             <ul className="space-y-4">
               <li>
                 <Link
@@ -130,7 +130,7 @@ export default async function Footer() {
 
           {/* Column 3: Dịch vụ công */}
           <div>
-              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">Dịch vụ công</h3>
+              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">DỊCH VỤ CÔNG</h3>
             <ul className="space-y-4">
               <li><Link href="/dich-vu-cong" className="text-slate-300 text-sm hover:text-white transition-colors">Thủ tục hành chính</Link></li>
               <li><Link href="/tra-cuu" className="text-slate-300 text-sm hover:text-white transition-colors">Tra cứu hồ sơ</Link></li>
@@ -142,7 +142,7 @@ export default async function Footer() {
 
           {/* Column 4: Thông tin liên hệ */}
           <div>
-              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">Thông tin liên hệ</h3>
+              <h3 className="gov-section-title text-sm font-bold uppercase tracking-widest mb-6 text-slate-100">THÔNG TIN LIÊN HỆ</h3>
             <ul className="space-y-5">
               <li className="flex gap-4">
                 <span className="material-symbols-outlined gov-icon text-primary text-xl flex-shrink-0">location_on</span>

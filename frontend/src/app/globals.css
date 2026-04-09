@@ -52,10 +52,10 @@
   --bg-soft: #ffffff;
   --ink: #0f172a;
   --ink-muted: #475569;
-  --brand: #b71c1c; /* Đỏ cờ Tổ quốc */
-  --brand-light: #fbe9e7;
-  --brand-dark: #7f0000;
-  --brand-ink: #3e2723;
+  --brand: #0b5ea8; /* Chuyển sang Xanh chính quy */
+  --brand-light: #eff6ff;
+  --brand-dark: #084a84;
+  --brand-ink: #1e3a8a;
   --accent: #ffc107; /* Vàng sao cờ Tổ quốc */
   --success: #10b981;
   --danger: #ef4444;

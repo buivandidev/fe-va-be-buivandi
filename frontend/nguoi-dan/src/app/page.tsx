@@ -183,7 +183,7 @@ export default function Home() {
       title:
         "Quyết định về việc ban hành Quy chế quản lý và sử dụng hạ tầng công nghệ thông tin tỉnh",
       icon: "description",
-      iconStyle: "bg-red-50 text-red-600",
+      iconStyle: "bg-blue-50 text-blue-600",
     },
     {
       code: "Số: 128/BC-SKHĐT",
@@ -222,15 +222,14 @@ export default function Home() {
 
           <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              <span className="mb-4 inline-block rounded bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+              <span className="mb-4 inline-block rounded bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-900">
                 Chính phủ điện tử
               </span>
-              <h2 className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-6xl">
-                Vì một cuộc sống <br /> thuận tiện & số hóa
+              <h2 className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-6xl uppercase">
+                CHÍNH QUY - HIỆN ĐẠI <br /> PHỤC VỤ NHÂN DÂN
               </h2>
-              <p className="mb-10 text-lg leading-relaxed text-slate-200">
-                Truy cập nhanh chóng các dịch vụ hành chính công trực tuyến, cập nhật tin tức kinh tế xã
-                hội và phản hồi ý kiến đến chính quyền địa phương.
+              <p className="mb-10 text-lg leading-relaxed text-slate-100">
+                Hệ thống thông tin giải quyết thủ tục hành chính tập trung, cung cấp dịch vụ công trực tuyến mức độ toàn trình cho công dân và doanh nghiệp.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
