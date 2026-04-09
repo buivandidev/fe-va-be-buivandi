@@ -38,18 +38,21 @@ jobs:
         run: |
           node scripts/prepare-standalone.mjs
           
-          # ULTRA AGGRESSIVE FLATTENING for Admin
+          # Flatten nested structure for Admin
           cd .next/standalone
           if [ -d "frontend" ]; then
             cp -r frontend/. .
             rm -rf frontend
           fi
           
+          # CREATE A ZIP
+          zip -r ../../deploy.zip .
+          
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: admin-standalone-bundle
-          path: frontend/.next/standalone
+          path: frontend/deploy.zip
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -61,10 +64,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: admin-standalone-bundle
-          path: admin-deploy-package
+          path: .
       - name: Deploy to Azure Web App (Admin FE)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_ADMIN_FE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_ADMIN_FE_PUBLISH_PROFILE }}
-          package: admin-deploy-package
+          package: deploy.zip
