@@ -28,22 +28,31 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          # 1. Create a workspace to resolve symlinks
-          mkdir -p $GITHUB_WORKSPACE/prep-citizen
+          # 1. Workspace for total flattening
+          mkdir -p $GITHUB_WORKSPACE/final-citizen
           
-          # 2. Use -L (dereference) to copy real files instead of symlinks!
-          # This is CRITICAL for monorepo standalone folders on Azure.
-          cp -rL .next/standalone/. $GITHUB_WORKSPACE/prep-citizen/
+          # 2. Copy standalone core (dereferencing symlinks)
+          cp -rL .next/standalone/. $GITHUB_WORKSPACE/final-citizen/
           
-          # 3. Add static and public assets (using -L to be safe)
-          mkdir -p $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/public
-          cp -rL public/. $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/public/ || true
+          cd $GITHUB_WORKSPACE/final-citizen
           
-          mkdir -p $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/.next/static
-          cp -rL .next/static/. $GITHUB_WORKSPACE/prep-citizen/frontend/nguoi-dan/.next/static/ || true
+          # 3. IF nested monorepo structure exists, MOVE everything to root
+          if [ -d "frontend/nguoi-dan" ]; then
+            echo "Total flattening of monorepo structure..."
+            cp -rL frontend/nguoi-dan/. .
+            rm -rf frontend
+          fi
           
-          # 4. Zip from the resolved directory
-          cd $GITHUB_WORKSPACE/prep-citizen
+          # 4. Ensure .next/static and public are AT THE ROOT
+          mkdir -p .next/static
+          cp -rL $GITHUB_WORKSPACE/frontend/nguoi-dan/.next/static/. .next/static/ || true
+          cp -rL $GITHUB_WORKSPACE/frontend/nguoi-dan/public/. ./public/ || true
+          
+          # 5. Create a duplicate '_next' folder for Azure's underscores requirements
+          cp -r .next _next || true
+          
+          # 6. Verify and ZIP
+          ls -la .
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
           
       - name: Upload artifact
