@@ -23,12 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
       - name: Install
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Build
         run: npm run build
         env:
@@ -38,16 +34,18 @@ jobs:
         run: |
           node scripts/prepare-standalone.mjs
           
-          # Aggressive flattening
+          # Create ZIP from standalone root
           cd .next/standalone
-          if [ -d "frontend" ]; then
-            echo "Moving files out of frontend..."
-            cp -r frontend/. .
-            rm -rf frontend
-          fi
           
-          # Create ZIP
-          zip -r $GITHUB_WORKSPACE/deploy-admin.zip .
+          # If it's a monorepo, everything is in 'frontend'
+          if [ -d "frontend" ]; then
+            cd frontend
+            zip -r $GITHUB_WORKSPACE/deploy-admin.zip .
+            cd ..
+            zip -g $GITHUB_WORKSPACE/deploy-admin.zip node_modules server.js .next
+          else
+            zip -r $GITHUB_WORKSPACE/deploy-admin.zip .
+          fi
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4

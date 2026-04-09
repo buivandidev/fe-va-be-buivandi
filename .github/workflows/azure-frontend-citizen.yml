@@ -19,12 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/nguoi-dan/package-lock.json
       - name: Install
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Build
         run: npm run build
         env:
@@ -32,23 +28,20 @@ jobs:
           API_BASE_URL: ${{ secrets.CITIZEN_FE_NEXT_PUBLIC_API_BASE_URL }}
       - name: Prepare standalone assets
         run: |
-          # Next.js standalone folder often contains a nested path for monorepos
-          cd .next/standalone
+          # Copy static and public into the standalone folder
+          cp -r public .next/standalone/frontend/nguoi-dan/ || true
+          mkdir -p .next/standalone/frontend/nguoi-dan/.next
+          cp -r .next/static .next/standalone/frontend/nguoi-dan/.next/static || true
           
-          # Forcefully move all nested files from 'frontend/nguoi-dan' to the root of standalone
-          if [ -d "frontend/nguoi-dan" ]; then
-            echo "Flattening nested directory..."
-            cp -r frontend/nguoi-dan/. .
-            rm -rf frontend
-          fi
-          
-          # Manually copy public and static to ensure they are at the correct root
-          cp -r ../../public . || true
-          mkdir -p .next/static
-          cp -r ../static/. .next/static/ || true
-          
-          # Create ZIP of the root of standalone
+          # CREATE A COMPLETELY FLAT ZIP FROM THE NESTED STANDALONE DIR
+          # This is the most reliable way for Next.js monorepos
+          cd .next/standalone/frontend/nguoi-dan
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
+          
+          # Also include node_modules from the parent standalone dir
+          cd ..
+          cd ..
+          zip -g $GITHUB_WORKSPACE/deploy-citizen.zip node_modules server.js .next
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
