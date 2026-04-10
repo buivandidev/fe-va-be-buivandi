@@ -51,7 +51,13 @@ jobs:
           # 5. Create a duplicate '_next' folder for Azure's underscores requirements
           cp -r .next _next || true
           
-          # 6. Verify and ZIP
+          # 6. Remove any nested 'nguoi-dan' folder if exists (prevent double nesting)
+          if [ -d "nguoi-dan" ]; then
+            echo "Removing nested nguoi-dan folder..."
+            rm -rf nguoi-dan
+          fi
+
+          # 7. Verify and ZIP
           ls -la .
           zip -r $GITHUB_WORKSPACE/deploy-citizen.zip .
           
